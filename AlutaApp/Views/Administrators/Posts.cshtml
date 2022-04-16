@@ -1,0 +1,71 @@
+﻿@model IEnumerable<AlutaApp.Models.Post>
+
+@{
+    ViewData["Title"] = "Posts";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Posts</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                        @{
+                            var models = new Post();
+                            await Html.RenderPartialAsync("_SearchPostPartial", models);
+
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="table-responsive">
+                    @{
+                        if (Model == null)
+                        {
+                            <div>
+                                <h2 class="text-center text-warning">
+                                    No Available Post
+                                </h2>
+                            </div>
+                            return;
+                        }
+                        else
+                        {
+                            await Html.RenderPartialAsync("_PostListPartial", Model);
+                        }
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+
+<script src="~/libs/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#postSearch").keydown(function() {
+        var text = this.value;
+        //console.log($("#SearchName").val());
+        $.ajax({
+            type: "GET",
+            url: "/Administrators/SearchPost?searchText="+text,
+            contentType:"html",
+            success: function(data) {
+                $("#search-results").html(data);
+            }
+        })
+    })
+})
+</script>

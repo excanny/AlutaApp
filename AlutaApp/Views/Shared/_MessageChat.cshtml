@@ -1,0 +1,166 @@
+﻿@foreach(AlutaApp.ViewModels.ListOfSenders senders in @ViewBag.ListOfSenders){
+<div class="navbar flex-nowrap b-b">
+                                <button data-toggle="modal" data-target="#content-aside" data-modal class="d-md-none btn btn-sm btn-icon no-bg">
+                                    <span>
+				      		<i data-feather="menu"></i>
+				        </span>
+                                </button>
+                                <span class="text-ellipsis flex mx-1">
+			        	<span class="text-md text-highlight mx-2">Team messages</span>
+                                </span>
+                                <span class="flex"></span>
+                                <div>
+                                    <div class="d-flex flex-wrap align-items-center avatar-group">
+                                        <a href="app.message.html" class="w-24 avatar circle bg-danger-lt">
+                                            <img src="../assets/img/a10.jpg" alt=".">
+                                        </a>
+                                        <a href="app.message.html" class="w-24 avatar circle bg-primary-lt">
+                                            <img src="../assets/img/a3.jpg" alt=".">
+                                        </a>
+                                        <a href="app.message.html" class="w-24 avatar circle bg-info-lt">
+                                            A
+                                        </a>
+                                        <a href="app.message.html" class="w-24 avatar circle bg-warning-lt">
+                                            T
+                                        </a>
+                                        <a class="w-24 avatar circle bg-primary">
+                                            <i data-feather="plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="scrollable hover">
+                                <div class="loading m-3"></div>
+                                <div class="list hide">
+                                    <div class="p-3">
+                                        <div class="chat-list">
+                                            <div class="chat-item" data-class>
+                                                <a href="#" class="avatar w-40">
+                                                    <img src="../assets/img/a2.jpg" alt=".">
+                                                </a>
+                                                <div class="chat-body">
+                                                    <div class="chat-content rounded msg bg-body">
+                                                        @senders.SenderLastMessage
+                                                    </div>
+                                                    <div class="w-md my-3">
+                                                        <div class="row row-xs">
+                                                            <div class="col-4">
+                                                                <div class="media media-4x3 r box-shadows">
+                                                                    <a class="media-content" style="background-image: url(../assets/img/b1.jpg);"></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="media media-4x3 r box-shadows">
+                                                                    <a class="media-content" style="background-image: url(../assets/img/b7.jpg);"></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="media media-4x3 r box-shadows">
+                                                                    <a class="media-content" style="background-image: url(../assets/img/b16.jpg);"></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="chat-date date">
+                                                        2 days ago
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat-item" data-class="alt">
+                                                <a href="#" class="avatar w-40">
+                                                    <img class="image" src="../assets/img/a0.jpg" alt=".">
+                                                </a>
+                                                <div class="chat-body">
+                                                    <div class="chat-content rounded msg bg-body">
+                                                        Hi, Jacqueline Reid...
+                                                    </div>
+                                                    <div class="w-md my-3">
+                                                        <div class="row row-xs">
+                                                            <div class="col-12">
+                                                                <div class="media media-2x1 r box-shadows">
+                                                                    <a class="media-content" style="background-image: url(../assets/img/b11.jpg);"></a>
+                                                                    <div class="media-action active">
+                                                                        <a href="#" class="btn btn-md btn-icon btn-white btn-rounded">
+                                                                            <i data-feather="play" width="12" height="12"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="chat-date date">
+                                                        8 hrs ago
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat-item" data-class>
+                                                <a href="#" class="avatar w-40">
+                                                    <img class="image" src="../assets/img/a2.jpg" alt=".">
+                                                </a>
+                                                <div class="chat-body">
+                                                    <div class="chat-content rounded msg block bg-primary--lt">
+                                                        <a href="#">document.pdf <span class="text-muted">2.5mb</span>
+                                                            <i class="text-muted" data-feather="download"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="chat-date date">
+                                                        2 hrs ago
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat-item" data-class>
+                                                <a href="#" class="avatar w-40">
+                                                    <img class="image" src="../assets/img/a2.jpg" alt=".">
+                                                </a>
+                                                <div class="chat-body">
+                                                    <div class="chat-content rounded msg bg-body">
+                                                        Typing...
+                                                    </div>
+                                                    <div class="chat-date date">
+                                                        Just now
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hide">
+                                            <div class="chat-item" id="chat-item" data-class>
+                                                <a href="#" class="avatar w-40">
+                                                    <img class="image" src="../assets/img/a0.jpg" alt=".">
+                                                </a>
+                                                <div class="chat-body">
+                                                    <div class="chat-content rounded msg block bg-body">
+                                                    </div>
+                                                    <div class="chat-date date"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-auto b-t" id="chat-form">
+                                <div class="p-2">
+                                    <div class="px-3">
+                                        <div class="toolbar my-1">
+                                            <a href="#" class="text-muted mx-1">
+                                                <i data-feather="image" width="14" height="14"></i>
+                                            </a>
+                                            <a href="#" class="text-muted mx-1">
+                                                <i data-feather="camera" width="14" height="14"></i>
+                                            </a>
+                                            <a href="#" class="text-muted mx-1">
+                                                <i data-feather="map-pin" width="14" height="14"></i>
+                                            </a>
+                                            <a href="#" class="text-muted mx-1">
+                                                <i data-feather="paperclip" width="14" height="14"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control p-3 no-shadow no-border" placeholder="Say something" id="newField">
+                                        <button class="btn btn-icon btn-rounded gd-success" type="button" id="newBtn">
+                                            <i data-feather="arrow-up"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+}

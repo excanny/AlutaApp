@@ -1,0 +1,75 @@
+﻿@model IEnumerable<AlutaApp.Models.Institution>
+
+@{
+    ViewData["Title"] = "Institutions";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Institutions</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                                @{
+                            var models = new Department();
+                            await Html.RenderPartialAsync("_AddInstitutionPartial", models);
+
+                        }
+                        @{
+
+                            await Html.RenderPartialAsync("_SearchInstitutionPartial", models);
+
+                        }
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="table-responsive">@{
+                        if (Model == null)
+                        {
+                            <div>
+                                <h2 class="text-center text-warning">
+                                    No Available Institution
+                                </h2>
+                            </div>
+                            return;
+                        }
+                        else{
+                            await Html.RenderPartialAsync("_InstitutionListPartial", Model);
+                        
+                        }
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+<script src="~/libs/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#SearchName").keydown(function() {
+        var text = this.value;
+        //console.log($("#SearchName").val());
+        $.ajax({
+            type: "GET",
+            url: "/Administrators/SearchInstitution?searchText="+text,
+            contentType:"html",
+            success: function(data) {
+                $("#search-results").html(data);
+            }
+        })
+    })
+})
+</script>

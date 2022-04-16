@@ -1,0 +1,72 @@
+﻿@model IEnumerable<AlutaApp.Models.Points2Earn>
+
+@{
+    ViewData["Title"] = "Departments";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Points</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                        @{
+                            var models = new Points2Earn();
+                            await Html.RenderPartialAsync("_SearchPointPartial", models);
+
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="page-content page-container" id="page-content">
+            <div class="padding">
+                <div class="table-responsive">
+                    @{
+                        if (Model == null)
+                        {
+                            <div>
+                                <h2 class="text-center text-warning">
+                                    No Available Point
+                                </h2>
+                            </div>
+                            return;
+                        }
+                        else
+                        {
+
+                            await Html.RenderPartialAsync("_PointListPartial", Model);
+                        }
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+
+<script src="~/libs/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#SearchPoint").keydown(function() {
+        var text = this.value;
+        //console.log($("#SearchName").val());
+        $.ajax({
+            type: "GET",
+            url: "/Administrators/SearchPoint?searchText="+text,
+            contentType:"html",
+            success: function(data) {
+                $("#search-results").html(data);
+            }
+        })
+    })
+})
+</script>

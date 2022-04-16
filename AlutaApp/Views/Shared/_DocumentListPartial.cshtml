@@ -1,0 +1,81 @@
+﻿
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<AlutaApp.Models.Document>
+<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th><span class="text-muted">Document Type</span></th>
+                                            <th><span class="text-muted">Owner</span></th>
+                                            <th><span class="text-muted">Department</span></th>
+                                            <th><span class="text-muted">Document Link</span></th>
+                                            <th><span class="text-muted">Total Download</span></th>
+                                           
+                                            
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model) {
+
+                                        <tr class="" data-id="16">
+                                            <td >
+                                                <small class="text-muted">@item.Category.Name</small>
+                                            </td>
+                                            
+                                            <td >
+                                                <small class="text-muted">@item.User.FullName</small>
+                                            </td>
+                                            
+
+                                              <td >
+                                                <small class="text-muted">@item.Department.Name</small>
+                                            </td>
+                                            
+                                              <td >
+                                                <small class="text-muted">@item.DocumentLink</small>
+                                            </td>
+
+
+                                              <td >
+                                                <small class="text-muted">@item.TotalDownloads</small>
+                                            </td>
+
+                                            <td>
+                                                <div class="item-action dropdown">
+                                                    <a href="#" data-toggle="dropdown" class="text-muted">
+                                                        <i data-feather="more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
+                                                        <a class="dropdown-item" href="../../Administrators/ViewDocument/@item.Id" id="viewInstitution">
+                                                            View
+                                                        </a>
+                                                      
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item trash" href="../../Administrators/DeleteDocument/@item.Id" id="deleteInstitution">
+                                                            Delete
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                   }
+                                    </tbody>
+
+                                </table>
+                                <div>
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("Documents", new { page = page }),
+            new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item"},
+                        PageClasses = new string[] {"page-link"}
+                    } )
+                    
+               
+                                </div>
+
+
+                              

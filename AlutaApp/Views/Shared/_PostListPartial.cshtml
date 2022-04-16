@@ -1,0 +1,78 @@
+﻿
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<AlutaApp.Models.Post>
+<table id="" class="table table-theme table-row v-middle" data-plugin="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th><span class="text-muted">Title</span></th>
+                                            <th><span class="text-muted">Posted By</span></th>
+                                            <th><span class="text-muted">Created At</span></th>
+                                            <th><span class="text-muted">IsActive</span></th>
+                                           
+                                            
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="search-results">
+                                        @foreach (var item in Model) {
+
+                                        <tr class="" data-id="16">
+                                            <td >
+                                                <small class="text-muted">@item.Title</small>
+                                            </td>
+                                            <td >
+                                                
+                                                <small class="text-muted">@item.User.UserName</small>
+                                            </td>
+
+                                             <td >
+                                                <small class="text-muted">@item.TimeCreated</small>
+                                            </td>
+                                            
+
+                                             <td >
+                                                <small class="text-muted">@item.Active</small>
+                                            </td>
+
+                                           
+                                             
+                                            
+                                            <td>
+                                                <div class="item-action dropdown">
+                                                    <a href="#" data-toggle="dropdown" class="text-muted">
+                                                        <i data-feather="more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
+                                                        <a class="dropdown-item" href="../../Administrators/ViewPost/@item.Id" id="viewInstitution">
+                                                            View
+                                                        </a>
+                                                       
+                                                        <a class="dropdown-item edit" href="../../Administrators/DeletePost/@item.Id" id="editInstitution">
+                                                            Delete
+                                                        </a>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                   }
+                                    </tbody>
+
+                                </table>
+                                <div>
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("Posts", new { page = page }),
+            new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item"},
+                        PageClasses = new string[] {"page-link"}
+                    } )
+                    
+               
+                                </div>
+
+
+                              

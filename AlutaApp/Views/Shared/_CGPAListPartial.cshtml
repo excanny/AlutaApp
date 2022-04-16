@@ -1,0 +1,89 @@
+﻿
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<AlutaApp.Models.CGPA>
+<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th><span class="text-muted">FullName</span></th>
+                                            <th><span class="text-muted">Credit Unit</span></th>
+                                            <th><span class="text-muted">Grade</span></th>
+                                            <th><span class="text-muted">Grade Point</span></th>
+                                            <th><span class="text-muted">Level</span></th>
+                                            <th><span class="text-muted">Semester</span></th>
+                                            <th><span class="text-muted">Course Code</span></th>
+                                            
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model) {
+
+                                        <tr class="" data-id="16">
+                                            <td >
+                                                <small class="text-muted">@item.User.FullName</small>
+                                            </td>
+                                            <td >
+                                                <small class="text-muted">@item.CreditUnit</small>
+                                            </td>
+                                             
+                                            <td >
+                                                <small class="text-muted">@item.Grade</small>
+                                            </td>
+
+
+                                            <td >
+                                                <small class="text-muted">@item.GradePoint</small>
+                                            </td>
+
+                                            <td >
+                                                <small class="text-muted">@item.Level</small>
+                                            </td>
+
+                                            <td >
+                                                <small class="text-muted">@item.Semester</small>
+                                            </td>
+
+                                            <td >
+                                                <small class="text-muted">@item.CourseCode</small>
+                                            </td>
+                                            <td>
+                                                <div class="item-action dropdown">
+                                                    <a href="#" data-toggle="dropdown" class="text-muted">
+                                                        <i data-feather="more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
+                                                        <a class="dropdown-item" href="../../CGPAs/Details/@item.Id" id="viewInstitution">
+                                                            View
+                                                        </a>
+                                                        @*<a class="dropdown-item edit" href="../../TGIFMatches/Edit/@item.Id" id="editInstitution">
+                                                            Update
+                                                        </a>
+                                                       
+                                                        <a class="dropdown-item edit" href="../../TGIFMatches/Delete/@item.Id" id="editInstitution">
+                                                            Delete  
+                                                        </a>*@
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                   }
+                                    </tbody>
+
+                                </table>
+                                <div>
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("CGPAs", new { page = page }),
+            new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item"},
+                        PageClasses = new string[] {"page-link"}
+                    } )
+                    
+               
+                                </div>
+
+
+                              
