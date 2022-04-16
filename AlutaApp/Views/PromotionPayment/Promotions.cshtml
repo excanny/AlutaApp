@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AlutaApp.Models.Promotion>
+
+@{
+    ViewData["Title"] = "Promotions";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Promotions</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                           
+                            </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+       
+        <div class="page-content page-container" id="page-content">
+                        <div class="padding">
+                <div class="table-responsive">
+                
+                   @{
+
+                        await Html.RenderPartialAsync("_PromotionListPartial", Model);
+
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+

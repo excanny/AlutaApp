@@ -1,0 +1,135 @@
+﻿@model AlutaApp.Models.AlutaApp.Models.User
+
+@{
+    ViewData["Title"] = "ViewAccount";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<!-- ############ Content START-->
+            <div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Profile</h2>
+                                <small class="text-muted">Your personal information</small>
+                            </div>
+                            <div class="flex"></div>
+                        </div>
+                    </div>
+                    <div class="page-content page-container" id="page-content">
+                        <div class="padding sr">
+                            <div class="card">
+                                <div class="card-header bg-dark bg-img p-0 no-border" data-stellar-background-ratio="0.1" style="background-image:url(../assets/img/b3.jpg);" data-plugin="stellar">
+                                    <div class="bg-dark-overlay r-2x no-r-b">
+                                        <div class="d-md-flex">
+                                            <div class="p-4">
+                                                <div class="d-flex">
+                                                    <a href="#">
+                                                        <span class="avatar w-64">
+                  <img src="data:image/png;base64,@Model.ProfilePhoto" alt=".">
+                  <i class="on"></i>
+                </span>
+                                                    </a>
+                                                    <div class="mx-3">
+                                                        <h5 class="mt-2">@Model.FullName</h5>
+                                                        <div class="text-fade text-sm"><span class="m-r">@Model.Department.Name</span>
+                                                            <small>
+                                                                <i class="fa fa-map-marker mr-2"></i>@Model.Institution.Name</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="flex"></span>
+                                            <div class="align-items-center d-flex p-4">
+                                                <div class="toolbar">
+                                                    <a href="#" class="btn btn-sm bg-dark-overlay btn-rounded text-white bg-success active" data-toggle-class="bg-success">
+                                                        @*<span class="d-inline">Online</span>*@
+                                            @{
+                                                var result = @Model.Online == true ? "Online" : "Offline";
+                                            }
+                                                        <span class="d-none">@result</span>
+                                                    </a>
+                                                </div>
+                                                 <div class="toolbar">
+                                                    <a href="../../Administrators/Ban/@Model.Id" class="btn btn-sm bg-dark-overlay btn-rounded text-white bg-success active" data-toggle-class="bg-success">
+                                                        @*<span class="d-inline">Online</span>*@
+                                            @{
+                                                var bans = @Model.IsBanned == true ? "Ban" : "Remove Ban";
+                                            }
+                                                        <span class="d-none">@bans</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="d-flex">
+                                        <ul class="nav nav-pills">
+                                           @* <li class="nav-item">
+                                                <a class="nav-link active" href="#" data-toggle="tab" data-target="#tab_1">Feed</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_2">Activity</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_3">Friends</a>
+                                            </li>*@
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">Profile</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+       
+                                        <div class="tab-pane">
+                                            <div class="card">
+                                                
+                                                <div class="px-4 py-4">
+                                                    <div class="row mb-2">
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Cell Phone</small>
+                                                            <div class="my-2">@Model.PhoneNumber</div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <small class="text-muted">UserName</small>
+                                                            <div class="my-2">@Model.UserName</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Birth Date</small>
+                                                            <div class="my-2">@Model.DateOfBirth.ToString("yyyy-MM-dd")</div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Grade Point</small>
+                                                            <div class="my-2">@Model.GradePoint</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Posts</small>
+                                                            <div class="my-2">@Model.Posts.Count</div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Year of Admission</small>
+                                                            <div class="my-2">@Model.YearOfAdmission</div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <small class="text-muted">Bio</small>
+                                                        <div class="my-2">@Model.Biography</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ############ Main END-->

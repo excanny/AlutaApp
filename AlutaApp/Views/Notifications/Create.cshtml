@@ -1,0 +1,75 @@
+﻿@model AlutaApp.Models.Notification
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Notification</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <input asp-for="CategoryId" class="form-control" />
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecondPartyId" class="control-label"></label>
+                <input asp-for="SecondPartyId" class="form-control" />
+                <span asp-validation-for="SecondPartyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ThirdPartyId" class="control-label"></label>
+                <input asp-for="ThirdPartyId" class="form-control" />
+                <span asp-validation-for="ThirdPartyId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Viewed" /> @Html.DisplayNameFor(model => model.Viewed)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Clicked" /> @Html.DisplayNameFor(model => model.Clicked)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeCreated" class="control-label"></label>
+                <input asp-for="TimeCreated" class="form-control" />
+                <span asp-validation-for="TimeCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

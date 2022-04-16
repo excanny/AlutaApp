@@ -1,0 +1,73 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<AlutaApp.Models.Promotion>
+<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th><span class="text-muted">Start Date</span></th>
+                                            <th><span class="text-muted">End Date</span></th>
+                                            <th><span class="text-muted">Views</span></th>
+                                            <th><span class="text-muted">Promoted By</span></th>
+                                            <th><span class="text-muted">Status</span></th>
+                                            <th><span class="text-muted">Post Id</span></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model) {
+                                        <tr class="" data-id="16">
+                                            <td >
+                                                <small class="text-muted">@item.StartDate</small>
+                                            </td>
+                                            <td >
+                                                <small class="text-muted">@item.EndDate</small>
+                                            </td>
+                                             
+                                            <td >
+                                                <small class="text-muted">@item.Views</small>
+                                            </td>
+                                            <td >
+                                                <small class="text-muted">@item.PromotedById</small>
+                                            </td>
+                                            <td >
+                                                <small class="text-muted">@item.Status</small>
+                                            </td>
+                                            <td >
+                                                <small class="text-muted">@item.PostId</small>
+                                            </td>
+                                            <td>
+                                                <div class="item-action dropdown">
+                                                    <a href="#" data-toggle="dropdown" class="text-muted">
+                                                        <i data-feather="more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
+                                                        <a class="dropdown-item" href="../../Promotions/Details/@item.Id" id="viewInstitution">
+                                                            View
+                                                        </a>
+                                                        <a class="dropdown-item edit" href="../../Promotions/Edit/@item.Id" id="editInstitution">
+                                                            Update
+                                                        </a>
+                                                       
+                                                        @*<a class="dropdown-item edit" href="../../TGIFMatches/Delete/@item.Id" id="editInstitution">
+                                                            Delete  
+                                                        </a>*@
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                   }
+                                    </tbody>
+                                </table>
+                                <div>
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("Promotions", new { page = page }),
+            new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item"},
+                        PageClasses = new string[] {"page-link"}
+                    })
+                                </div>
+
+
+                              

@@ -1,0 +1,13 @@
+﻿@model AlutaApp.Models.Trivia
+<div class="search-bar">
+    @using (Html.BeginForm("Create", "Trivias"))
+    {
+        <div class="input-group mb-12">
+                                               
+                                                <input type="date" name="PlayDate" class="form-control col-12">|
+                                                <input class="btn btn-primary" type="submit" value="Add" id="search"/>
+                                            </div>
+                                          
+    }
+</div>
+

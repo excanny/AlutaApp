@@ -1,0 +1,55 @@
+﻿@model AlutaApp.Models.TGIFMatch
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TGIFMatch</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Male)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Male.FullName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Female)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Female.FullName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaleStatus)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaleStatus)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FemaleStatus)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FemaleStatus)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateMatched)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateMatched)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfExpiry)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfExpiry)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

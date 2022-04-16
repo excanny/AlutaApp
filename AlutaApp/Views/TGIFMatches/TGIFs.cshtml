@@ -1,0 +1,61 @@
+﻿@model IEnumerable<AlutaApp.Models.TGIFMatch>
+
+@{
+    ViewData["Title"] = "TGIFs";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">TGIF Match</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                                <!-- @{
+                            var models = new TGIFMatch();
+                            await Html.RenderPartialAsync("_SearchTGIFMatchPartial", models);
+
+                        } -->
+                            </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+       
+        <div class="page-content page-container" id="page-content">
+                        <div class="padding">
+                <div class="table-responsive">@{
+
+                        await Html.RenderPartialAsync("_TGIFListPartial", Model);
+
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+
+<script src="~/libs/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#SearchDepartment").keydown(function() {
+        var text = this.value;
+        //console.log($("#SearchName").val());
+        $.ajax({
+            type: "GET",
+            url: "/Administrators/SearchDepartment?searchText="+text,
+            contentType:"html",
+            success: function(data) {
+                $("#search-results").html(data);
+            }
+        })
+    })
+})
+</script>

@@ -1,0 +1,57 @@
+﻿@using X.PagedList
+@model AlutaApp.Models.Trivia
+ 
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div>
+   
+    <div id="questionPanel">
+        <h4>Question</h4>
+        @{
+            var triviaQuestion = new TriviaQuestion();
+            var question = Model.Questions.Where(e => e.TriviaId == Model.Id).FirstOrDefault();
+            await Html.RenderPartialAsync("_TriviaQuestionPartial", question);
+       }
+    </div>
+    <div>
+    <div id="attemptPanel">
+        <h4>Attempts</h4>
+            @{
+                int pageSize = 10;
+                int pageIndex = 1;
+                var triviaAttempts = new TriviaAttempt();
+                var attempts = Model.Attempts.Where(e => e.TriviaId == Model.Id).OrderByDescending(e=>e.TotalScore).ToList();
+                var attempss = await attempts.ToPagedListAsync(pageIndex, pageSize);
+                await Html.RenderPartialAsync("_TriviaAttemptsPartial", attempss);
+       }
+    </div>
+
+
+    <div id="resultPanel">
+        <h4>Results</h4>
+        @{
+           int pgSize = 10;
+           int pgIndex = 1;
+           var triviaResults = new TriviaResult();
+           var resultss = Model.UserResults.Where(e => e.TriviaId == Model.Id).OrderBy(s=>s.TimeTakenInSeconds).ToList();
+           var res = await resultss.ToPagedListAsync(pgIndex, pgSize);
+           await Html.RenderPartialAsync("_TriviaResultPartial", res);
+       }
+    </div>
+
+    <div id="triviaWinners">
+       <h4>Winners</h4>
+        @{
+            
+           var triviaWinners = new TriviaWinner();
+           var winnerResult = Model.Winners.Where(e => e.TriviaId == Model.Id).OrderBy(s=>s.Position).ToList();
+            var winnerRes = await winnerResult.ToPagedListAsync(pgIndex, pgSize);
+            await Html.RenderPartialAsync("_TriviaWinnerPartial", winnerRes);
+       }
+    </div>
+</div>    
+</div>
+

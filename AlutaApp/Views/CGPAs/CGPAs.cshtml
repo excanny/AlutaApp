@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AlutaApp.Models.CGPA>
+
+@{
+    ViewData["Title"] = "Trivias";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">CGPA</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                               @* @{
+                            var models = new TGIFMatch();
+                            await Html.RenderPartialAsync("_AddTGIFPartial", models);
+
+                        }*@
+                            </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+       
+        <div class="page-content page-container" id="page-content">
+                        <div class="padding">
+                <div class="table-responsive">@{
+
+                        await Html.RenderPartialAsync("_CGPAListPartial", Model);
+
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+

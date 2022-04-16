@@ -1,0 +1,98 @@
+﻿@model AlutaApp.Models.Document
+
+@{
+    ViewData["Title"] = "ViewPost";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<!-- ############ Content START-->
+            <div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Document</h2>
+                                <small class="text-muted">@Model.Title</small>
+                            </div>
+                            <div class="flex"></div>
+                        </div>
+                    </div>
+                    <div class="page-content page-container" id="page-content">
+                        <div class="padding sr">
+                            <div class="card">
+                                <div class="card-header bg-dark bg-img p-0 no-border" data-stellar-background-ratio="0.1" style="background-image:url(../assets/img/b3.jpg);" data-plugin="stellar">
+                                    <div class="bg-dark-overlay r-2x no-r-b">
+                                        <div class="d-md-flex">
+                                            <div class="p-4">
+                                                <div class="d-flex">
+                                                
+                                                    <div class="mx-3">
+                                                        <h5 class="mt-2">@Model.User.FullName</h5>
+                                                        <div class="text-fade text-sm"><span class="m-r">@Model.Department.Name</span>
+                                                            <small>
+                                                                <i class="fa fa-map-marker mr-2"></i>@Model.Category.Name</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="flex"></span>
+                                            <div class="align-items-center d-flex p-4">
+                                                
+                                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="d-flex">
+                                        <ul class="nav nav-pills">
+                                           @* <li class="nav-item">
+                                                <a class="nav-link active" href="#" data-toggle="tab" data-target="#tab_1">Feed</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_2">Activity</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#" data-toggle="tab" data-target="#tab_3">Friends</a>
+                                            </li>*@
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">Details</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+       
+                                        <div class="tab-pane">
+                                            <div class="card">
+                                                
+                                                <div class="px-4 py-4">
+                                                    <div class="row mb-2">
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Document Link</small>
+                                                            <div class="my-2">@Model.DocumentLink</div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Total Downloads</small>
+                                                            <div class="my-2">@Model.TotalDownloads</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-6">
+                                                            <small class="text-muted">Likes</small>
+                                                            <div class="my-2">@Model.Likes</div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ############ Main END-->

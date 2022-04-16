@@ -1,0 +1,56 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model AlutaApp.Models.DocumentComment
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.FullName)
+        </dd>
+        <br />
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <br />
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeCreated)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TimeCreated)
+        </dd>
+        <br />
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Likes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Likes.Count)
+        </dd>
+        
+    </dl>
+</div>
+@{
+    var likers  =  (IPagedList)@ViewBag.Likers;
+    await Html.RenderPartialAsync("_DocumetLikersListPartial",likers);
+}
+                            
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-warning">Back to List</a>
+</div>
+</div>
+

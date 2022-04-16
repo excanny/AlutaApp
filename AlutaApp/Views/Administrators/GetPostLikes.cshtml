@@ -1,0 +1,40 @@
+﻿@model IEnumerable<AlutaApp.Models.Post>
+
+@{
+    ViewData["Title"] = "PostLikes";
+    Layout = null;
+}
+<div id="content" class="flex ">
+       
+        <div class="page-content page-container" id="page-content">
+                        <div class="padding">
+                <div class="table-responsive">@{
+
+                        await Html.RenderPartialAsync("_GetPostLikes", Model);
+
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+
+<script src="~/libs/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#SearchPoint").keydown(function() {
+        var text = this.value;
+        //console.log($("#SearchName").val());
+        $.ajax({
+            type: "GET",
+            url: "/Administrators/SearchPoint?searchText="+text,
+            contentType:"html",
+            success: function(data) {
+                $("#search-results").html(data);
+            }
+        })
+    })
+})
+</script>

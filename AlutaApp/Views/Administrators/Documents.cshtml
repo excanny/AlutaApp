@@ -1,0 +1,55 @@
+﻿@model IEnumerable<AlutaApp.Models.Document>
+
+@{
+    ViewData["Title"] = "Documents";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Documents</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                               @* @{
+                            var models = new Institution();
+                            await Html.RenderPartialAsync("_AddDepartmentPartial", models);
+
+                        }*@
+                            </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+       
+        <div class="page-content page-container" id="page-content">
+                        <div class="padding">
+                <div class="table-responsive">
+                    @{
+                        if (Model == null)
+                        {
+                            <div>
+                                <h2 class="text-center text-warning">
+                                    No Available Document
+                                </h2>
+                            </div>
+                            return;
+                        }
+                        else{
+                            await Html.RenderPartialAsync("_DocumentListPartial", Model);
+                        }
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>
+                               
+

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<AlutaApp.Models.AlutaApp.Models.User>
+
+@{
+    ViewData["Title"] = "UserAccount";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<div id="content" class="flex ">
+                <!-- ############ Main START-->
+                <div>
+                    <div class="page-hero page-container " id="page-hero">
+                        <div class="padding d-flex">
+                            <div class="page-title">
+                                <h2 class="text-md text-highlight">Users</h2>
+                                <small class="text-muted"></small>
+                                <br />
+                                <div>
+                                @* @{
+                                    var users = new AlutaApp.Models.AlutaApp.Models.User();
+                            await Html.RenderPartialAsync("_SearchUserAccountPartial", users);
+
+                        } *@
+                            </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+       
+        <div class="page-content page-container" id="page-content">
+                        <div class="padding">
+                <div class="table-responsive">
+                    @{
+                        if (Model == null)
+                        {
+                            <div>
+                                <h2 class="text-center text-warning">
+                                    No Available User
+                                </h2>
+                            </div>
+                            return;
+                        }
+                        else
+                        {
+                            await Html.RenderPartialAsync("_UserListPartial", Model);
+                        }
+                    }
+                    
+                                </div>
+                                </div></div>
+                               </div>
+                                
+                                </div>  
+                               
+
+<script src="~/libs/jquery/dist/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#userSearch").keydown(function() {
+        var text = this.value;
+        $.ajax({
+            type: "GET",
+            url: "/Administrators/SearchUser?searchText="+text,
+            contentType:"html",
+            success: function(data) {
+                //debugger;
+                $("#search-results").html(data);
+            }, error:function(err) {
+                console.log(err);
+            }
+        })
+    })
+})
+</script>

@@ -1,0 +1,54 @@
+﻿@model AlutaApp.Models.TimeTable
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+
+
+<div>
+    <h4>TimeTable</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User.FullName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.FullName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Course)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Day)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Day)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hour)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Minute)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Minute)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RemindInMinutes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RemindInMinutes)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

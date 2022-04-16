@@ -1,0 +1,35 @@
+﻿@model AlutaApp.Models.StatusView
+
+@{
+    ViewData["Title"] = "StatusesView";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+
+<div>
+    <h4>Status Views</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+           User
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.FullName)
+        </dd>
+        <dt class = "col-sm-2">
+           Content
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status.Text)
+        </dd>
+        <dt class = "col-sm-2">
+            Views
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.StatusViews
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

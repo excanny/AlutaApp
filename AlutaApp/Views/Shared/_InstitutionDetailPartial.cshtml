@@ -1,0 +1,21 @@
+﻿@model AlutaApp.Models.Institution
+<div class="search-bar">
+    @using (Html.BeginForm("AddDepartment", "Administrators"))
+    {
+        <div class="input-group mb-6">
+                                               
+                                                <input type="text" name="Name" class="form-control col-4" placeholder="Name" aria-label="Name" aria-describedby="basic-addon1">|
+                                               <input class="btn btn-primary" type="submit" value="Add" id="search"/>
+                                            </div>
+                                           @* <div class="input-group mb-3">
+                                                
+                                               @* <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">@@example.com</span>
+                                                </div>
+                                            </div>*@
+        @*<input id="VendorName" name="VendorName" type="text" value="" class="form-control" placeholder="Vendor Name" required/>*@
+        
+       
+    }
+</div>
+

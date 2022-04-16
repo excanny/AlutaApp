@@ -1,0 +1,86 @@
+﻿@model AlutaApp.Models.Post
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@{
+    ViewData["Title"] = "ViewPost";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<link href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="text/css">
+<div class="card" id="feed-8">
+    @{
+                    
+                        var days = (@DateTime.Now.TimeOfDay - @Model.TimeCreated.TimeOfDay);
+                        var totalDuration = @days.Days > 0 ? @days.Days +"days ago" : @days.Hours > 0 ? @days.Hours +" hours ago" : @days.Minutes > 0 ? @days.Minutes +" minutes ago" : @days.Seconds > 0 ? @days.Seconds +" seconds ago" :  @days.Seconds +" seconds ago";
+                        
+                                                <div class="card-header d-flex">
+                                                    <a href="#">
+                                                        <img src="data:image/jpeg;base64,@Model.User.ProfilePhoto" class="avatar w-40">
+                                                    </a>
+                                                    <div class="mx-3">
+                                                        <a href="#">@Model.User.UserName</a>
+                                                        <div class="text-muted text-sm">@totalDuration</div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-text mb-3">
+                                                        <h2>@Model.Title</h2>
+                                                        <p>@Model.Content</p>
+                                                    </div>
+                                                </div>
+                                                <div class="p-3 b-t">
+                                                    <div class="toolbar toolbar-mx">
+                                                        <a href="#" id="likes"  style="background-color:white" class="text-muted btn btn-warning">
+                                                            @Model.Likes.Count Likes
+                                                        </a>
+                                                        <a href="#" id="comment" style="background-color:white" class="text-muted  btn btn-warning" data-toggle="collapse">
+                                                            @Model.Comments.Count Comments
+                                                        </a>
+                                                        
+                                                    </div>
+
+                                                    </div>
+                                                    <div id="likesPanel" style="display: none">
+                                                    
+                                            @{
+                                                var page  = (IPagedList)@ViewBag.PageList;
+                                                await Html.RenderPartialAsync("_PostLikeListPartial",page);
+                                            }
+                                  
+        </div>
+                                                <div id="commentPanel" style="display: none">
+                                                  @{
+                                                      var pages = (IPagedList)@ViewBag.CommentList;
+                                                      await Html.RenderPartialAsync("_PostCommentListPartial",pages);
+                                                  }
+    </div>
+
+
+
+    }
+    </div>
+    
+                                                
+                                                
+                                                
+
+     <script src="~/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/libs/jquery/dist/datatable.js"></script>
+    
+    <script>
+        $('#comment').on('click', function (e) {
+            $("#commentPanel").show();
+            $("#likesPanel").hide();
+         });
+
+          $('#likes').on('click', function (e) {
+            $("#likesPanel").show();
+            $("#commentPanel").hide();
+         });
+    </script>
+
+    
+
+    
+

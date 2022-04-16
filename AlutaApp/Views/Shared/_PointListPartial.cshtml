@@ -1,0 +1,65 @@
+﻿
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<AlutaApp.Models.Points2Earn>
+<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th><span class="text-muted">Point</span></th>
+                                            <th><span class="text-muted">Category</span></th>
+                                           
+                                            
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="search-results">
+                                        @foreach (var item in Model) {
+
+                                        <tr class="" data-id="16">
+                                            <td >
+                                                <small class="text-muted">@item.Points</small>
+                                                
+                                            </td>
+                                            
+                                            <td>
+                                                <small class="text-muted">@item.Category</small>
+                                            </td>
+                                            
+                                            <td>
+                                                <div class="item-action dropdown">
+                                                    <a href="#" data-toggle="dropdown" class="text-muted">
+                                                        <i data-feather="more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
+                                                        <a class="dropdown-item" href="../../Administrators/ViewPoint/@item.Id" id="viewInstitution">
+                                                            View
+                                                        </a>
+                                                       
+                                                        <a class="dropdown-item edit" href="../../Administrators/UpdatePoint/@item.Id" id="editInstitution">
+                                                            Update
+                                                        </a>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                   }
+                                    </tbody>
+
+                                </table>
+                                <div>
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("Points", new { page = page }),
+            new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item"},
+                        PageClasses = new string[] {"page-link"}
+                    } )
+                    
+               
+                                </div>
+
+
+                              
