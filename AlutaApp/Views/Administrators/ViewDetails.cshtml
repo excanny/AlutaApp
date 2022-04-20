@@ -2,22 +2,20 @@
 @{
     ViewData["Title"] = "ViewDetails";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+
 }
 
-
-
 <div class="col-sm-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Institution
-                                        </div>
-                                        <div class="card-body">
-                                            <h5 class="card-title">@Model.Abbreviation DETAILS</h5>
-                                            <p class="card-text">Name:  @Model.Name</p>
-                                            <p class="card-text">Abbreviation: @Model.Abbreviation</p>
-                                        </div>
-                                    </div>
-                                    
-                                    </div>
+    <div class="card">
+        <div class="card-header">
+             <h1>Institution</h1>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Abbreviation DETAILS</h5>
+            <p class="card-text">Name:  @Model.Name</p>
+            <p class="card-text">Abbreviation: @Model.Abbreviation</p>
+        </div>
+    </div>                               
+</div>
    
                                     

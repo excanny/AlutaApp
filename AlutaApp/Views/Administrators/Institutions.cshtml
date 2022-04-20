@@ -7,21 +7,22 @@
 <div id="content" class="flex ">
                 <!-- ############ Main START-->
                 <div>
-                    <div class="page-hero page-container " id="page-hero">
-                        <div class="padding d-flex">
-                            <div class="page-title">
+                    <div class="page-herox page-containerx" id="page-hero">
+                        <div class="padding">
+                            <div class="page-titlex">
                                 <h2 class="text-md text-highlight">Institutions</h2>
                                 <small class="text-muted"></small>
                                 <br />
                                 <div>
                                 @{
-                            var models = new Department();
+                            var models = new Institution();
                             await Html.RenderPartialAsync("_AddInstitutionPartial", models);
 
                         }
+                        <hr />
                         @{
 
-                            await Html.RenderPartialAsync("_SearchInstitutionPartial", models);
+                            await Html.RenderPartialAsync("_SearchInstitutionPartial", Model);
 
                         }
                     </div>
@@ -32,7 +33,7 @@
             </div>
         </div>
 
-        <div class="page-content page-container" id="page-content">
+        @*<div class="page-content page-container" id="page-content">
             <div class="padding">
                 <div class="table-responsive">@{
                         if (Model == null)
@@ -51,7 +52,7 @@
                     }
                     
                                 </div>
-                                </div></div>
+                                </div></div>*@
                                </div>
                                 
                                 </div>

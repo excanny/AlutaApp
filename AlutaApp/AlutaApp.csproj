@@ -30,4 +30,8 @@
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\js\site.min.js" />
+  </ItemGroup>
 </Project>

@@ -27,30 +27,30 @@ namespace AlutaApp.Controllers
         public async Task<IActionResult> Promotions(int? page)
         {
             var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
+            //ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
+            //ViewBag.Remaining = ViewBag.Count - firstCount;
+            //ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
+            //{
+            //    Content = s.Content,
+            //    User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+            //    NotificationId = s.Id,
+            //    Clicked = s.Clicked,
+            //    View = s.Viewed,
+            //    TimeCreated = s.TimeCreated
+            //}).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+            //int pageSize = 10;
+            //int pageIndex = 1;
 
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            //pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             var allPromotions = await _context.Promotions.Include(s=>s.Post).ToListAsync();
-            var promotions = await allPromotions.OrderByDescending(s => s.StartDate).ToPagedListAsync(pageIndex, pageSize);
-            if (promotions.Count() == 0)
-            {
-                ViewBag.NoInstitition = "No User";
-                return View(null);
-            }
+            //var promotions = await allPromotions.OrderByDescending(s => s.StartDate).ToPagedListAsync(pageIndex, pageSize);
+            //if (promotions.Count() == 0)
+            //{
+            //    ViewBag.NoInstitition = "No User";
+            //    return View(null);
+            //}
 
-            return View(promotions);
+            return View(allPromotions);
         }
         // GET: Promotions
         public async Task<IActionResult> Index()

@@ -1,7 +1,5 @@
-﻿@using X.PagedList;
-@using X.PagedList.Mvc.Core;
-@using X.PagedList.Web.Common;
-@model X.PagedList.IPagedList<AlutaApp.Models.Promotion>
+﻿@model IEnumerable<AlutaApp.Models.Promotion>
+
 <table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
@@ -60,14 +58,8 @@
                                     </tbody>
                                 </table>
                                 <div>
-                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("Promotions", new { page = page }),
-            new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "page-item"},
-                        PageClasses = new string[] {"page-link"}
-                    })
-                                </div>
+                                    
+                              </div>
 
 
                               

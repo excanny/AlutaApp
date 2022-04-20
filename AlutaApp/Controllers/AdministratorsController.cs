@@ -80,6 +80,7 @@ namespace AlutaApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UsersAccount));
         }
+
        [HttpGet]
        public async Task<IActionResult> SearchInstitution(string searchText){
            int? page = 1;
@@ -216,7 +217,7 @@ namespace AlutaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission,Biography,InstitutionId,DepartmentId,GradePoint,Id,UserName,Email,PhoneNumber")] User user)
+        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission, Biography,InstitutionId,DepartmentId,GradePoint,Id,UserName,Email,PhoneNumber")] User user)
         {
             var firstCount = 2;
             ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
@@ -239,6 +240,7 @@ namespace AlutaApp.Controllers
             if (id != user.Id)
             {
                 return NotFound();
+
             }
             
             if (!ModelState.IsValid)
@@ -923,134 +925,9 @@ namespace AlutaApp.Controllers
         
 
 
-
-
-
-
-
-
-
-
-
-
-
-        // GET: Administrators
-        //public async Task<IActionResult> Index()
-        //{
-        //    var administrators = await _context.Administrator.Select(e=> new AdminstratorModel
-        //    { 
-        //    DateCreated = e.CreatedDate.ToLongDateString(),
-        //    FirstName = e.FullName,
-        //    RoleId = e.RoleId,
-        //    RoleName = _context.Role.Where(d => d.Id == e.RoleId).Select(e => e.RoleName).FirstOrDefault(),
-        //    UserName = e.UserName
-        //    }).ToListAsync();
-        //    List<PageModel> models = new List<PageModel>();
-        //    var apps = await _context.Page.ToListAsync();
-        //    var roleid = HttpContext.Session.GetInt32("RoleId");
-        //    ViewBag.FullName = HttpContext.Session.GetString("FullName");
-
-        //    foreach (var item in apps)
-        //    {
-        //        var userAccess = await _context.Permission.Where(e => e.RoleId == roleid && e.PageId == item.Id).FirstOrDefaultAsync();
-        //        models.Add(new PageModel { PageName = item.PageName, PageUrl = item.PageUrl });
-        //    }
-
-
-        //    ViewBag.AccessPage = models;
-        //    return View(administrators);
-        //}
-
-        //// GET: Administrators/Details/5
-        //public async Task<IActionResult> Details(long? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var administrator = await _context.Administrator
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (administrator == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(administrator);
-        //}
-
-        //// GET: Administrators/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["RoleId"] = new SelectList(_context.Role, "Id", "RoleName");
-        //    return View();
-        //}
-
-        //// POST: Administrators/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("UserName,Password,RoleId,Id,CreatedDate,ModifiedDate,CreatedBy,ModifiedBy")] Administrator administrator)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        administrator.CreatedDate = DateTime.Now;
-        //        _context.Add(administrator);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["RoleId"] = new SelectList(_context.Role, "Id", "RoleName");
-        //    return View(administrator);
-        //}
-
-        //[HttpGet]
-        //public async Task<IActionResult> Login()
-        //{
-        //    //if (HttpContext.Session.GetString("userName") == null)
-        //    //{
-        //    //    return RedirectToAction("Login");
-        //    //}
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> Login(LoginModel login)
-        //{
-        //    //if (HttpContext.Session.GetString("userName") == null)
-        //    //{
-        //    //    return RedirectToAction("Login");
-        //    //}
-        //    var user = await _context.Administrator.Where(d=>d.UserName == login.UserName).FirstOrDefaultAsync();
-        //    if (user == null)
-        //    {
-        //        ViewBag.Message = "User Does not Exist";
-        //        return View();
-        //    }
-        //    if (user.Password != login.Password)
-        //    {
-        //        ViewBag.Message = "Invalid username or password";
-        //        return View();
-        //    }
-        //    //List<PageModel> models = new List<PageModel>();
-        //    //var apps = await _context.Page.ToListAsync();
-        //    HttpContext.Session.SetInt32("RoleId", user.RoleId);
-        //    HttpContext.Session.SetString("FullName", user.FullName);
-        //    //foreach (var item in apps)
-        //    //{
-        //    //    var userAccess = await _context.Permission.Where(e => e.RoleId == user.RoleId && e.PageId == item.Id).FirstOrDefaultAsync();
-        //    //    models.Add(new PageModel { PageName = item.PageName, PageUrl = item.PageUrl});
-        //    //}
-
-
-        //    //ViewBag.AccessPage = models;
-        //    return RedirectToAction("Dashboard");
-        //}
-
         [Authorize]
         public async Task<ActionResult> Dashboard()
         {
-            //var secondPartyId = _contextAccessor.HttpContext.Session.GetInt32("secondPartyId");
             var firstCount = 2;
             ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
             ViewBag.Remaining = ViewBag.Count - firstCount;
@@ -1074,31 +951,8 @@ namespace AlutaApp.Controllers
             var getRevenue = _context.PropmotionPayments.Select(s => s.Amount).ToList().Sum();
             ViewBag.Revenue = getRevenue;
             ViewBag.UserName = replaced;
-            //List<string> months = new List<string>();
-
-            //months.Add("January");
-            //months.Add("February");
-            //months.Add("March");
-            //months.Add("April");
-            //months.Add("May");
-            //months.Add("June" );
-            //months.Add("July");
-            //months.Add("August");
-            //months.Add("September");
-            //months.Add("October" );
-            //months.Add("November" );
-            //months.Add("December");
-            //ViewBag.Months = JsonConvert.SerializeObject(months);
-            //List<string> userCounts = new List<string>();
-
+            
             var users = _context.Users.Where(s => s.TimeRegistered.Year == DateTime.Now.Year).ToList();
-            //for (int i = 1; i <= 12; i++)
-            //{
-            //    var userCounters = users.Where(s => s.TimeRegistered.Month == i && s.TimeRegistered.Year == DateTime.Now.Year).ToList().Count();
-            //    userCounts.Add(userCounters.ToString());
-            //}
-
-            //ViewBag.Counter = JsonConvert.SerializeObject(userCounts);
 
             var months = new Month
             {
@@ -1239,7 +1093,7 @@ namespace AlutaApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Department));
+                return RedirectToAction(nameof(Departments));
             }
             return View(administrator);
         }
@@ -1275,7 +1129,7 @@ namespace AlutaApp.Controllers
         }
 
         // POST: Administrators/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteDepartment")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedDepartment(int id)
         {
@@ -1304,30 +1158,30 @@ namespace AlutaApp.Controllers
         public async Task<IActionResult> Institutions(int? page)
         {
             var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
+            //ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
+            //ViewBag.Remaining = ViewBag.Count - firstCount;
+            //ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
+            //{
+            //    Content = s.Content,
+            //    User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+            //    NotificationId = s.Id,
+            //    Clicked = s.Clicked,
+            //    View = s.Viewed,
+            //    TimeCreated = s.TimeCreated
+            //}).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+            //int pageSize = 10;
+            //int pageIndex = 1;
             
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            //pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             var allInstitutions = await _context.Institutions.ToListAsync();
-            var institutions = await allInstitutions.OrderBy(s=>s.Abbreviation).ToPagedListAsync(pageIndex, pageSize);
-            if (institutions.Count == 0)
-            {
-                ViewBag.NoInstitition = "No Institutions";
-                return View();
-            }
-            ViewBag.Institutions=  institutions;
-            return View(institutions);
+            //var institutions = await allInstitutions.OrderBy(s=>s.Abbreviation).ToPagedListAsync(pageIndex, pageSize);
+            //if (institutions.Count == 0)
+            //{
+            //    ViewBag.NoInstitition = "No Institutions";
+            //    return View();
+            //}
+            //ViewBag.Institutions=  institutions;
+            return View(allInstitutions);
         }
 
         public async Task<IActionResult> Create(Institution institution)

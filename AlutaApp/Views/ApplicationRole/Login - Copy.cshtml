@@ -1,0 +1,45 @@
+﻿@model AlutaApp.DTO.UserLoginDto  
+@{  
+    ViewData["Title"] = "Login";  
+    Layout = "~/Views/Shared/_LayoutSignIn.cshtml";   
+}  
+  
+  
+<div class="container ml-5">  
+    @Html.ValidationSummary()  
+    <form asp-action="Login" asp-controller="ApplicationRole" method="post">  
+    <h1 style="margin-top: 7rem;">Welcome back</h1>
+        <p>
+            <small class="text-muted">Login to manage your account</small>
+        </p>
+     
+            <div class="form-group">  
+                <label asp-for="@Model.Email"></label>  
+                <br>  
+                <div class="w-75">  
+                    @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", @class = "form-control" })  
+                    @Html.ValidationMessageFor(m => m.Email)  
+                </div>  
+            </div>  
+  
+            <div class="form-group">  
+                <label asp-for="@Model.Password"></label>  
+                <br>  
+                <div class="w-75">  
+                    @Html.PasswordFor(m => m.Password, new { placeholder = "Password", @class = "form-control" })  
+                    @Html.ValidationMessageFor(m => m.Password)  
+                </div>  
+            </div>  
+  
+            <div class="form-group">  
+                <div class="btn-submit"> 
+                    
+                   <button type="submit" class="btn btn-success">Login</button> 
+                    
+                   <p class="mt-3"> Don't have an account?   <a asp-action="Register" asp-controller="ApplicationRole">Click to Register</a>  </p>
+  
+                </div>  
+            </div>  
+        
+    </form>  
+</div>  

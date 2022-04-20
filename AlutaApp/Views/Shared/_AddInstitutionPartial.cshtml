@@ -1,15 +1,18 @@
-﻿@model AlutaApp.Models.Department
-<div class="search-bar">
+﻿@model AlutaApp.Models.Institution
+<div class="search-barx w-100">
 <h5>Add a new Institution</h5>
     @using (Html.BeginForm("Create", "Administrators"))
-    {
-        <div class="input-group mb-6">
-                                               
-                                                <input type="text" name="Name" class="form-control col-6" placeholder="Name" aria-label="Name" aria-describedby="basic-addon1"><hr />
-                                                <input type="text" name="Abbreviation" class="form-control col-6" placeholder="Abbreviation" aria-label="Abbreviation" aria-describedby="basic-addon2">|
-                                                <input class="btn btn-primary" type="submit" value="Add" id="search"/>
-                                            </div>
-                                          
+    {        
+        <div class="col-lg-8">
+            
+              <label for="email">Name:</label>
+              <input type="text" name="Name" class="form-control mb-3" placeholder="Enter name" required>
+              <label for="pwd">Abbreviation:</label>
+              <input type="text" name="Abbreviation" class="form-control mb-4" placeholder="Enter abbreviation" required>
+
+              <button type="submit" class="btn btn-primary">Add</button>
+           
+        </div>                                  
     }
 </div>
 

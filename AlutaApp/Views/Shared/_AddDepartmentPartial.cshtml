@@ -3,13 +3,14 @@
 <div class="search-bar">
     @using (Html.BeginForm("AddDepartment", "Administrators"))
     {
-        <div class="input-group mb-6">
-                                               
-                                                <input type="text" name="Name" class="form-control col-12" placeholder="Name" aria-label="Name" aria-describedby="basic-addon1">
-                                                <input class="btn btn-primary" type="submit" value="Add Department" id="search"/>
-                                            </div>
+
+        <div class="input-group mb-3">
+          <input type="text" name="Name" class="form-control" placeholder="Name">
+          <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Add</button>
+          </div>
+        </div>
         
-       
     }
 </div>
 
