@@ -1,61 +1,43 @@
 ﻿@model IEnumerable<AlutaApp.Models.Institution>
 
 @{
-    ViewData["Title"] = "Institutions";
+    ViewData["Title"] = "Institution";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
-<div id="content" class="flex ">
-                <!-- ############ Main START-->
-                <div>
-                    <div class="page-herox page-containerx" id="page-hero">
-                        <div class="padding">
-                            <div class="page-titlex">
-                                <h2 class="text-md text-highlight">Institutions</h2>
-                                <small class="text-muted"></small>
-                                <br />
-                                <div>
-                                @{
-                            var models = new Institution();
-                            await Html.RenderPartialAsync("_AddInstitutionPartial", models);
 
-                        }
-                        <hr />
-                        @{
+ <div class="page-title-box">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h4 class="page-title">Institutions</h4>
+            </div>
+                              
+        </div> <!-- end row -->
+    </div>
+    <!-- end page-title -->
 
-                            await Html.RenderPartialAsync("_SearchInstitutionPartial", Model);
+    <div class="row">
+  
+        <div class="col-sm-12 col-xl-12">
+   
+            <small class="text-muted"></small>
+            <br />
+            <div>
+            @{
+                    var models = new Institution();
+                    await Html.RenderPartialAsync("_AddInstitutionPartial", models);
 
-                        }
-                    </div>
-                </div>
+                }
+                <hr />
+                @{
 
+                    await Html.RenderPartialAsync("_SearchInstitutionPartial", Model);
 
-
+                }
             </div>
         </div>
-
-        @*<div class="page-content page-container" id="page-content">
-            <div class="padding">
-                <div class="table-responsive">@{
-                        if (Model == null)
-                        {
-                            <div>
-                                <h2 class="text-center text-warning">
-                                    No Available Institution
-                                </h2>
-                            </div>
-                            return;
-                        }
-                        else{
-                            await Html.RenderPartialAsync("_InstitutionListPartial", Model);
-                        
-                        }
-                    }
-                    
-                                </div>
-                                </div></div>*@
-                               </div>
-                                
-                                </div>
+ 
+ </div>                               
+                               
                                
 <script src="~/libs/jquery/dist/jquery.min.js"></script>
 <script>

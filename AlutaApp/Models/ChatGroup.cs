@@ -8,10 +8,8 @@ namespace AlutaApp.Models
         public int Id { get; set; }
 
         public int? InstitutionId { get; set; }
-        public Institution Institution { get; set; }
 
         public int? DepartmentId { get; set; }
-        public Department Department { get; set; }
 
         public int? YearOfAdmission { get; set; }
 

@@ -5,12 +5,15 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>BannerAd</h4>
-    <hr />
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+             <h3> Delete BannerAd</h3>
+        </div>
+
+        <div class="card-body">
+         
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.User)
@@ -67,4 +70,8 @@
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
+</div>
+        </div>
+        
+    </div>                               
 </div>

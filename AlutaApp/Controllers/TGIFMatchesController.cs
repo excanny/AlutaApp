@@ -10,6 +10,7 @@ using AlutaApp.Models;
 using AlutaApp.ViewModels;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -17,37 +18,26 @@ namespace AlutaApp.Controllers
     public class TGIFMatchesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TGIFMatchesController(ApplicationDbContext context)
+        public TGIFMatchesController(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
 
         public async Task<IActionResult> TGIFs(int? page)
         {
-        
-           var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
+     
+            var alltgifs = await _context.TGIFMatches.Include(s => s.Messages).ToListAsync();
 
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var alltrivias = await _context.TGIFMatches.Include(s => s.Messages).ToListAsync();
-            var trivias = await alltrivias.ToPagedListAsync(pageIndex, pageSize);
-            ViewData["FemaleId"] = new SelectList(_context.Users, "Id", "FullName");
-            ViewData["MaleId"] = new SelectList(_context.Users, "Id", "FullName");
-            return View(trivias);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
+            return View(alltgifs);
         }
         // GET: TGIFMatches
         public async Task<IActionResult> Index()
@@ -59,7 +49,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -79,7 +69,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -112,7 +102,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -137,7 +127,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -165,7 +155,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -200,7 +190,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -246,7 +236,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -281,7 +271,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,

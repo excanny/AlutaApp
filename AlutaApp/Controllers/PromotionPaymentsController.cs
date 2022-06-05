@@ -32,7 +32,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -64,7 +64,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -84,7 +84,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -116,7 +116,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -140,7 +140,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               /// User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -166,7 +166,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -200,7 +200,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -245,7 +245,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+              //  User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -279,7 +279,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using AlutaApp.Models;
 using AlutaApp.Data;
 using X.PagedList;
-using AlutaApp.Models.AlutaApp.Models;
 using AlutaApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using AlutaApp.DTO;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -21,10 +21,14 @@ namespace AlutaApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
-        public AdministratorsController(ApplicationDbContext context, IHttpContextAccessor contextAccessor)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AdministratorsController(ApplicationDbContext context, IHttpContextAccessor contextAccessor, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> DeleteUser(int? id)
@@ -35,7 +39,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -49,7 +53,7 @@ namespace AlutaApp.Controllers
             var user = await _context.Users
                  .Include(u => u.Department)
                  .Include(u => u.Institution)
-                 .FirstOrDefaultAsync(m => m.Id == id);
+                 .FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
@@ -69,14 +73,14 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
                 TimeCreated = s.TimeCreated
             }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            var administrator = await _context.Users.FindAsync(id);
-            _context.Users.Remove(administrator);
+            //var administrator = await _context.Users.FindAsync(id);
+            //_context.Users.Remove(administrator);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UsersAccount));
         }
@@ -90,7 +94,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -114,7 +118,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -141,22 +145,20 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
                 TimeCreated = s.TimeCreated
             }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-             int pageSize = 10;
+            // int pageSize = 10;
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             var allUsers = await _context.Posts
             .Include(s=>s.User)
             .Include(s=>s.Comments)
-            .Include(s=>s.Likes).Where(e => e.Title.Contains(searchText) 
-            || e.Content.Contains(searchText)).ToListAsync();
-            var users = await allUsers.OrderBy(s=>s.Title).ToPagedListAsync(pageIndex, pageSize);
-            return PartialView("_PostListPartial",users);
+            .ToListAsync();
+            return PartialView("_PostListPartial");
        }
 
 
@@ -169,7 +171,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -191,7 +193,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -217,32 +219,39 @@ namespace AlutaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission, Biography,InstitutionId,DepartmentId,GradePoint,Id,UserName,Email,PhoneNumber")] User user)
+        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission, Biography,InstitutionId,DepartmentId,GradePoint,Id,UserName,Email,PhoneNumber, UserType, UserStatus")] User user)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            user.InstitutionId = user.InstitutionId;
-            user.Institution = await _context.Institutions.Where(w=>w.Id == user.InstitutionId).FirstOrDefaultAsync();
+            //var firstCount = 2;
+            //ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
+            //ViewBag.Remaining = ViewBag.Count - firstCount;
+            //ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
+            //{
+            //    Content = s.Content,
+            //    ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+            //    NotificationId = s.Id,
+            //    Clicked = s.Clicked,
+            //    View = s.Viewed,
+            //    TimeCreated = s.TimeCreated
+            //}).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+            //user.InstitutionId = user.InstitutionId;
+            //user.Institution = await _context.Institutions.Where(w=>w.Id == user.InstitutionId).FirstOrDefaultAsync();
 
-            user.DepartmentId = user.DepartmentId;
-            user.Department = await _context.Departments.Where(w => w.Id == user.DepartmentId).FirstOrDefaultAsync();
+            //user.Department = await _context.Departments.Where(w => w.Id == user.DepartmentId).FirstOrDefaultAsync();
 
-            if (id != user.Id)
-            {
-                return NotFound();
+            //if (id != user.Id)
+            //{
+            //    return NotFound();
 
-            }
-            
+            //}
+
+            //var errors = ModelState.Where(x => x.Value.Errors.Any())
+                //.Select(x => new { x.Key, x.Value.Errors });
+
+            var errors = ModelState
+            .Where(x => x.Value.Errors.Count > 0)
+            .Select(x => new { x.Key, x.Value.Errors })
+            .ToArray();
+
             if (!ModelState.IsValid)
             {
                 return View(ModelState);
@@ -257,14 +266,14 @@ namespace AlutaApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //if (!UserExists(user.Id))
+                    //{
+                    //    return NotFound();
+                    //}
+                    //else
+                    //{
+                    //    throw;
+                    //}
                 }
                 return RedirectToAction(nameof(UsersAccount));
             }
@@ -272,37 +281,16 @@ namespace AlutaApp.Controllers
             ViewData["InstitutionId"] = new SelectList(_context.Institutions, "Id", "Abbreviation", user.InstitutionId);
             return View(user);
         }
-        private bool UserExists(int id)
+      
+        public async Task<IActionResult> UsersAccount()
         {
-            return _context.Users.Any(e => e.Id == id);
-        }
-        public async Task<IActionResult> UsersAccount(int? page)
-        {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
-
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+           
             var allUsers = await _context.Users.Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
-            var departments = await allUsers.OrderBy(s => s.DateOfBirth).ToPagedListAsync(pageIndex, pageSize);
-            if (departments.Count == 0)
-            {
-                ViewBag.NoInstitition = "No User";
-                return View(null);
-            }
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
 
-            return View(departments);
+            return View(allUsers);
+
         }
 
         public async Task<IActionResult> Ban(int? id)
@@ -313,7 +301,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -324,13 +312,7 @@ namespace AlutaApp.Controllers
             {
                 return View(null);
             }
-            if (getUser.IsBanned == false)
-            {
-                getUser.IsBanned = true;
-                _context.SaveChanges();
-                return RedirectToAction("ViewAccount", new { id = id });
-            }
-            getUser.IsBanned = false;
+            
             _context.SaveChanges();
             return RedirectToAction("ViewAccount", new { id = id });
         }
@@ -343,18 +325,18 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
                 TimeCreated = s.TimeCreated
             }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            var result = await _context.Users.Where(e => e.Id == id).Include(e => e.Department).Include(x=>x.Posts).Include(s => s.Institution).FirstOrDefaultAsync();
-            return View(result);
+            //var result = await _context.Users.Where(e => e.Id == id).Include(e => e.Department).Include(x=>x.Posts).Include(s => s.Institution).FirstOrDefaultAsync();
+            return View();
 
         }
 
-        public async Task<IActionResult> Points(int? page)
+        public async Task<IActionResult> Points()
         {
             var firstCount = 2;
             ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
@@ -362,7 +344,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -371,16 +353,20 @@ namespace AlutaApp.Controllers
             int pageSize = 10;
             int pageIndex = 1;
 
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var allDepartments = await _context.Points2Earns.ToListAsync();
-            var departments = await allDepartments.OrderBy(s => s.Points).ToPagedListAsync(pageIndex, pageSize);
-            if (departments.Count == 0)
-            {
-                ViewBag.NoInstitition = "No Department";
-                return View(null);
-            }
+            //pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            var allPoints = await _context.Points2Earns.ToListAsync();
+            //var departments = await allDepartments.OrderBy(s => s.Points).ToPagedListAsync(pageIndex, pageSize);
+            //if (departments.Count == 0)
+            //{
+            //    ViewBag.NoInstitition = "No Department";
+            //    return View(null);
+            //}
 
-            return View(departments);
+            //return View(allDepartments);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
+            return View(allPoints);
         }
 
        [HttpGet]
@@ -392,7 +378,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -408,33 +394,15 @@ namespace AlutaApp.Controllers
 
        
 //
-        public async Task<IActionResult> Posts(int? page)
+        public async Task<IActionResult> Posts()
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
+           
+            var allPosts = await _context.Posts.Include(r=>r.User).ToListAsync();
 
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var allDepartments = await _context.Posts.Include(r=>r.User).ToListAsync();
-            var departments = await allDepartments.OrderByDescending(s => s.TimeCreated).ToPagedListAsync(pageIndex, pageSize);
-            if (departments.Count == 0)
-            {
-                ViewBag.NoInstitition = "No Department";
-                return View(null);
-            }
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
 
-            return View(departments);
+            return View(allPosts);
         }
 
         public ActionResult PostChart()
@@ -466,7 +434,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -505,7 +473,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -565,26 +533,26 @@ namespace AlutaApp.Controllers
             return new JsonResult(months);
         }
 
-        public ActionResult PromoChart()
-        {
-            var users = _context.Promotions.Where(s => s.DateCreated.Year == DateTime.Now.Year).ToList();
-            var months = new Month
-            {
-                January = users.Where(s => s.DateCreated.Month == 1).Count(),
-                February = users.Where(s => s.DateCreated.Month == 2).Count(),
-                March = users.Where(s => s.DateCreated.Month == 3).Count(),
-                April = users.Where(s => s.DateCreated.Month == 4).Count(),
-                May = users.Where(s => s.DateCreated.Month == 5).Count(),
-                June = users.Where(s => s.DateCreated.Month == 6).Count(),
-                July = users.Where(s => s.DateCreated.Month == 7).Count(),
-                August = users.Where(s => s.DateCreated.Month == 8).Count(),
-                September = users.Where(s => s.DateCreated.Month == 9).Count(),
-                October = users.Where(s => s.DateCreated.Month == 10).Count(),
-                November = users.Where(s => s.DateCreated.Month == 11).Count(),
-                December = users.Where(s => s.DateCreated.Month == 12).Count(),
-            };
-            return new JsonResult(months);
-        }
+        //public ActionResult PromoChart()
+        //{
+        //    var users = _context.Promotions.Where(s => s.DateCreated.Year == DateTime.Now.Year).ToList();
+        //    var months = new Month
+        //    {
+        //        January = users.Where(s => s.DateCreated.Month == 1).Count(),
+        //        February = users.Where(s => s.DateCreated.Month == 2).Count(),
+        //        March = users.Where(s => s.DateCreated.Month == 3).Count(),
+        //        April = users.Where(s => s.DateCreated.Month == 4).Count(),
+        //        May = users.Where(s => s.DateCreated.Month == 5).Count(),
+        //        June = users.Where(s => s.DateCreated.Month == 6).Count(),
+        //        July = users.Where(s => s.DateCreated.Month == 7).Count(),
+        //        August = users.Where(s => s.DateCreated.Month == 8).Count(),
+        //        September = users.Where(s => s.DateCreated.Month == 9).Count(),
+        //        October = users.Where(s => s.DateCreated.Month == 10).Count(),
+        //        November = users.Where(s => s.DateCreated.Month == 11).Count(),
+        //        December = users.Where(s => s.DateCreated.Month == 12).Count(),
+        //    };
+        //    return new JsonResult(months);
+        //}
 
         public ActionResult RevenueChart()
         {
@@ -616,7 +584,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -636,7 +604,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -655,7 +623,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -687,7 +655,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -704,33 +672,17 @@ namespace AlutaApp.Controllers
             return _context.Posts.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> Documents(int? page)
+        public async Task<IActionResult> Documents()
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
+          
+            var allDocuments = await _context.Documents.Include(s=>s.Category).Include(e=>e.Department).Include(a=>a.User).ToListAsync();
 
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var allDepartments = await _context.Documents.Include(s=>s.Category).Include(e=>e.Department).Include(a=>a.User).ToListAsync();
-            var departments = await allDepartments.OrderByDescending(s => s.TimeCreated).ToPagedListAsync(pageIndex, pageSize);
-            if (departments.Count == 0)
-            {
-                ViewBag.NoInstitition = "No Department";
-                return View(null);
-            }
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
 
-            return View(departments);
+            return View(allDocuments);
+
+           
         }
 
 
@@ -744,7 +696,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -769,7 +721,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -805,7 +757,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -825,7 +777,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -851,7 +803,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -883,7 +835,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -918,90 +870,64 @@ namespace AlutaApp.Controllers
             return View(administrator);
         }
 
-        // GET: Administrators/Delete/5
-        
-
-        
-        
-
-
         [Authorize]
         public async Task<ActionResult> Dashboard()
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s=> new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e=>e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            ViewBag.ActiveUsers = _context.Users.Where(s=>s.Online  == true).ToList().Count();
-            ViewBag.InActiveUsers= _context.Users.Where(s=>s.Online  == false).ToList().Count();
-            ViewBag.DailyRevenue =  _context.PropmotionPayments.Where(s=>s.DateInitiated.Day == DateTime.Now.Day).ToList().Sum(e => e.Amount);
-            ViewBag.TotalUsers = _context.Users.ToList().Count();
-            var res = _contextAccessor.HttpContext.Session.GetString("userName");
-            var getSubstring = res.IndexOf("@");
-            var getLength = res.Length;
-            var replaced = res.Replace(res.Substring(getSubstring, getLength-getSubstring),"");
-            var getRevenue = _context.PropmotionPayments.Select(s => s.Amount).ToList().Sum();
-            ViewBag.Revenue = getRevenue;
-            ViewBag.UserName = replaced;
-            
-            var users = _context.Users.Where(s => s.TimeRegistered.Year == DateTime.Now.Year).ToList();
+           
+            ViewBag.TotalApprovedBannerAds = _context.BannerAds.ToList().Count();
+            var totalBannerAdsCost = _context.BannerAds.Sum(e => e.Cost);
+            var totalpromotionPayments = _context.PropmotionPayments.Sum(e => e.Amount);
+            ViewBag.TotalRevenue = totalBannerAdsCost + totalpromotionPayments;
+            ViewBag.NoOfpromotions = _context.Promotions.ToList().Count();
 
-            var months = new Month
-            {
-                January = users.Where(s => s.TimeRegistered.Month == 1).Count(),
-                February = users.Where(s => s.TimeRegistered.Month == 2).Count(),
-                March = users.Where(s => s.TimeRegistered.Month == 3).Count(),
-                April = users.Where(s => s.TimeRegistered.Month == 4).Count(),
-                May = users.Where(s => s.TimeRegistered.Month == 5).Count(),
-                June = users.Where(s => s.TimeRegistered.Month == 6).Count(),
-                July = users.Where(s => s.TimeRegistered.Month == 7).Count(),
-                August = users.Where(s => s.TimeRegistered.Month == 8).Count(),
-                September = users.Where(s => s.TimeRegistered.Month == 9).Count(),
-                October = users.Where(s => s.TimeRegistered.Month == 10).Count(),
-                November = users.Where(s => s.TimeRegistered.Month == 11).Count(),
-                December = users.Where(s => s.TimeRegistered.Month == 12).Count(),
-            };
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
 
             return View();
         }
 
-        
+        public JsonResult GetUsersChartJSON()
+        {
+            var user_data = _context.Users.GroupBy(user => user.Online).Select(group => new
+            {
+                Count = group.Count()
+            });
+
+            return Json(user_data);
+        }
+
+        public JsonResult GetPostsChartJSON()
+        {
+            var past = DateTime.Now.AddMonths(-7);
+
+            //var post_data = _context.Posts.Where(c => c.TimeCreated > DateTime.Now.AddYears(-1))
+            var post_data = _context.Posts
+               .GroupBy(c => c.TimeCreated.Month)
+            .Select(g => new { Month = g.Key, Count = g.Count() });
+
+
+            return Json(post_data);
+        }
+
+        public JsonResult GetCommentsChartJSON()
+        {
+            //var post_data = _context.Posts.Where(c => c.TimeCreated > DateTime.Now.AddYears(-1))
+            var comment_data = _context.Comments
+               .GroupBy(c => c.TimeCreated.Month)
+            .Select(g => new { Month = g.Key, Count = g.Count() });
+
+
+            return Json(comment_data);
+        }
 
         public async Task<IActionResult> Departments(int? page)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
-
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             var allDepartments = await _context.Departments.ToListAsync();
-            var departments = await allDepartments.OrderBy(s => s.Name).ToPagedListAsync(pageIndex, pageSize);
-            if (departments.Count == 0)
-            {
-                ViewBag.NoInstitition = "No Department";
-                return View(null);
-            }
 
-            return View(departments);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
+            return View(allDepartments);
         }
 
 
@@ -1031,7 +957,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1063,7 +989,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1107,7 +1033,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1139,7 +1065,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1157,30 +1083,12 @@ namespace AlutaApp.Controllers
         }
         public async Task<IActionResult> Institutions(int? page)
         {
-            var firstCount = 2;
-            //ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            //ViewBag.Remaining = ViewBag.Count - firstCount;
-            //ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            //{
-            //    Content = s.Content,
-            //    User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-            //    NotificationId = s.Id,
-            //    Clicked = s.Clicked,
-            //    View = s.Viewed,
-            //    TimeCreated = s.TimeCreated
-            //}).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            //int pageSize = 10;
-            //int pageIndex = 1;
-            
-            //pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+           
             var allInstitutions = await _context.Institutions.ToListAsync();
-            //var institutions = await allInstitutions.OrderBy(s=>s.Abbreviation).ToPagedListAsync(pageIndex, pageSize);
-            //if (institutions.Count == 0)
-            //{
-            //    ViewBag.NoInstitition = "No Institutions";
-            //    return View();
-            //}
-            //ViewBag.Institutions=  institutions;
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
             return View(allInstitutions);
         }
 
@@ -1192,7 +1100,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1211,7 +1119,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1230,7 +1138,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1262,7 +1170,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1306,7 +1214,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -1338,7 +1246,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,

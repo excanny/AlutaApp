@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AlutaApp.Data;
-using AlutaApp.Models.AlutaApp.Models;
 using X.PagedList;
 using AlutaApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using AlutaApp.DTO;
 using Newtonsoft.Json;
+using AlutaApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -19,10 +20,14 @@ namespace AlutaApp.Controllers
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsersController(ApplicationDbContext context)
+        public UsersController(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public ActionResult UserChart()
@@ -61,61 +66,36 @@ namespace AlutaApp.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .Include(u => u.Department)
-                .Include(u => u.Institution)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            var user = await _context.Users.FirstOrDefaultAsync();
+        //        .Include(u => u.Department)
+        //        .Include(u => u.Institution)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
             return View(user);
         }
 
     
-        public async Task<IActionResult> ActiveUsers(int? page){
-           var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
+        public async Task<IActionResult> ActiveUsers(){
+           
+            var allUsers = await _context.Users.Where(q=>q.Online == true).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
+            
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
 
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var allUsers = await _context.Users.Where(q=>q.Online == true && q.IsBanned == false).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
-            var departments = await allUsers.OrderBy(s => s.DateOfBirth).ToPagedListAsync(pageIndex, pageSize);
-            return View(departments);
+            return View(allUsers);
         }
 
         public async Task<IActionResult> InActiveUsers(int? page){
-           var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int pageSize = 10;
-            int pageIndex = 1;
+           
+            var allUsers = await _context.Users.Where(q=>q.Online == false).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
 
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var allUsers = await _context.Users.Where(q=>q.Online == false && q.IsBanned == true).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
-            var departments = await allUsers.OrderBy(s => s.DateOfBirth).ToPagedListAsync(pageIndex, pageSize);
-            return View(departments);
+            return View(allUsers);
         }
 
 
@@ -128,7 +108,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -137,7 +117,7 @@ namespace AlutaApp.Controllers
              int pageSize = 10;
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var allUsers = await _context.Users.Where(q=>q.Online == true && q.IsBanned == false).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
+            var allUsers = await _context.Users.Where(q=>q.Online == true).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
             var departments = await allUsers.OrderBy(s => s.DateOfBirth).ToPagedListAsync(pageIndex, pageSize);
             //return View(departments);
            return PartialView("_UserListPartial",departments);
@@ -153,7 +133,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -162,7 +142,7 @@ namespace AlutaApp.Controllers
              int pageSize = 10;
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var allUsers = await _context.Users.Where(q=>q.Online == false && q.IsBanned == true).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
+            var allUsers = await _context.Users.Where(q=>q.Online == false).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
             var departments = await allUsers.OrderBy(s => s.DateOfBirth).ToPagedListAsync(pageIndex, pageSize);
             //return View(departments);
            return PartialView("_UserListPartial",departments);
@@ -219,10 +199,10 @@ namespace AlutaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission,ProfilePhoto,Biography,IsBanned,IsVerified,Referrer,InstitutionId,DepartmentId,GradePoint,Online,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
         {
-            if (id != user.Id)
-            {
-                return NotFound();
-            }
+            //if (id != user.Id)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
@@ -233,14 +213,14 @@ namespace AlutaApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //if (!UserExists(user.Id))
+                    //{
+                    //    return NotFound();
+                    //}
+                    //else
+                    //{
+                    //    throw;
+                    //}
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -260,7 +240,7 @@ namespace AlutaApp.Controllers
             var user = await _context.Users
                 .Include(u => u.Department)
                 .Include(u => u.Institution)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
@@ -280,9 +260,9 @@ namespace AlutaApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
+        //private bool UserExists(int id)
+        //{
+        //    //return _context.Users.Any(e => e.Id == id);
+        //}
     }
 }

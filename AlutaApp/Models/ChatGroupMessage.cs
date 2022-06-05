@@ -1,8 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
-using System.Collections.Generic;
-
-namespace AlutaApp.Models
+﻿namespace AlutaApp.Models
 {
     public class ChatGroupMessage
     {
@@ -12,8 +8,13 @@ namespace AlutaApp.Models
 
         public int UserId { get; set; }
         public User Sender { get; set; }
-
+        
         public string Content { get; set; }
+
+        public string MediaLink { get; set; }
+
+        public int? ParentMessageId { get; set; }
+        public ChatGroupMessage ParentMessage { get; set; }
 
         public bool Deleted { get; set; }
 
@@ -22,20 +23,5 @@ namespace AlutaApp.Models
         public ChatGroupMessage()
         {
         }
-    }
-
-    public class GroupChatList
-    {
-       
-        public List<int> ChatGroupId { get; set; }
-        public List<string> ChatGroupName { get; set; }
-        public List<MessageInfo> MessageInfos { get; set; }
-    }
-
-    public class MessageInfo
-    {
-        public string Contents { get; set; }
-        public string Senders { get; set; }
-        public DateTime TimeCreated { get; set; }
     }
 }

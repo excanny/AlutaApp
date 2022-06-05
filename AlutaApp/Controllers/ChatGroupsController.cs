@@ -9,6 +9,7 @@ using AlutaApp.Data;
 using AlutaApp.Models;
 using AlutaApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -16,10 +17,14 @@ namespace AlutaApp.Controllers
     public class ChatGroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ChatGroupsController(ApplicationDbContext context)
+        public ChatGroupsController(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> GetMessagesByChatGroup(int? id)
@@ -30,7 +35,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -38,21 +43,21 @@ namespace AlutaApp.Controllers
             }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             var getIt = await _context.GroupMessages.Include(d=>d.Sender).ToListAsync();
 
-            GroupChatList chatList = new GroupChatList();
+            //GroupChatList chatList = new GroupChatList();
             var gets = _context.ChatGroups.Where(s => s.Id == id).ToList();
 
 
-            chatList.ChatGroupId = gets.DistinctBy(s => new { chatGroupId = s.Id }).Select(s => s.Id).ToList();
+            //chatList.ChatGroupId = gets.DistinctBy(s => new { chatGroupId = s.Id }).Select(s => s.Id).ToList();
 
 
             var mess = _context.ChatGroups.ToList();
 
-            chatList.MessageInfos = await _context.GroupMessages.Include(w=>w.Sender).Where(e => e.ChatGroupId == id).Select(s => new MessageInfo { Contents = s.Content, Senders = s.Sender.UserName, TimeCreated = s.TimeCreated}).ToListAsync();
-            chatList.ChatGroupName = mess.DistinctBy(s => new { chatGroupId = s.Id }).Select(s => s.Name).ToList();
+            //chatList.MessageInfos = await _context.GroupMessages.Include(w=>w.Sender).Where(e => e.ChatGroupId == id).Select(s => new MessageInfo { Contents = s.Content, Senders = s.Sender.UserName, TimeCreated = s.TimeCreated}).ToListAsync();
+            //chatList.ChatGroupName = mess.DistinctBy(s => new { chatGroupId = s.Id }).Select(s => s.Name).ToList();
 
             //List<ChatGroupMessage> groupMessages = getIt.DistinctBy(s=> new {chatGroupId = s.ChatGroupId}).ToList();
 
-            return View(chatList);
+            return View();
         }
 
 
@@ -64,7 +69,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -80,7 +85,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -94,19 +99,13 @@ namespace AlutaApp.Controllers
         // GET: ChatGroups
         public async Task<IActionResult> Index()
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            return View(await _context.ChatGroups.Include(s=>s.Department).Include(d=>d.Institution).ToListAsync());
+            var allChatGroups = await _context.ChatGroups.ToListAsync();
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
+            return View(allChatGroups);
+            
         }
 
         // GET: ChatGroups/Details/5
@@ -118,7 +117,7 @@ namespace AlutaApp.Controllers
             }
 
             var chatGroup = await _context.ChatGroups.Include(s=>s.Messages).Include(s=>s.Users)
-                .FirstOrDefaultAsync(m => m.Id == id);
+ .FirstOrDefaultAsync(m => m.Id == id);
             if (chatGroup == null)
             {
                 return NotFound();

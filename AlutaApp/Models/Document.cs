@@ -1,5 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,8 +9,8 @@ namespace AlutaApp.Models
         public int Id { get; set; }
 
         [Required]
-        public int? UserId { get; set; }
-        public User? User { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         [Required]
         public int DepartmentId { get; set; }

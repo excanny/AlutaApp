@@ -1,5 +1,6 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AlutaApp.Models
 {
     public class Message
@@ -8,6 +9,8 @@ namespace AlutaApp.Models
         public int Id { get; set; }
 
         public string Content { get; set; }
+
+        public string MediaLink { get; set; }
 
         public int SenderId { get; set; }
         public User Sender { get; set; }
@@ -22,6 +25,16 @@ namespace AlutaApp.Models
         public DateTime TimeCreated { get; set; }
 
         public bool Deleted { get; set; }
+
+        public bool FirstArchived { get; set; }
+
+        public bool SecondArchived { get; set; }
+
+        public int? ParentMessageId { get; set; }
+        public Message ParentMessage { get; set; }
+
+        public int? PostId { get; set; }
+        public Post Post { get; set; }
 
         public Message()
         {

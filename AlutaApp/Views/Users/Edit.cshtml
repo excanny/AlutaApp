@@ -1,162 +1,258 @@
-﻿@model AlutaApp.Models.AlutaApp.Models.User
+﻿@model AlutaApp.Models.User
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Edit</h1>
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+             <h3> Edit User</h3>
+        </div>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="YearOfAdmission" class="control-label"></label>
-                <input asp-for="YearOfAdmission" class="form-control" />
-                <span asp-validation-for="YearOfAdmission" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProfilePhoto" class="control-label"></label>
-                <input asp-for="ProfilePhoto" class="form-control" />
-                <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Biography" class="control-label"></label>
-                <input asp-for="Biography" class="form-control" />
-                <span asp-validation-for="Biography" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsBanned" /> @Html.DisplayNameFor(model => model.IsBanned)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsVerified" /> @Html.DisplayNameFor(model => model.IsVerified)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Referrer" class="control-label"></label>
-                <input asp-for="Referrer" class="form-control" />
-                <span asp-validation-for="Referrer" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InstitutionId" class="control-label"></label>
-                <select asp-for="InstitutionId" class="form-control" asp-items="ViewBag.InstitutionId"></select>
-                <span asp-validation-for="InstitutionId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DepartmentId" class="control-label"></label>
-                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
-                <span asp-validation-for="DepartmentId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GradePoint" class="control-label"></label>
-                <input asp-for="GradePoint" class="form-control" />
-                <span asp-validation-for="GradePoint" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Online" /> @Html.DisplayNameFor(model => model.Online)
-                </label>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NormalizedUserName" class="control-label"></label>
-                <input asp-for="NormalizedUserName" class="form-control" />
-                <span asp-validation-for="NormalizedUserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NormalizedEmail" class="control-label"></label>
-                <input asp-for="NormalizedEmail" class="form-control" />
-                <span asp-validation-for="NormalizedEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EmailConfirmed" /> @Html.DisplayNameFor(model => model.EmailConfirmed)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="PasswordHash" class="control-label"></label>
-                <input asp-for="PasswordHash" class="form-control" />
-                <span asp-validation-for="PasswordHash" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SecurityStamp" class="control-label"></label>
-                <input asp-for="SecurityStamp" class="form-control" />
-                <span asp-validation-for="SecurityStamp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConcurrencyStamp" class="control-label"></label>
-                <input asp-for="ConcurrencyStamp" class="form-control" />
-                <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="PhoneNumberConfirmed" /> @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TwoFactorEnabled" /> @Html.DisplayNameFor(model => model.TwoFactorEnabled)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="LockoutEnd" class="control-label"></label>
-                <input asp-for="LockoutEnd" class="form-control" />
-                <span asp-validation-for="LockoutEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="LockoutEnabled" /> @Html.DisplayNameFor(model => model.LockoutEnabled)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="AccessFailedCount" class="control-label"></label>
-                <input asp-for="AccessFailedCount" class="form-control" />
-                <span asp-validation-for="AccessFailedCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        <div class="card-body">
+            <h1>Edit</h1>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+            <h4>User</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col">
+                                 <div class="form-group">
+                            <label asp-for="FullName" class="control-label"></label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="Gender" class="control-label"></label>
+                            <input asp-for="Gender" class="form-control" />
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="DateOfBirth" class="control-label"></label>
+                            <input asp-for="DateOfBirth" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="YearOfAdmission" class="control-label"></label>
+                            <input asp-for="YearOfAdmission" class="form-control" />
+                            <span asp-validation-for="YearOfAdmission" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="ProfilePhoto" class="control-label"></label>
+                            <input asp-for="ProfilePhoto" class="form-control" />
+                            <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            @*<label asp-for="Biography" class="control-label"></label>
+                            <input asp-for="Biography" class="form-control" />
+                            <span asp-validation-for="Biography" class="text-danger"></span>*@
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" @*asp-for="IsBanned" *@/> @*@Html.DisplayNameFor(model => model.IsBanned)*@
+                            </label>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="IsVerified" /> @Html.DisplayNameFor(model => model.IsVerified)
+                            </label>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="Referrer" class="control-label"></label>
+                            <input asp-for="Referrer" class="form-control" />
+                            <span asp-validation-for="Referrer" class="text-danger"></span>
+                        </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col">
+                                 <div class="form-group">
+                            <label asp-for="InstitutionId" class="control-label"></label>
+                            <select asp-for="InstitutionId" class="form-control" asp-items="ViewBag.InstitutionId"></select>
+                            <span asp-validation-for="InstitutionId" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="DepartmentId" class="control-label"></label>
+                            <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="GradePoint" class="control-label"></label>
+                            <input asp-for="GradePoint" class="form-control" />
+                            <span asp-validation-for="GradePoint" class="text-danger"></span>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                 <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="Online" /> @Html.DisplayNameFor(model => model.Online)
+                            </label>
+                        </div>
+                        <input type="hidden" asp-for="Id" />
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="NormalizedUserName" class="control-label"></label>
+                            <input asp-for="NormalizedUserName" class="form-control" />
+                            <span asp-validation-for="NormalizedUserName" class="text-danger"></span>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="NormalizedEmail" class="control-label"></label>
+                            <input asp-for="NormalizedEmail" class="form-control" />
+                            <span asp-validation-for="NormalizedEmail" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                 <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="EmailConfirmed" /> @Html.DisplayNameFor(model => model.EmailConfirmed)
+                            </label>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="PasswordHash" class="control-label"></label>
+                            <input asp-for="PasswordHash" class="form-control" />
+                            <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="SecurityStamp" class="control-label"></label>
+                            <input asp-for="SecurityStamp" class="form-control" />
+                            <span asp-validation-for="SecurityStamp" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="ConcurrencyStamp" class="control-label"></label>
+                            <input asp-for="ConcurrencyStamp" class="form-control" />
+                            <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
+                        </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="PhoneNumberConfirmed" /> @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+                            </label>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="TwoFactorEnabled" /> @Html.DisplayNameFor(model => model.TwoFactorEnabled)
+                            </label>
+                        </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="LockoutEnd" class="control-label"></label>
+                            <input asp-for="LockoutEnd" class="form-control" />
+                            <span asp-validation-for="LockoutEnd" class="text-danger"></span>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="LockoutEnabled" /> @Html.DisplayNameFor(model => model.LockoutEnabled)
+                            </label>
+                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                            <label asp-for="AccessFailedCount" class="control-label"></label>
+                            <input asp-for="AccessFailedCount" class="form-control" />
+                            <span asp-validation-for="AccessFailedCount" class="text-danger"></span>
+                        </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+        
+    </div>                               
 </div>
 

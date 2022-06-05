@@ -1,9 +1,6 @@
 ﻿
 
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
-@using X.PagedList.Web.Common;
-@model X.PagedList.IPagedList<AlutaApp.Models.CGPA>
+@model IEnumerable<AlutaApp.Models.CGPA>
 <table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
@@ -22,9 +19,9 @@
                                         @foreach (var item in Model) {
 
                                         <tr class="" data-id="16">
-                                            <td >
+                                           @* <td >
                                                 <small class="text-muted">@item.User.FullName</small>
-                                            </td>
+                                            </td>*@
                                             <td >
                                                 <small class="text-muted">@item.CreditUnit</small>
                                             </td>
@@ -74,13 +71,7 @@
 
                                 </table>
                                 <div>
-                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("CGPAs", new { page = page }),
-            new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "page-item"},
-                        PageClasses = new string[] {"page-link"}
-                    } )
+                                   
                     
                
                                 </div>

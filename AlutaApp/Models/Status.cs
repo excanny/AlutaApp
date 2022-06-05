@@ -1,5 +1,6 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
+using System.Collections.Generic;
+
 namespace AlutaApp.Models
 {
     public class Status
@@ -16,6 +17,8 @@ namespace AlutaApp.Models
         public string TextColorCode { get; set; }
 
         public DateTime TimeCreated { get; set; }
+
+        public List<StatusView> Views { get; set; }
 
         public Status()
         {

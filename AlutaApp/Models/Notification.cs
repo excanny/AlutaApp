@@ -15,6 +15,8 @@ namespace AlutaApp.Models
 
         public int SecondPartyId { get; set; }
 
+        public User SecondParty { get; set; }
+
         public int ThirdPartyId { get; set; }
 
         public bool Viewed { get; set; }

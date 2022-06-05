@@ -1,5 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace AlutaApp.Models
@@ -13,7 +12,6 @@ namespace AlutaApp.Models
 
         [Required]
         public int UserId { get; set; }
-        public User User { get; set; }
 
         public DateTime TimeCreated { get; set; }
 

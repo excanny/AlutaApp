@@ -9,6 +9,7 @@ using AlutaApp.Data;
 using AlutaApp.Models;
 using AlutaApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -16,28 +17,20 @@ namespace AlutaApp.Controllers
     public class MessagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public MessagesController(ApplicationDbContext context)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public MessagesController(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
-        
+
         public async Task<IActionResult> Messages()
         {
             
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+   
             ViewBag.ListOfSenders = await _context.Messages.Select(e=>new ListOfSenders{
                 Sender = e.Sender.FullName,
                 SenderLastMessage = e.Content,
@@ -47,7 +40,9 @@ namespace AlutaApp.Controllers
             List<ListOfSenders> Sender = ViewBag.ListOfSenders;
 
 
-           // ViewBag.ListOfSentMessages  = await _context.Messages.Select(w=>w.m)
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
             return View();
 
         }

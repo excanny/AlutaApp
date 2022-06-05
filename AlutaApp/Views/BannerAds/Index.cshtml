@@ -5,8 +5,15 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Index</h1>
 
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+             <h3> Banner Ads</h3>
+        </div>
+
+        <div class="card-body">
+            
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -14,28 +21,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+               User
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BannerLink)
+               BannerLink
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InstitutionId)
+               InstitutionId
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DepartmentId)
+               DepartmentId
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gender)
+               Gender
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+               StartDate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+               EndDate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+               Status
             </th>
             <th></th>
         </tr>
@@ -76,3 +83,7 @@
 }
     </tbody>
 </table>
+        </div>
+        
+    </div>                               
+</div>

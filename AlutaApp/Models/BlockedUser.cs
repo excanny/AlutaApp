@@ -1,5 +1,6 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AlutaApp.Models
 {
     public class BlockedUser
@@ -9,7 +10,8 @@ namespace AlutaApp.Models
         public int UserId { get; set; }
         public virtual User User { get; set; }
 
-        public int? UserBlockedId { get; set; }
+        [ForeignKey("UserBlockedId")]
+        public int UserBlockedId { get; set; }
         public virtual User UserBlocked { get; set; }
 
         public DateTime TimeCreated { get; set; }

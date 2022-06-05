@@ -10,6 +10,7 @@ using AlutaApp.Models;
 using AlutaApp.ViewModels;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -17,35 +18,24 @@ namespace AlutaApp.Controllers
     public class DocumentCommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public DocumentCommentsController(ApplicationDbContext context)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public DocumentCommentsController(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         // GET: DocumentComments
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index()
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+           
+            var documentComments = _context.DocumentComments.ToList();
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
 
-            int pageSize = 10;
-            int pageIndex = 1;
-
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var documentComments = _context.DocumentComments.Include(d => d.User).ToList();
-            var documents = await documentComments.ToPagedListAsync(pageIndex, pageSize);
-            return View(documents);
+            return View(documentComments);
         }
 
 
@@ -58,7 +48,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -70,17 +60,17 @@ namespace AlutaApp.Controllers
             int pageIndex = 1;
             var likers = _context.DocumentCommentLikes.Where(e=>e.DocumentCommentId  == id).ToList();
 
-            var getDocumentLikers = likers.Select(d=> new Likers{
-                Name = _context.Users.Where(e=>e.Id == d.UserId).Select(e=>e.FullName).FirstOrDefault(),
-                TimeLiked = d.TimeCreated
-            }).ToList();
+            //var getDocumentLikers = likers.Select(d=> new Likers{
+            //    Name = _context.Users.Where(e=>e.Id == d.UserId).Select(e=>e.FullName).FirstOrDefault(),
+            //    TimeLiked = d.TimeCreated
+            //}).ToList();
              
-            var documentLikers = await getDocumentLikers.OrderByDescending(s => s.TimeLiked).ToPagedListAsync(pageIndex, pageSize);
-            ViewBag.Likers = documentLikers;
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //var documentLikers = await getDocumentLikers.OrderByDescending(s => s.TimeLiked).ToPagedListAsync(pageIndex, pageSize);
+            //ViewBag.Likers = documentLikers;
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
             var documentComment = await _context.DocumentComments
                 .Include(d => d.User).Include(e=>e.Likes)
@@ -102,7 +92,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -125,7 +115,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -150,7 +140,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -183,7 +173,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -227,7 +217,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+               // User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -260,7 +250,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,

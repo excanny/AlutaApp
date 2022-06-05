@@ -1,11 +1,11 @@
 ﻿using AlutaApp.Models;
-using AlutaApp.Models.AlutaApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlutaApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -13,7 +13,8 @@ namespace AlutaApp.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<BannerAd> BannerAds { get; set; }
-        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        //public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        //public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<BlockedUser> BlockedUsers { get; set; }
         public DbSet<CGPA> CGPAs { get; set; }
         public DbSet<ChatGroup> ChatGroups { get; set; }
@@ -56,5 +57,58 @@ namespace AlutaApp.Data
         public DbSet<TriviaQuestion> TriviaQuestions { get; set; }
         public DbSet<TriviaResult> TriviaResults { get; set; }
         public DbSet<TriviaWinner> TriviaWinners { get; set; }
+        public DbSet<UserActivity> UserActivities { get; set; }
+        public DbSet<UserDevice> UserDevices { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>(entity => entity.Property(m => m.Id).HasMaxLength(85));
+            modelBuilder.Entity<ApplicationUser>(entity => entity.Property(m => m.NormalizedEmail).HasMaxLength(85));
+            modelBuilder.Entity<ApplicationUser>(entity => entity.Property(m => m.NormalizedUserName).HasMaxLength(85));
+            modelBuilder.Entity<ApplicationRole>(entity => entity.Property(m => m.Id).HasMaxLength(85));
+            modelBuilder.Entity<ApplicationRole>(entity => entity.Property(m => m.NormalizedName).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserLogin<string>>(entity => entity.Property(m => m.LoginProvider).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserLogin<string>>(entity => entity.Property(m => m.ProviderKey).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserLogin<string>>(entity => entity.Property(m => m.UserId).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserRole<string>>(entity => entity.Property(m => m.UserId).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserRole<string>>(entity => entity.Property(m => m.RoleId).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserToken<string>>(entity => entity.Property(m => m.UserId).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserToken<string>>(entity => entity.Property(m => m.LoginProvider).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserToken<string>>(entity => entity.Property(m => m.Name).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserClaim<string>>(entity => entity.Property(m => m.Id).HasMaxLength(85));
+            modelBuilder.Entity<IdentityUserClaim<string>>(entity => entity.Property(m => m.UserId).HasMaxLength(85));
+            modelBuilder.Entity<IdentityRoleClaim<string>>(entity => entity.Property(m => m.Id).HasMaxLength(85));
+            modelBuilder.Entity<IdentityRoleClaim<string>>(entity => entity.Property(m => m.RoleId).HasMaxLength(85));
+            //modelBuilder.Entity<ApplicationUser>(entity =>
+            //{
+            //    entity.ToTable(name: "Users");
+            //});
+            //modelBuilder.Entity<ApplicationRole>(entity =>
+            //{
+            //    entity.ToTable(name: "Roles");
+            //});
+            //modelBuilder.Entity<IdentityUserRole<string>>(entity =>
+            //{
+            //    entity.ToTable("UserRoles");
+            //});
+            //modelBuilder.Entity<IdentityUserClaim<string>>(entity =>
+            //{
+            //    entity.ToTable("UserClaims");
+            //});
+            //modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
+            //{
+            //    entity.ToTable("UserLogins");
+            //});
+            //modelBuilder.Entity<IdentityRoleClaim<string>>(entity =>
+            //{
+            //    entity.ToTable("RoleClaims");
+            //});
+            //modelBuilder.Entity<IdentityUserToken<string>>(entity =>
+            //{
+            //    entity.ToTable("UserTokens");
+            //});
+        }
+
     }
 }

@@ -42,7 +42,7 @@
        }
     </div>
 
-    <div id="triviaWinners">
+   @* <div id="triviaWinners">
        <h4>Winners</h4>
         @{
             
@@ -51,7 +51,7 @@
             var winnerRes = await winnerResult.ToPagedListAsync(pgIndex, pgSize);
             await Html.RenderPartialAsync("_TriviaWinnerPartial", winnerRes);
        }
-    </div>
+    </div>*@
 </div>    
 </div>
 

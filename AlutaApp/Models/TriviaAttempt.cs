@@ -1,5 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
 namespace AlutaApp.Models
 {
     public class TriviaAttempt
@@ -10,7 +9,6 @@ namespace AlutaApp.Models
         public User User { get; set; }
 
         public int TriviaId { get; set; }
-        public Trivia? Trivia { get; set; }
 
         public int TotalCorrectAnswers { get; set; }
 

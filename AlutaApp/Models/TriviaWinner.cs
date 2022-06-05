@@ -1,6 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
-namespace AlutaApp.Models
+﻿namespace AlutaApp.Models
 {
     public class TriviaWinner
     {

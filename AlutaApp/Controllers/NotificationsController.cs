@@ -9,6 +9,7 @@ using AlutaApp.Data;
 using AlutaApp.Models;
 using AlutaApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -17,10 +18,14 @@ namespace AlutaApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
-        public NotificationsController(ApplicationDbContext context, IHttpContextAccessor contextAccessor)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public NotificationsController(ApplicationDbContext context, IHttpContextAccessor contextAccessor, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> ClickNotification(int id)
@@ -28,7 +33,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -46,7 +51,7 @@ namespace AlutaApp.Controllers
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
             {
                 Content = s.Content,
-                User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
+                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
                 NotificationId = s.Id,
                 Clicked = s.Clicked,
                 View = s.Viewed,
@@ -82,7 +87,12 @@ namespace AlutaApp.Controllers
         // GET: Notifications
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Notifications.ToListAsync());
+            var allNotifications = await _context.Notifications.ToListAsync();
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
+            return View(allNotifications);
+           
         }
 
         // GET: Notifications/Details/5
@@ -104,8 +114,11 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Notifications/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
             return View();
         }
 

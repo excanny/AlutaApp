@@ -12,12 +12,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <!-- style -->
         <!-- build:css ../assets/css/site.min.css -->
-<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>        
-<link rel="stylesheet" href="~/assets/css/bootstrap.css" type="text/css" />
-        <link rel="stylesheet" href="~/assets/css/theme.css" type="text/css" />
-        <link rel="stylesheet" href="~/assets/css/style.css" type="text/css" />
-        <script src="~/assets/chart/highcharts.js"></script>
-        <script src="~/assets/chart/exporting.js"></script>
+       @* <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>   *@     
+        <link rel="stylesheet" href="~/assets/css/site.min.css" type="text/css" />
 
     </head>
     <body class="layout-row">
@@ -41,7 +37,17 @@
                 <div class="flex scrollable hover">
                     <div class="nav-active-text-primary" data-nav>
                         <ul class="nav bg">
-                        
+                            <li class="nav-header hidden-folded">
+                                <span class="text-muted">Main</span>
+                            </li>
+
+                           @*<li>
+                                <a href="../../Charts/Charts">
+                                    <span class="nav-icon text-primary"><i data-feather='home'></i></span>
+                                    <span class="nav-text">Charts</span>
+                                </a>
+                           </li>*@
+
                             <li>
                                 <a href="../../Administrators/Dashboard">
                                     <span class="nav-icon text-primary"><i data-feather='home'></i></span>
@@ -152,6 +158,13 @@
                                 </a>
                            </li>
 
+                           @*<li>
+                                <a href="../../Status/StatusView">
+                                    <span class="nav-icon text-primary"><i data-feather='bell'></i></span>
+                                    <span class="nav-text">Status</span>
+                                </a>
+                           </li>*@
+
                            <li>
                                 <a href="../../Notifications/Index">
                                     <span class="nav-icon text-primary"><i data-feather='bell'></i></span>
@@ -182,6 +195,22 @@
                                     <span class="nav-text">Chat Groups</span>
                                 </a>
                            </li>
+<!-- 
+
+                           <li>
+                                <a href="../../ChatGroups/Index">
+                                    <span class="nav-icon text-primary"><i data-feather='bell'></i></span>
+                                    <span class="nav-text">ChatGroups</span>
+                                </a>
+                           </li>
+
+
+                           <li>
+                                <a href="../../ChatGroupMessages/Index">
+                                    <span class="nav-icon text-primary"><i data-feather='bell'></i></span>
+                                    <span class="nav-text">Messages</span>
+                                </a>
+                           </li> -->
 
                            <li>
                                 <a href="../../Messages/Messages">
@@ -426,26 +455,97 @@
         <script src="~/libs/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- ajax page -->
         <script src="~/libs/pjax/pjax.min.js"></script>
-        <script src="~/assets/js/ajax.js"></script>
+       @* <script src="~/assets/js/ajax.js"></script*@>
         <!-- lazyload plugin -->    
-        <script src="~/assets/js/lazyload.config.js"></script>
-        <script src="~/assets/js/lazyload.js"></script>
-        <script src="~/assets/js/plugin.js"></script>
+       @* <script src="~/assets/js/lazyload.config.js"></script>*@
+        @*<script src="~/assets/js/lazyload.js"></script>
+        <script src="~/assets/js/plugin.js"></script>*@
         <!-- scrollreveal -->
         <script src="~/libs/scrollreveal/dist/scrollreveal.min.js"></script>
         <!-- feathericon -->
-        <script src="~/libs/feather-icons/dist/feather.min.js"></script>
-        <script src="~/assets/js/plugins/feathericon.js"></script>
+       @* <script src="~/libs/feather-icons/dist/feather.min.js"></script>
+        <script src="~/assets/js/plugins/feathericon.js"></script>*@
         <!-- theme -->
-        <script src="~/assets/js/theme.js"></script>
-        <script src="~/assets/js/utils.js"></script>
+        @*<script src="~/assets/js/theme.js"></script>
+        <script src="~/assets/js/utils.js"></script>*@
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script src="~/assets/dashChart/visualChart.js"></script>
+    @*    <script src="~/assets/dashChart/visualChart.js"></script>
         <script src="~/assets/dashChart/postPieChart.js"></script>
         <script src="~/assets/dashChart/commentPieChart.js"></script>
         <script src="~/assets/dashChart/messagePieChart.js"></script>
         <script src="~/assets/dashChart/promoPieChart.js"></script>
-        <script src="~/assets/dashChart/revenuePieChart.js"></script>
+        <script src="~/assets/dashChart/revenuePieChart.js"></script>*@
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        
+        // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+           $.ajax({
+               type : "GET",
+               url : "/Administrators/GetUsersChartJSON", 
+                success: function (chartdata) {
+                    var Data = chartdata;
+                   //console.log(Data);
+                   //alert("Hi");
+                     //var data = new google.visualization.DataTable();
+                     //data.addColumn('string', 'CategoryName');
+                     //data.addColumn('number', 'PostCount');
+
+                     //for(i = 0; i < Data.length; i++){
+                     //    data.addRows([[Data[i].categoryName, Data[i].postCount ]]);
+                     //}
+
+                     //   var options = {
+                     //         width: 400,
+                     //         height: 240,
+                     //         title: 'Google Pie Chart',
+                     //         colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+                     //         is3D: true
+                     //       };
+
+                     //var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                     //chart.draw(data, options);
+
+                    var data = new google.visualization.DataTable();
+                     data.addColumn('string', 'Active');
+                    data.addColumn('number', 'Count');
+
+                     for(i = 0; i < Data.length; i++){
+                         data.addRows([[Data[i].Active, Data[i].Count ]]);
+                     }
+
+                        var options = {
+                              width: 400,
+                              height: 240,
+                              title: 'Google Pie Chart',
+                              colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+                              is3D: true
+                            };
+
+                            console.log(data);
+
+                     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                     chart.draw(data, options);
+
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                   alert(errorMessage);
+                }       
+          });
+      }
+    
+    </script>
+
+
         
     </body>
 </html>

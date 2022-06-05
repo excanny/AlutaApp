@@ -9,6 +9,8 @@ namespace AlutaApp.Models
 
         public int UserId { get; set; }
 
+        public DateTime TimeCreated { get; set; }
+
         public DocumentLike()
         {
         }

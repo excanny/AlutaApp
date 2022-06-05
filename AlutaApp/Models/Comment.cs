@@ -1,5 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,9 +21,13 @@ namespace AlutaApp.Models
         [Required]
         public int PostId { get; set; }
 
+        public int? CommentId { get; set; }
+
         public bool Active { get; set; }
 
         public List<CommentLike> CommentLikes { get; set; }
+
+        public List<Comment> Replies { get; set; }
 
         public Comment()
         {

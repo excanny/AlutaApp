@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlutaApp.Models
 {
-    public class ApplicationRole: IdentityRole
+
+    public class ApplicationRole : IdentityRole
     {
-        public string?  Description { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public string? IPAddress { get; set; }
+        public ApplicationRole(string name) : base(name)
+        {
+        }
+        public string? Description { get; set; }
     }
 }

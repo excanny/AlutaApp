@@ -9,13 +9,11 @@ namespace AlutaApp.Models
 
         public DateTime PlayDate { get; set; }
 
-        public List<TriviaQuestion>? Questions { get; set; }
+        public List<TriviaQuestion> Questions { get; set; }
 
-        public List<TriviaResult>? UserResults { get; set; }
+        public List<TriviaResult> UserResults { get; set; }
 
-        public List<TriviaWinner>? Winners { get; set; }
-
-        public List<TriviaAttempt>? Attempts { get; set; }
+        public List<TriviaAttempt> Attempts { get; set; }
 
         public Trivia()
         {

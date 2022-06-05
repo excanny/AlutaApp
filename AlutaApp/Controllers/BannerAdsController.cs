@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AlutaApp.Data;
 using AlutaApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using AlutaApp.ViewModels;
 
 namespace AlutaApp.Controllers
 {
@@ -15,17 +17,24 @@ namespace AlutaApp.Controllers
     public class BannerAdsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BannerAdsController(ApplicationDbContext context)
+        public BannerAdsController(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         // GET: BannerAds
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BannerAds.Include(b => b.User);
-            return View(await applicationDbContext.ToListAsync());
+            var allBannerAds = await _context.BannerAds.Include(b => b.User).ToListAsync();
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
+            return View(allBannerAds);
         }
 
         // GET: BannerAds/Details/5
@@ -48,9 +57,11 @@ namespace AlutaApp.Controllers
         }
 
         // GET: BannerAds/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName");
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var role = await _userManager.GetRolesAsync(currentUser);
+
             return View();
         }
 
@@ -99,7 +110,7 @@ namespace AlutaApp.Controllers
             {
                 return NotFound();
             }
-            bannerAd.User = _context.Users.Where(d=>d.Id == bannerAd.UserId).FirstOrDefault();
+            //bannerAd.User = _context.Users.Where(d => d.Id == bannerAd.Id).FirstOrDefault();
             if (ModelState.IsValid)
             {
                 try

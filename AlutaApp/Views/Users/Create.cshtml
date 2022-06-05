@@ -1,4 +1,4 @@
-﻿@model AlutaApp.Models.AlutaApp.Models.User
+﻿@model AlutaApp.Models.User
 
 @{
     ViewData["Title"] = "Create";
@@ -39,13 +39,13 @@
                 <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Biography" class="control-label"></label>
+                @*<label asp-for="Biography" class="control-label"></label>
                 <input asp-for="Biography" class="form-control" />
-                <span asp-validation-for="Biography" class="text-danger"></span>
+                <span asp-validation-for="Biography" class="text-danger"></span>*@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsBanned" /> @Html.DisplayNameFor(model => model.IsBanned)
+                    <input class="form-check-input" @*asp-for="IsBanned"*@ /> @*@Html.DisplayNameFor(model => model.IsBanned)*@
                 </label>
             </div>
             <div class="form-group form-check">

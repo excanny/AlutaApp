@@ -65,6 +65,6 @@ namespace AlutaApp.DTO
 
 		//Explicitly setting the name to be used while serializing to JSON.
 		[DataMember(Name = "indexLabel")]
-		public string IndexLabel = null;
+		public string? IndexLabel = null;
 	}
 }

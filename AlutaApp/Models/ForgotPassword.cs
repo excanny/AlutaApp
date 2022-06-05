@@ -9,6 +9,8 @@ namespace AlutaApp.Models
 
         public int Code { get; set; }
 
+        public DateTime ExpireDate { get; set; }
+
         public bool Active { get; set; }
 
         public ForgotPassword()

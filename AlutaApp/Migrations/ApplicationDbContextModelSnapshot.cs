@@ -22,55 +22,66 @@ namespace AlutaApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AlutaApp.Models.AlutaApp.Models.User", b =>
+            modelBuilder.Entity("AlutaApp.Models.ApplicationRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IPAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Biography")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<double>("GradePoint")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("InstitutionId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("bit");
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -79,59 +90,43 @@ namespace AlutaApp.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("Online")
-                        .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProfilePhoto")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("Referrer")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("TimeRegistered")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("UserStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("YearOfAdmission")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
 
-                    b.HasIndex("InstitutionId");
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users");
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("AlutaApp.Models.BannerAd", b =>
@@ -144,7 +139,14 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("BannerLink")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BannerURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
@@ -154,10 +156,13 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("InstitutionId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("PaidWithPoints")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -165,12 +170,25 @@ namespace AlutaApp.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("TimeCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Views")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("BannerAds");
                 });
@@ -186,17 +204,23 @@ namespace AlutaApp.Migrations
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserBlockedId")
+                    b.Property<int>("UserBlockedId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserBlockedId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("UserBlockedId");
+                    b.HasIndex("UserBlockedId1");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("BlockedUsers");
                 });
@@ -211,14 +235,14 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("CourseCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("CreditUnit")
                         .HasColumnType("float");
 
                     b.Property<string>("Grade")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("GradePoint")
                         .HasColumnType("float");
@@ -233,8 +257,6 @@ namespace AlutaApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("CGPAs");
                 });
@@ -252,23 +274,19 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("GroupPhotoLink")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("InstitutionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("YearOfAdmission")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("InstitutionId");
 
                     b.ToTable("ChatGroups");
                 });
@@ -286,10 +304,20 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("MediaLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentMessageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
@@ -301,7 +329,9 @@ namespace AlutaApp.Migrations
 
                     b.HasIndex("ChatGroupId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ParentMessageId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("GroupMessages");
                 });
@@ -326,9 +356,14 @@ namespace AlutaApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ChatGroupId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("ChatGroupUsers");
                 });
@@ -344,9 +379,12 @@ namespace AlutaApp.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -357,11 +395,17 @@ namespace AlutaApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Comments");
                 });
@@ -387,8 +431,6 @@ namespace AlutaApp.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("CommentLikes");
                 });
 
@@ -412,13 +454,23 @@ namespace AlutaApp.Migrations
                     b.Property<DateTime>("DateInitiated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Follower")
+                    b.Property<int>("FollowerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Following")
+                    b.Property<string>("FollowerId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("FollowingId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FollowingId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FollowerId1");
+
+                    b.HasIndex("FollowingId1");
 
                     b.ToTable("Connections");
                 });
@@ -433,7 +485,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -450,7 +502,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -473,11 +525,11 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("DocumentLink")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocumentThumbnailLink")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
@@ -487,14 +539,16 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalDownloads")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .IsRequired()
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -502,7 +556,7 @@ namespace AlutaApp.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Documents");
                 });
@@ -517,7 +571,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -534,7 +588,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
@@ -545,11 +599,14 @@ namespace AlutaApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("DocumentComments");
                 });
@@ -589,6 +646,9 @@ namespace AlutaApp.Migrations
                     b.Property<int>("DocumentId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("TimeCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -615,7 +675,10 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -635,7 +698,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("ConnectionId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -643,9 +706,12 @@ namespace AlutaApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("HubConnections");
                 });
@@ -660,11 +726,11 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Abbreviation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -681,7 +747,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
@@ -689,25 +755,83 @@ namespace AlutaApp.Migrations
                     b.Property<bool>("Delivered")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("FirstArchived")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MediaLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentMessageId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Read")
                         .HasColumnType("bit");
 
                     b.Property<int>("RecieverId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RecieverId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("SecondArchived")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SenderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SenderId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RecieverId");
+                    b.HasIndex("ParentMessageId");
 
-                    b.HasIndex("SenderId");
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("RecieverId1");
+
+                    b.HasIndex("SenderId1");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.NewsFeed", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("LastRanked")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostRank")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("NewsFeed");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Notification", b =>
@@ -723,7 +847,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -733,10 +857,13 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SecondPartyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SecondPartyId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ThirdPartyId")
                         .HasColumnType("int");
@@ -752,7 +879,7 @@ namespace AlutaApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SecondPartyId1");
 
                     b.ToTable("Notifications");
                 });
@@ -776,7 +903,10 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeRequested")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -793,7 +923,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Points")
                         .HasColumnType("int");
@@ -801,6 +931,37 @@ namespace AlutaApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Points2Earns");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.PointsLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Points")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("PointsLog");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Post", b =>
@@ -816,24 +977,27 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Privacy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Posts");
                 });
@@ -848,7 +1012,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("ImageLink")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -881,9 +1045,30 @@ namespace AlutaApp.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("PostLikes");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.PostVideo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VideoLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId")
+                        .IsUnique();
+
+                    b.ToTable("PostVideo");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Promotion", b =>
@@ -894,13 +1079,10 @@ namespace AlutaApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<int>("PromotedById")
@@ -935,7 +1117,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Channel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateInitiated")
                         .HasColumnType("datetime2");
@@ -948,7 +1130,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("TransactionId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -971,6 +1153,9 @@ namespace AlutaApp.Migrations
                     b.Property<int>("ReporterId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReporterId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
@@ -978,7 +1163,7 @@ namespace AlutaApp.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.HasIndex("ReporterId");
+                    b.HasIndex("ReporterId1");
 
                     b.ToTable("ReportedComments");
                 });
@@ -997,6 +1182,9 @@ namespace AlutaApp.Migrations
                     b.Property<int>("ReporterId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReporterId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
@@ -1004,7 +1192,7 @@ namespace AlutaApp.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("ReporterId");
+                    b.HasIndex("ReporterId1");
 
                     b.ToTable("ReportedPosts");
                 });
@@ -1019,22 +1207,28 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReportedId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReportedId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ReporterId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ReporterId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReportedId");
+                    b.HasIndex("ReportedId1");
 
-                    b.HasIndex("ReporterId");
+                    b.HasIndex("ReporterId1");
 
                     b.ToTable("ReportedUsers");
                 });
@@ -1049,7 +1243,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("CourseCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CourseCredit")
                         .HasColumnType("int");
@@ -1082,11 +1276,11 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VerificationCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1103,15 +1297,15 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("ImageLink")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TextColorCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
@@ -1119,9 +1313,12 @@ namespace AlutaApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Statuses");
                 });
@@ -1134,17 +1331,20 @@ namespace AlutaApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("StatusId")
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StatusId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("StatusViews");
                 });
@@ -1166,20 +1366,26 @@ namespace AlutaApp.Migrations
                     b.Property<int>("FemaleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("FemaleId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("FemaleStatus")
                         .HasColumnType("int");
 
                     b.Property<int>("MaleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("MaleId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("MaleStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FemaleId");
+                    b.HasIndex("FemaleId1");
 
-                    b.HasIndex("MaleId");
+                    b.HasIndex("MaleId1");
 
                     b.ToTable("TGIFMatches");
                 });
@@ -1194,16 +1400,28 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Delivered")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Read")
                         .HasColumnType("bit");
 
                     b.Property<int>("ReceiverId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReceiverId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("SenderId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SenderId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TGIFMatchId")
                         .HasColumnType("int");
@@ -1213,9 +1431,9 @@ namespace AlutaApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("ReceiverId1");
 
-                    b.HasIndex("SenderId");
+                    b.HasIndex("SenderId1");
 
                     b.HasIndex("TGIFMatchId");
 
@@ -1232,7 +1450,7 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Course")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Day")
                         .HasColumnType("int");
@@ -1246,12 +1464,15 @@ namespace AlutaApp.Migrations
                     b.Property<int>("RemindInMinutes")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("TimeTables");
                 });
@@ -1295,11 +1516,14 @@ namespace AlutaApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TriviaId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("TriviaAttempts");
                 });
@@ -1317,25 +1541,25 @@ namespace AlutaApp.Migrations
 
                     b.Property<string>("Option1")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Option2")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Option3")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Option4")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Question")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TriviaId")
+                    b.Property<int?>("TriviaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1365,19 +1589,12 @@ namespace AlutaApp.Migrations
                     b.Property<int>("TriviaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TriviaQuestionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TriviaId");
-
-                    b.HasIndex("TriviaQuestionId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("TriviaResults");
                 });
@@ -1402,46 +1619,172 @@ namespace AlutaApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TriviaId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("TriviaWinners");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("AlutaApp.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<double?>("GradePoint")
+                        .HasColumnType("float");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Online")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Points")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ProfileBanner")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePhoto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Referrer")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeRegistered")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("YearOfAdmission")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                    b.HasIndex("DepartmentId");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.HasIndex("InstitutionId");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.UserActivity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserActivities");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.UserDevice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DeviceHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeviceToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAndroid")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("UserDevices");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1453,10 +1796,10 @@ namespace AlutaApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
@@ -1469,71 +1812,6 @@ namespace AlutaApp.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -1543,10 +1821,10 @@ namespace AlutaApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1562,13 +1840,15 @@ namespace AlutaApp.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1602,36 +1882,22 @@ namespace AlutaApp.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AlutaApp.Models.ApplicationRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("IPAddress")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasDiscriminator().HasValue("ApplicationRole");
-                });
-
-            modelBuilder.Entity("AlutaApp.Models.AlutaApp.Models.User", b =>
+            modelBuilder.Entity("AlutaApp.Models.BannerAd", b =>
                 {
                     b.HasOne("AlutaApp.Models.Department", "Department")
                         .WithMany()
@@ -1641,63 +1907,30 @@ namespace AlutaApp.Migrations
                         .WithMany()
                         .HasForeignKey("InstitutionId");
 
+                    b.HasOne("AlutaApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
                     b.Navigation("Department");
 
                     b.Navigation("Institution");
-                });
-
-            modelBuilder.Entity("AlutaApp.Models.BannerAd", b =>
-                {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.BlockedUser", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "UserBlocked")
+                    b.HasOne("AlutaApp.Models.User", "UserBlocked")
                         .WithMany()
-                        .HasForeignKey("UserBlockedId");
+                        .HasForeignKey("UserBlockedId1");
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
 
                     b.Navigation("UserBlocked");
-                });
-
-            modelBuilder.Entity("AlutaApp.Models.CGPA", b =>
-                {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AlutaApp.Models.ChatGroup", b =>
-                {
-                    b.HasOne("AlutaApp.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
-
-                    b.HasOne("AlutaApp.Models.Institution", "Institution")
-                        .WithMany()
-                        .HasForeignKey("InstitutionId");
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Institution");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.ChatGroupMessage", b =>
@@ -1708,11 +1941,15 @@ namespace AlutaApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Sender")
+                    b.HasOne("AlutaApp.Models.ChatGroupMessage", "ParentMessage")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentMessageId");
+
+                    b.HasOne("AlutaApp.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId");
+
+                    b.Navigation("ParentMessage");
 
                     b.Navigation("Sender");
                 });
@@ -1724,19 +1961,29 @@ namespace AlutaApp.Migrations
                         .HasForeignKey("ChatGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AlutaApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Comment", b =>
                 {
+                    b.HasOne("AlutaApp.Models.Comment", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentId");
+
                     b.HasOne("AlutaApp.Models.Post", null)
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1750,14 +1997,21 @@ namespace AlutaApp.Migrations
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+            modelBuilder.Entity("AlutaApp.Models.Connection", b =>
+                {
+                    b.HasOne("AlutaApp.Models.User", "Follower")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FollowerId1");
 
-                    b.Navigation("User");
+                    b.HasOne("AlutaApp.Models.User", "Following")
+                        .WithMany()
+                        .HasForeignKey("FollowingId1");
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Document", b =>
@@ -1774,11 +2028,9 @@ namespace AlutaApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Category");
 
@@ -1795,11 +2047,9 @@ namespace AlutaApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
@@ -1824,48 +2074,74 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("AlutaApp.Models.HubConnection", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", null)
+                    b.HasOne("AlutaApp.Models.User", null)
                         .WithMany("HubConnections")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Message", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Reciever")
+                    b.HasOne("AlutaApp.Models.Message", "ParentMessage")
                         .WithMany()
-                        .HasForeignKey("RecieverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentMessageId");
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Sender")
+                    b.HasOne("AlutaApp.Models.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
+
+                    b.HasOne("AlutaApp.Models.User", "Reciever")
+                        .WithMany()
+                        .HasForeignKey("RecieverId1");
+
+                    b.HasOne("AlutaApp.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId1");
+
+                    b.Navigation("ParentMessage");
+
+                    b.Navigation("Post");
 
                     b.Navigation("Reciever");
 
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("AlutaApp.Models.Notification", b =>
+            modelBuilder.Entity("AlutaApp.Models.NewsFeed", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
+                    b.HasOne("AlutaApp.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AlutaApp.Models.User", null)
+                        .WithMany("Feeds")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.Notification", b =>
+                {
+                    b.HasOne("AlutaApp.Models.User", "SecondParty")
+                        .WithMany("Notifications")
+                        .HasForeignKey("SecondPartyId1");
+
+                    b.Navigation("SecondParty");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.PointsLog", b =>
+                {
+                    b.HasOne("AlutaApp.Models.User", null)
+                        .WithMany("PointsLogs")
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Post", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany("Posts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
@@ -1886,21 +2162,24 @@ namespace AlutaApp.Migrations
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+            modelBuilder.Entity("AlutaApp.Models.PostVideo", b =>
+                {
+                    b.HasOne("AlutaApp.Models.Post", null)
+                        .WithOne("Video")
+                        .HasForeignKey("AlutaApp.Models.PostVideo", "PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Promotion", b =>
                 {
                     b.HasOne("AlutaApp.Models.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Post");
                 });
@@ -1924,11 +2203,9 @@ namespace AlutaApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Reporter")
+                    b.HasOne("AlutaApp.Models.User", "Reporter")
                         .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReporterId1");
 
                     b.Navigation("Comment");
 
@@ -1943,11 +2220,9 @@ namespace AlutaApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Reporter")
+                    b.HasOne("AlutaApp.Models.User", "Reporter")
                         .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReporterId1");
 
                     b.Navigation("Post");
 
@@ -1956,17 +2231,13 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("AlutaApp.Models.ReportedUser", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Reported")
+                    b.HasOne("AlutaApp.Models.User", "Reported")
                         .WithMany()
-                        .HasForeignKey("ReportedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReportedId1");
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Reporter")
+                    b.HasOne("AlutaApp.Models.User", "Reporter")
                         .WithMany()
-                        .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReporterId1");
 
                     b.Navigation("Reported");
 
@@ -1975,43 +2246,37 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("AlutaApp.Models.Status", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.StatusView", b =>
                 {
-                    b.HasOne("AlutaApp.Models.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId");
+                    b.HasOne("AlutaApp.Models.Status", null)
+                        .WithMany("Views")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Status");
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.TGIFMatch", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Female")
+                    b.HasOne("AlutaApp.Models.User", "Female")
                         .WithMany()
-                        .HasForeignKey("FemaleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FemaleId1");
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Male")
+                    b.HasOne("AlutaApp.Models.User", "Male")
                         .WithMany()
-                        .HasForeignKey("MaleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MaleId1");
 
                     b.Navigation("Female");
 
@@ -2020,17 +2285,13 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("AlutaApp.Models.TGIFMessage", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Receiver")
+                    b.HasOne("AlutaApp.Models.User", "Receiver")
                         .WithMany()
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReceiverId1");
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "Sender")
+                    b.HasOne("AlutaApp.Models.User", "Sender")
                         .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SenderId1");
 
                     b.HasOne("AlutaApp.Models.TGIFMatch", null)
                         .WithMany("Messages")
@@ -2045,90 +2306,90 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("AlutaApp.Models.TimeTable", b =>
                 {
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.TriviaAttempt", b =>
                 {
-                    b.HasOne("AlutaApp.Models.Trivia", "Trivia")
+                    b.HasOne("AlutaApp.Models.Trivia", null)
                         .WithMany("Attempts")
                         .HasForeignKey("TriviaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trivia");
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.TriviaQuestion", b =>
                 {
-                    b.HasOne("AlutaApp.Models.Trivia", "Trivia")
+                    b.HasOne("AlutaApp.Models.Trivia", null)
                         .WithMany("Questions")
-                        .HasForeignKey("TriviaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trivia");
+                        .HasForeignKey("TriviaId");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.TriviaResult", b =>
                 {
-                    b.HasOne("AlutaApp.Models.Trivia", "Trivia")
+                    b.HasOne("AlutaApp.Models.Trivia", null)
                         .WithMany("UserResults")
                         .HasForeignKey("TriviaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("AlutaApp.Models.TriviaQuestion", "TriviaQuestion")
-                        .WithMany()
-                        .HasForeignKey("TriviaQuestionId");
-
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trivia");
-
-                    b.Navigation("TriviaQuestion");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.TriviaWinner", b =>
                 {
                     b.HasOne("AlutaApp.Models.Trivia", "Trivia")
-                        .WithMany("Winners")
+                        .WithMany()
                         .HasForeignKey("TriviaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlutaApp.Models.AlutaApp.Models.User", "User")
+                    b.HasOne("AlutaApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Trivia");
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AlutaApp.Models.User", b =>
+                {
+                    b.HasOne("AlutaApp.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AlutaApp.Models.Institution", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.UserDevice", b =>
+                {
+                    b.HasOne("AlutaApp.Models.User", null)
+                        .WithMany("Devices")
+                        .HasForeignKey("UserId1");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("AlutaApp.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2137,7 +2398,7 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AlutaApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2146,7 +2407,7 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AlutaApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2155,13 +2416,13 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("AlutaApp.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AlutaApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2170,20 +2431,11 @@ namespace AlutaApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("AlutaApp.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("AlutaApp.Models.AlutaApp.Models.User", b =>
-                {
-                    b.Navigation("HubConnections");
-
-                    b.Navigation("Notifications");
-
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.ChatGroup", b =>
@@ -2196,6 +2448,8 @@ namespace AlutaApp.Migrations
             modelBuilder.Entity("AlutaApp.Models.Comment", b =>
                 {
                     b.Navigation("CommentLikes");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.Document", b =>
@@ -2217,6 +2471,14 @@ namespace AlutaApp.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("Video")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AlutaApp.Models.Status", b =>
+                {
+                    b.Navigation("Views");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.TGIFMatch", b =>
@@ -2231,8 +2493,21 @@ namespace AlutaApp.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("UserResults");
+                });
 
-                    b.Navigation("Winners");
+            modelBuilder.Entity("AlutaApp.Models.User", b =>
+                {
+                    b.Navigation("Devices");
+
+                    b.Navigation("Feeds");
+
+                    b.Navigation("HubConnections");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("PointsLogs");
+
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

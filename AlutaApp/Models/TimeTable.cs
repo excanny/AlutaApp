@@ -5,8 +5,8 @@ namespace AlutaApp.Models
     {
         public int Id { get; set; }
 
-        public int? UserId { get; set; }
-        public AlutaApp.Models.User? User { get; set; }
+        public User User { get; set; }
+        public int UserId { get; set; }
 
         public string Course { get; set; }
 

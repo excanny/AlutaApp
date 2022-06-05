@@ -1,4 +1,4 @@
-﻿@model AlutaApp.Models.AlutaApp.Models.User
+﻿@model AlutaApp.Models.User
 
 @{
     ViewData["Title"] = "Details";
@@ -41,7 +41,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ProfilePhoto)
         </dd>
-        <dt class = "col-sm-2">
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Biography)
         </dt>
         <dd class = "col-sm-10">
@@ -51,7 +51,7 @@
             @Html.DisplayNameFor(model => model.IsBanned)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsBanned)
+            @Html.DisplayFor(model => model.IsBanned)*@
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IsVerified)

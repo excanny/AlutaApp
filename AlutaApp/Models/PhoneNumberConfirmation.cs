@@ -11,6 +11,8 @@ namespace AlutaApp.Models
 
         public bool Completed { get; set; }
 
+        public DateTime TimeRequested { get; set; }
+
         public bool Active { get; set; }
 
         public PhoneNumberConfirmation()

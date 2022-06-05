@@ -5,8 +5,7 @@ namespace AlutaApp.Models
     {
         public int Id { get; set; }
 
-        public int TriviaId { get; set; }
-        public Trivia? Trivia { get; set; }
+        public int? TriviaId { get; set; }
 
         public string Question { get; set; }
 

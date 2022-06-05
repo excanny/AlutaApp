@@ -1,11 +1,18 @@
-﻿@model IEnumerable<AlutaApp.Models.AlutaApp.Models.User>
+﻿@model IEnumerable<AlutaApp.Models.User>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Index</h1>
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+             <h3> Active Users</h3>
+        </div>
+
+        <div class="card-body">
+    
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -28,12 +35,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProfilePhoto)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Biography)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsBanned)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.IsVerified)
             </th>
@@ -115,12 +122,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ProfilePhoto)
             </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.Biography)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsBanned)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.IsVerified)
             </td>
@@ -190,3 +197,7 @@
 }
     </tbody>
 </table>
+        </div>
+        
+    </div>                               
+</div>

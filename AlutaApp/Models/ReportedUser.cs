@@ -1,5 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
 namespace AlutaApp.Models
 {
     public class ReportedUser

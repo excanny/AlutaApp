@@ -1,9 +1,5 @@
-﻿
+﻿@model IEnumerable<AlutaApp.Models.Post>
 
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
-@using X.PagedList.Web.Common;
-@model X.PagedList.IPagedList<AlutaApp.Models.Post>
 <table id="" class="table table-theme table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
@@ -20,9 +16,9 @@
                                         @foreach (var item in Model) {
 
                                         <tr class="" data-id="16">
-                                            <td >
+                                           @* <td >
                                                 <small class="text-muted">@item.Title</small>
-                                            </td>
+                                            </td>*@
                                             <td >
                                                 
                                                 <small class="text-muted">@item.User.UserName</small>
@@ -63,13 +59,7 @@
 
                                 </table>
                                 <div>
-                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("Posts", new { page = page }),
-            new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "page-item"},
-                        PageClasses = new string[] {"page-link"}
-                    } )
+                                    
                     
                
                                 </div>

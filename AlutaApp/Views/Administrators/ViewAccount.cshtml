@@ -1,4 +1,4 @@
-﻿@model AlutaApp.Models.AlutaApp.Models.User
+﻿@model AlutaApp.Models.User
 
 @{
     ViewData["Title"] = "ViewAccount";
@@ -55,10 +55,10 @@
                                                  <div class="toolbar">
                                                     <a href="../../Administrators/Ban/@Model.Id" class="btn btn-sm bg-dark-overlay btn-rounded text-white bg-success active" data-toggle-class="bg-success">
                                                         @*<span class="d-inline">Online</span>*@
-                                            @{
+                                           @* @{
                                                 var bans = @Model.IsBanned == true ? "Ban" : "Remove Ban";
-                                            }
-                                                        <span class="d-none">@bans</span>
+                                            }*@
+                                                        <span class="d-none">@*@bans*@</span>
                                                     </a>
                                                 </div>
                                             </div>
@@ -121,7 +121,7 @@
                                                     </div>
                                                     <div>
                                                         <small class="text-muted">Bio</small>
-                                                        <div class="my-2">@Model.Biography</div>
+                                                      @*  <div class="my-2">@Model.Biography</div>*@
                                                 </div>
                                             </div>
                                         </div>

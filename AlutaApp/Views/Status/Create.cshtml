@@ -5,7 +5,14 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Create</h1>
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-header">
+             <h3>Create</h3>
+        </div>
+
+        <div class="card-body">
+            
 
 <h4>Status</h4>
 <hr />
@@ -18,25 +25,21 @@
                 <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="ImageLink" class="control-label"></label>
-                <input asp-for="ImageLink" class="form-control" />
-                <span asp-validation-for="ImageLink" class="text-danger"></span>
+                <label class="control-label">ImageLink</label>
+                <input  class="form-control" required/>
+               
             </div>
             <div class="form-group">
-                <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
-                <span asp-validation-for="Text" class="text-danger"></span>
+                <label  class="control-label">Text</label>
+                <input name="Text" class="form-control" required/>
+                
             </div>
             <div class="form-group">
-                <label asp-for="TextColorCode" class="control-label"></label>
-                <input asp-for="TextColorCode" class="form-control" />
-                <span asp-validation-for="TextColorCode" class="text-danger"></span>
+                <label  class="control-label">TextColorCode</label>
+                <input name="TextColorCode" class="form-control" required />
+                
             </div>
-            <div class="form-group">
-                <label asp-for="TimeCreated" class="control-label"></label>
-                <input asp-for="TimeCreated" class="form-control" />
-                <span asp-validation-for="TimeCreated" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -47,4 +50,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+        </div>
+        
+    </div>                               
+</div>

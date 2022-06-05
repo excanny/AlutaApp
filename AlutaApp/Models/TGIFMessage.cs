@@ -1,5 +1,4 @@
-﻿using AlutaApp.Models.AlutaApp.Models;
-using System;
+﻿using System;
 namespace AlutaApp.Models
 {
     public class TGIFMessage
@@ -17,6 +16,10 @@ namespace AlutaApp.Models
         public User Receiver { get; set; }
 
         public DateTime TimeCreated { get; set; }
+
+        public bool Delivered { get; set; }
+
+        public bool Read { get; set; }
 
         public bool Deleted { get; set; }
 

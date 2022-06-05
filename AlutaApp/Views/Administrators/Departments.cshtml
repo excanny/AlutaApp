@@ -4,75 +4,26 @@
     ViewData["Title"] = "Departments";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
-<div id="content" class="flex ">
-                <!-- ############ Main START-->
-                <div>
-                    <div class="page-hero page-container " id="page-hero">
-                        <div class="padding d-flex">
-                            <div class="page-title">
-                                <h2 class="text-md text-highlight">Departments</h2>
-                                <small class="text-muted"></small>
-                                <br />
-                                <div>
-                                @{
-                            var models = new Institution();
-                            await Html.RenderPartialAsync("_AddDepartmentPartial", models);
 
-                        }
-
-                        @{
-                            var department = new Department();
-                            await Html.RenderPartialAsync("_SearchDepartmentPartial", department);
-
-                        }
-                    </div>
-                </div>
-
-
+    <div class="page-title-box">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h4 class="page-title">Departments</h4>
             </div>
+                              
+        </div> <!-- end row -->
+    </div>
+    <!-- end page-title -->
+
+    <div class="row">
+  
+        <div class="col-sm-12 col-xl-12">
+            @{
+
+                    await Html.RenderPartialAsync("_DepartmentListPartial", Model);
+
+                }
         </div>
-
-        <div class="page-content page-container" id="page-content">
-            <div class="padding">
-                <div class="table-responsive">
-                    @{
-                        if (Model == null)
-                        {
-                            <div>
-                                <h2 class="text-center text-warning">
-                                    No Available Department
-                                </h2>
-                            </div>
-                            return;
-                        }
-                        else
-                        {
-
-                            await Html.RenderPartialAsync("_DepartmentListPartial", Model);
-                        }
-                    }
-                    
-                                </div>
-                                </div></div>
-                               </div>
-                                
-                                </div>
                                
+    </div>
 
-<script src="~/libs/jquery/dist/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-    $("#SearchDepartment").keydown(function() {
-        var text = this.value;
-        //console.log($("#SearchName").val());
-        $.ajax({
-            type: "GET",
-            url: "/Administrators/SearchDepartment?searchText="+text,
-            contentType:"html",
-            success: function(data) {
-                $("#search-results").html(data);
-            }
-        })
-    })
-})
-</script>

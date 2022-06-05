@@ -12,17 +12,17 @@ namespace AlutaApp.Models
         [Required]
         public string Content { get; set; }
 
-
-        [Required]
-        public string Title { get; set; }
-
         [Required]
         public int UserId { get; set; }
-        public AlutaApp.Models.User User { get; set; }
+        public User User { get; set; }
+
+        public string Privacy { get; set; }
 
         public List<PostLike> Likes { get; set; }
 
         public List<Comment> Comments { get; set; }
+
+        public PostVideo Video { get; set; }
 
         public DateTime TimeCreated { get; set; }
 

@@ -1,7 +1,4 @@
 ﻿using AlutaApp.Models;
-using AlutaApp.Models.AlutaApp.Models;
-using System;
-using System.Collections.Generic;
 
 namespace AlutaApp.ViewModels
 {
