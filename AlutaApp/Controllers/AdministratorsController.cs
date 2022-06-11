@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AlutaApp.Data;
+using AlutaApp.DTO;
+using AlutaApp.Models;
+using AlutaApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AlutaApp.Models;
-using AlutaApp.Data;
 using X.PagedList;
-using AlutaApp.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using AlutaApp.DTO;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Controllers
 {
@@ -31,20 +26,10 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.Delete)]
         public async Task<IActionResult> DeleteUser(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             if (id == null)
             {
                 return NotFound();
@@ -63,25 +48,20 @@ namespace AlutaApp.Controllers
         }
 
         // POST: Administrators/Delete/5
+      
+        [Authorize(Policy = Permissions.Permissions.Users.Delete)]
         [HttpPost, ActionName("DeleteUser")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedUser(int id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
+            var user = await _context.Users.FindAsync(id);
+            if(user != null)
             {
-                Content = s.Content,
-                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            //var administrator = await _context.Users.FindAsync(id);
-            //_context.Users.Remove(administrator);
-            await _context.SaveChangesAsync();
+                user.Deleted = true;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
+               
             return RedirectToAction(nameof(UsersAccount));
         }
 
@@ -185,20 +165,10 @@ namespace AlutaApp.Controllers
            return PartialView("_DepartmentListPartial",institutions);
        }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.Edit)]
         public async Task<IActionResult> EditUser(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             if (id == null)
             {
                 return NotFound();
@@ -218,39 +188,30 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.Users.Edit)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission, Biography,InstitutionId,DepartmentId,GradePoint,Id,UserName,Email,PhoneNumber, UserType, UserStatus")] User user)
+        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission, Biography,InstitutionId,DepartmentId,GradePoint")] EditUserDTO user)
+        //public async Task<IActionResult> EditUser(int id, User user)
         {
-            //var firstCount = 2;
-            //ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            //ViewBag.Remaining = ViewBag.Count - firstCount;
-            //ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            //{
-            //    Content = s.Content,
-            //    ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-            //    NotificationId = s.Id,
-            //    Clicked = s.Clicked,
-            //    View = s.Viewed,
-            //    TimeCreated = s.TimeCreated
-            //}).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            //user.InstitutionId = user.InstitutionId;
-            //user.Institution = await _context.Institutions.Where(w=>w.Id == user.InstitutionId).FirstOrDefaultAsync();
 
-            //user.Department = await _context.Departments.Where(w => w.Id == user.DepartmentId).FirstOrDefaultAsync();
+            //var errors = ModelState
+            //.Where(x => x.Value.Errors.Count > 0)
+            //.Select(x => new { x.Key, x.Value.Errors })
+            //.ToArray();
 
-            //if (id != user.Id)
-            //{
-            //    return NotFound();
+            User? userData = await _context.Users.FindAsync(id);
+            if (userData != null)
+            {
+                userData.FullName = user.FullName;
+                userData.Gender = user.Gender;
+                userData.DateOfBirth = user.DateOfBirth;
+                userData.YearOfAdmission = user.YearOfAdmission;
+                userData.InstitutionId = user.InstitutionId;    
+                userData.DepartmentId = user.DepartmentId;
+                userData.GradePoint = user.GradePoint;  
+     
+            }
 
-            //}
-
-            //var errors = ModelState.Where(x => x.Value.Errors.Any())
-                //.Select(x => new { x.Key, x.Value.Errors });
-
-            var errors = ModelState
-            .Where(x => x.Value.Errors.Count > 0)
-            .Select(x => new { x.Key, x.Value.Errors })
-            .ToArray();
 
             if (!ModelState.IsValid)
             {
@@ -261,38 +222,34 @@ namespace AlutaApp.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(userData);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(UsersAccount));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    //if (!UserExists(user.Id))
-                    //{
-                    //    return NotFound();
-                    //}
-                    //else
-                    //{
-                    //    throw;
-                    //}
+                  
                 }
                 return RedirectToAction(nameof(UsersAccount));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name", user.DepartmentId);
-            ViewData["InstitutionId"] = new SelectList(_context.Institutions, "Id", "Abbreviation", user.InstitutionId);
+
+            //return RedirectToAction("Index");
+
             return View(user);
         }
-      
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.View)]
         public async Task<IActionResult> UsersAccount()
         {
            
-            var allUsers = await _context.Users.Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
-
+            var allUsers = await _context.Users.Where(u => !u.Deleted).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
             return View(allUsers);
 
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.Edit)]
         public async Task<IActionResult> Ban(int? id)
         {
             var firstCount = 2;
@@ -317,25 +274,18 @@ namespace AlutaApp.Controllers
             return RedirectToAction("ViewAccount", new { id = id });
         }
 
-        public async Task<IActionResult> ViewAccount(int? id)
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.View)]
+        public async Task<IActionResult> ViewAccount(int id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            //var result = await _context.Users.Where(e => e.Id == id).Include(e => e.Department).Include(x=>x.Posts).Include(s => s.Institution).FirstOrDefaultAsync();
-            return View();
+
+            var userDetails = await _context.Users.Where(e => e.Id == id).Include(e => e.Department).Include(x=>x.Posts).Include(s => s.Institution).FirstOrDefaultAsync();
+            return View(userDetails);
 
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Points.View)]
         public async Task<IActionResult> Points()
         {
             var firstCount = 2;
@@ -392,8 +342,9 @@ namespace AlutaApp.Controllers
            return PartialView("_PointListPartial",points);
        }
 
-       
-//
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Posts.View)]
         public async Task<IActionResult> Posts()
         {
            
@@ -403,27 +354,6 @@ namespace AlutaApp.Controllers
             var role = await _userManager.GetRolesAsync(currentUser);
 
             return View(allPosts);
-        }
-
-        public ActionResult PostChart()
-        {
-            var users = _context.Posts.Where(s => s.TimeCreated.Year == DateTime.Now.Year).ToList();
-            var months = new Month
-            {
-                January = users.Where(s => s.TimeCreated.Month == 1).Count(),
-                February = users.Where(s => s.TimeCreated.Month == 2).Count(),
-                March = users.Where(s => s.TimeCreated.Month == 3).Count(),
-                April = users.Where(s => s.TimeCreated.Month == 4).Count(),
-                May = users.Where(s => s.TimeCreated.Month == 5).Count(),
-                June = users.Where(s => s.TimeCreated.Month == 6).Count(),
-                July = users.Where(s => s.TimeCreated.Month == 7).Count(),
-                August = users.Where(s => s.TimeCreated.Month == 8).Count(),
-                September = users.Where(s => s.TimeCreated.Month == 9).Count(),
-                October = users.Where(s => s.TimeCreated.Month == 10).Count(),
-                November = users.Where(s => s.TimeCreated.Month == 11).Count(),
-                December = users.Where(s => s.TimeCreated.Month == 12).Count(),
-            };
-            return new JsonResult(months);
         }
 
         public async Task<IActionResult> ViewPost(int? id)
@@ -490,91 +420,6 @@ namespace AlutaApp.Controllers
             var likes = await getLikes.OrderByDescending(s => s.TimeCreated).ToPagedListAsync(pageIndex, pageSize);
             return PartialView("_GetPostLikes",likes);
         }
-        public ActionResult CommentChart()
-        {
-            var users = _context.Comments.Where(s => s.TimeCreated.Year == DateTime.Now.Year).ToList();
-            var months = new Month
-            {
-                January = users.Where(s => s.TimeCreated.Month == 1).Count(),
-                February = users.Where(s => s.TimeCreated.Month == 2).Count(),
-                March = users.Where(s => s.TimeCreated.Month == 3).Count(),
-                April = users.Where(s => s.TimeCreated.Month == 4).Count(),
-                May = users.Where(s => s.TimeCreated.Month == 5).Count(),
-                June = users.Where(s => s.TimeCreated.Month == 6).Count(),
-                July = users.Where(s => s.TimeCreated.Month == 7).Count(),
-                August = users.Where(s => s.TimeCreated.Month == 8).Count(),
-                September = users.Where(s => s.TimeCreated.Month == 9).Count(),
-                October = users.Where(s => s.TimeCreated.Month == 10).Count(),
-                November = users.Where(s => s.TimeCreated.Month == 11).Count(),
-                December = users.Where(s => s.TimeCreated.Month == 12).Count(),
-            };
-            return new JsonResult(months);
-        }
-
-
-        public ActionResult MessageChart()
-        {
-            var users = _context.Messages.Where(s => s.TimeCreated.Year == DateTime.Now.Year).ToList();
-            var months = new Month
-            {
-                January = users.Where(s => s.TimeCreated.Month == 1).Count(),
-                February = users.Where(s => s.TimeCreated.Month == 2).Count(),
-                March = users.Where(s => s.TimeCreated.Month == 3).Count(),
-                April = users.Where(s => s.TimeCreated.Month == 4).Count(),
-                May = users.Where(s => s.TimeCreated.Month == 5).Count(),
-                June = users.Where(s => s.TimeCreated.Month == 6).Count(),
-                July = users.Where(s => s.TimeCreated.Month == 7).Count(),
-                August = users.Where(s => s.TimeCreated.Month == 8).Count(),
-                September = users.Where(s => s.TimeCreated.Month == 9).Count(),
-                October = users.Where(s => s.TimeCreated.Month == 10).Count(),
-                November = users.Where(s => s.TimeCreated.Month == 11).Count(),
-                December = users.Where(s => s.TimeCreated.Month == 12).Count(),
-            };
-            return new JsonResult(months);
-        }
-
-        //public ActionResult PromoChart()
-        //{
-        //    var users = _context.Promotions.Where(s => s.DateCreated.Year == DateTime.Now.Year).ToList();
-        //    var months = new Month
-        //    {
-        //        January = users.Where(s => s.DateCreated.Month == 1).Count(),
-        //        February = users.Where(s => s.DateCreated.Month == 2).Count(),
-        //        March = users.Where(s => s.DateCreated.Month == 3).Count(),
-        //        April = users.Where(s => s.DateCreated.Month == 4).Count(),
-        //        May = users.Where(s => s.DateCreated.Month == 5).Count(),
-        //        June = users.Where(s => s.DateCreated.Month == 6).Count(),
-        //        July = users.Where(s => s.DateCreated.Month == 7).Count(),
-        //        August = users.Where(s => s.DateCreated.Month == 8).Count(),
-        //        September = users.Where(s => s.DateCreated.Month == 9).Count(),
-        //        October = users.Where(s => s.DateCreated.Month == 10).Count(),
-        //        November = users.Where(s => s.DateCreated.Month == 11).Count(),
-        //        December = users.Where(s => s.DateCreated.Month == 12).Count(),
-        //    };
-        //    return new JsonResult(months);
-        //}
-
-        public ActionResult RevenueChart()
-        {
-            var users = _context.PropmotionPayments.Where(s => s.DateInitiated.Year == DateTime.Now.Year).ToList();
-            var months = new Month
-            {
-                January = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 1).Select(e=>e.Amount).Sum()),
-                February = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 2).Select(e => e.Amount).Sum()),
-                March = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 3).Select(e => e.Amount).Sum()),
-                April = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 4).Select(e => e.Amount).Sum()),
-                May = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 5).Select(e => e.Amount).Sum()),
-                June = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 6).Select(e => e.Amount).Sum()),
-                July = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 7).Select(e => e.Amount).Sum()),
-                August = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 8).Select(e => e.Amount).Sum()),
-                September = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 9).Select(e => e.Amount).Sum()),
-                October = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 10).Select(e => e.Amount).Sum()),
-                November = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 11).Select(e => e.Amount).Sum()),
-                December = Convert.ToInt32(users.Where(s => s.DateInitiated.Month == 12).Select(e => e.Amount).Sum()),
-            };
-            return new JsonResult(months);
-        }
-
 
         public async Task<IActionResult> ViewPostComment(int? id)
         {
@@ -615,6 +460,9 @@ namespace AlutaApp.Controllers
 
         }
 
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Posts.Delete)]
         public async Task<IActionResult> DeletePost(int? id)
         {
             var firstCount = 2;
@@ -645,6 +493,8 @@ namespace AlutaApp.Controllers
         }
 
         // POST: Administrators/Delete/5
+        
+        [Authorize(Policy = Permissions.Permissions.Posts.Delete)]
         [HttpPost, ActionName("DeletePost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedPost(int id)
@@ -672,6 +522,8 @@ namespace AlutaApp.Controllers
             return _context.Posts.Any(e => e.Id == id);
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Documents.View)]
         public async Task<IActionResult> Documents()
         {
           
@@ -684,8 +536,6 @@ namespace AlutaApp.Controllers
 
            
         }
-
-
 
 
         public async Task<IActionResult> ViewDocument(int? id)
@@ -711,8 +561,10 @@ namespace AlutaApp.Controllers
 
             return View(document);
         }
-        
 
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Documents.Delete)]
         public async Task<IActionResult> DeleteDocument(int? id)
         {
             var firstCount = 2;
@@ -746,7 +598,8 @@ namespace AlutaApp.Controllers
         }
 
 
-
+       
+        [Authorize(Policy = Permissions.Permissions.Documents.Delete)]
         [HttpPost, ActionName("DeleteDocument")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmDocument(int? id)
@@ -794,21 +647,11 @@ namespace AlutaApp.Controllers
             return _context.Comments.Any(e => e.Id == id);
         }
 
-
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Points.Edit)]
         public async Task<IActionResult> UpdatePoint(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+           
             if (id == null)
             {
                 return NotFound();
@@ -826,6 +669,7 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.Points.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePoint(int id, [Bind("Id,Points,Category")] Points2Earn administrator)
         {
@@ -876,7 +720,7 @@ namespace AlutaApp.Controllers
            
             ViewBag.TotalApprovedBannerAds = _context.BannerAds.ToList().Count();
             var totalBannerAdsCost = _context.BannerAds.Sum(e => e.Cost);
-            var totalpromotionPayments = _context.PropmotionPayments.Sum(e => e.Amount);
+            var totalpromotionPayments = _context.PromotionPayments.Sum(e => e.Amount);
             ViewBag.TotalRevenue = totalBannerAdsCost + totalpromotionPayments;
             ViewBag.NoOfpromotions = _context.Promotions.ToList().Count();
 
@@ -920,17 +764,17 @@ namespace AlutaApp.Controllers
             return Json(comment_data);
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Departments.View)]
         public async Task<IActionResult> Departments(int? page)
         {
             var allDepartments = await _context.Departments.ToListAsync();
-
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
-
+          
             return View(allDepartments);
         }
 
-
+        [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.Departments.Create)]
         public async Task<IActionResult> AddDepartment(Department department)
         {
             var secondPartyId = _contextAccessor.HttpContext.Session.GetInt32("secondPartyId");
@@ -941,6 +785,8 @@ namespace AlutaApp.Controllers
             return RedirectToAction("Departments");
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Departments.View)]
         public async Task<IActionResult> ViewDepartment(int? id)
         {
             var result = await _context.Departments.Where(e => e.Id == id).FirstOrDefaultAsync();
@@ -948,21 +794,11 @@ namespace AlutaApp.Controllers
         
         }
 
-
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Departments.Edit)]
         public async Task<IActionResult> EditDepartment(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+     
             if (id == null)
             {
                 return NotFound();
@@ -976,10 +812,8 @@ namespace AlutaApp.Controllers
             return View(administrator);
         }
 
-        // POST: Administrators/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.Departments.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDepartment(int id, [Bind("Id,Name")] Department administrator)
         {
@@ -1024,21 +858,10 @@ namespace AlutaApp.Controllers
             return View(administrator);
         }
 
-        // GET: Administrators/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Departments.Delete)]
         public async Task<IActionResult> DeleteDepartment(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             if (id == null)
             {
                 return NotFound();
@@ -1056,6 +879,8 @@ namespace AlutaApp.Controllers
 
         // POST: Administrators/Delete/5
         [HttpPost, ActionName("DeleteDepartment")]
+       
+        [Authorize(Policy = Permissions.Permissions.Departments.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedDepartment(int id)
         {
@@ -1081,31 +906,23 @@ namespace AlutaApp.Controllers
         {
             return _context.Departments.Any(e => e.Id == id);
         }
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Institutions.View)]
         public async Task<IActionResult> Institutions(int? page)
         {
            
             var allInstitutions = await _context.Institutions.ToListAsync();
 
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
 
             return View(allInstitutions);
         }
 
+        [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.Institutions.Create)]
         public async Task<IActionResult> Create(Institution institution)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             await _context.Institutions.AddAsync(institution);
             await _context.SaveChangesAsync();
             return RedirectToAction("Institutions");
@@ -1161,6 +978,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Institutions.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abbreviation")] Institution administrator)
         {
@@ -1206,24 +1025,10 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Administrators/DeleteInstitution/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Institutions.Delete)]
         public async Task<IActionResult> DeleteInstitution(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             var administrator = await _context.Institutions
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -1237,23 +1042,14 @@ namespace AlutaApp.Controllers
 
         // POST: Administrators/Delete/5
         [HttpPost, ActionName("DeleteInstitution")]
+       
+        [Authorize(Policy = Permissions.Permissions.Institutions.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedInstitution(int id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            var administrator = await _context.Institutions.FindAsync(id);
-            _context.Institutions.Remove(administrator);
+            var institution = await _context.Institutions.FindAsync(id);
+            if(institution != null)
+                _context.Institutions.Remove(institution);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Institutions));
         }

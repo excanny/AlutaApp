@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AlutaApp.Models.Promotion>
 
-<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+<table id="datatable" class="table table-theme table-row table-bordered table-striped v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
                                             <th><span class="text-muted">Start Date</span></th>
@@ -9,33 +9,33 @@
                                             <th><span class="text-muted">Promoted By</span></th>
                                             <th><span class="text-muted">Status</span></th>
                                             <th><span class="text-muted">Post Id</span></th>
-                                            <th></th>
+                                            <th><span class="text-muted">Action</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model) {
                                         <tr class="" data-id="16">
                                             <td >
-                                                <small class="text-muted">@item.StartDate</small>
+                                                @item.StartDate
                                             </td>
                                             <td >
-                                                <small class="text-muted">@item.EndDate</small>
+                                                @item.EndDate
                                             </td>
                                              
                                             <td >
-                                                <small class="text-muted">@item.Views</small>
+                                                @item.Views
                                             </td>
                                             <td >
-                                                <small class="text-muted">@item.PromotedById</small>
+                                                @item.PromotedById
                                             </td>
                                             <td >
-                                                <small class="text-muted">@item.Status</small>
+                                                @item.Status
                                             </td>
                                             <td >
-                                                <small class="text-muted">@item.PostId</small>
+                                                @item.PostId
                                             </td>
                                             <td>
-                                                <div class="item-action dropdown">
+                                                @*<div class="item-action dropdown">
                                                     <a href="#" data-toggle="dropdown" class="text-muted">
                                                         <i data-feather="more-vertical"></i>
                                                     </a>
@@ -47,10 +47,28 @@
                                                             Update
                                                         </a>
                                                        
-                                                        @*<a class="dropdown-item edit" href="../../TGIFMatches/Delete/@item.Id" id="editInstitution">
+                                                        <a class="dropdown-item edit" href="../../Promotions/Delete/@item.Id" id="editInstitution">
                                                             Delete  
-                                                        </a>*@
+                                                        </a>
                                                     </div>
+                                                </div>*@
+                                                <div class="btn-group">
+                                                    <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       
+                                                    </i>
+                   
+                                                    <div class="dropdown-menu shadow animated--grow-in">
+                                                        <a style='margin-right:16px' href="../../Promotions/Details/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-eye text-success"></i> View
+                                                        </a>
+                                                        <a style='margin-right:16px' href="../../Promotions/Edit/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-edit text-warning"></i> Edit
+                                                        </a>
+                                                         <a style='margin-right:16px' href="../../Promotions/Delete/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-trash text-danger"></i> Delete
+                                                        </a>
+                                                    </div>
+
                                                 </div>
                                             </td>
                                         </tr>

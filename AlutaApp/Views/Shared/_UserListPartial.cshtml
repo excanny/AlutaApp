@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AlutaApp.Models.User>
 
-<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+<table id="datatable" class="table table-theme table-bordered table-striped table-row v-middle" data-plugin="dataTable">
         <thead>
             <tr>
                 <th><span class="text-muted">FullName</span></th>
@@ -8,12 +8,11 @@
                 <th><span class="text-muted">Department</span></th>
                 <th><span class="text-muted">Admission Year</span></th>
                 <th><span class="text-muted">Grade Point</span></th>
-                <th><span class="text-muted">Mobile Number</span></th>
-                <th><span class="text-muted">Email</span></th>
+                
                 <th><span class="text-muted">Online</span></th>
                                            
-                                            
-                <th></th>
+                  <th><span class="text-muted">Action</span></th>                          
+                
             </tr>
         </thead>
         <tbody id="search-results">
@@ -21,49 +20,45 @@
 
             <tr class="" data-id="16">
                 <td >
-                    <small class="text-muted">@item.FullName</small>
+                    @item.FullName
                 </td>
                 <td >
                                                 
-                    <small class="text-muted">@item.Institution.Name</small>
+                    @item.Institution.Name
                 </td>
 
                     <td >
-                    <small class="text-muted">@item.Department.Name</small>
+                    @item.Department.Name
                 </td>
                                             
 
                     <td >
-                    <small class="text-muted">@item.YearOfAdmission</small>
+                    @item.YearOfAdmission
                 </td>
                     <td >
-                    <small class="text-muted">@item.GradePoint</small>
+                    @item.GradePoint
                 </td>
-                    <td >
-                    <small class="text-muted">@item.PhoneNumber</small>
-                </td>
-                    <td >
-                    <small class="text-muted">@item.Email</small>
-                </td> 
+                 
                 <td >
-                    <small class="text-muted">@item.Online</small>
+                    @item.Online
                 </td>                       
                                             
                 <td>
-                    <div class="item-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="text-muted">
-                            <i data-feather="more-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
-                            <a class="dropdown-item" href="../../Administrators/ViewAccount/@item.Id" id="viewInstitution">
-                                View
-                            </a>
-                            <a class="dropdown-item edit" href="../../Administrators/EditUser/@item.Id" id="editInstitution">
-                                Update
-                            </a>
+                  
+                    <div class="btn-group">
+                        <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                        
-                            <a class="dropdown-item edit" href="../../Administrators/DeleteUser/@item.Id" id="editInstitution">
-                                Delete  
+                        </i>
+                   
+                        <div class="dropdown-menu shadow animated--grow-in">
+                            <a style='margin-right:16px' href="../../Administrators/ViewAccount/@item.Id" class="dropdown-item">
+                                <i class="fas fa-eye text-success"></i> View
+                            </a>
+                            <a style='margin-right:16px' href="../../Administrators/EditUser/@item.Id" class="dropdown-item">
+                                <i class="fas fa-edit text-warning"></i> Edit
+                            </a>
+                             <a style='margin-right:16px' href="../../Administrators/DeleteUser/@item.Id" class="dropdown-item">
+                                <i class="fas fa-trash text-danger"></i> Delete
                             </a>
                         </div>
                     </div>

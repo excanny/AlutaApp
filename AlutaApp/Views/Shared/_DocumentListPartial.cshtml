@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AlutaApp.Models.Document>
 
-<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+<table id="datatable" class="table table-bordered table-striped table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
                                             <th><span class="text-muted">Document Type</span></th>
@@ -8,9 +8,7 @@
                                             <th><span class="text-muted">Department</span></th>
                                             <th><span class="text-muted">Document Link</span></th>
                                             <th><span class="text-muted">Total Download</span></th>
-                                           
-                                            
-                                            <th></th>
+                                            <th><span class="text-muted">Action</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -18,29 +16,29 @@
 
                                         <tr class="" data-id="16">
                                             <td >
-                                                <small class="text-muted">@item.Category.Name</small>
+                                                @item.Category.Name
                                             </td>
                                             
                                             <td >
-                                                <small class="text-muted">@item.User.FullName</small>
+                                                @item.User.FullName
                                             </td>
                                             
 
                                               <td >
-                                                <small class="text-muted">@item.Department.Name</small>
+                                                @item.Department.Name
                                             </td>
                                             
                                               <td >
-                                                <small class="text-muted">@item.DocumentLink</small>
+                                                @item.DocumentLink
                                             </td>
 
 
                                               <td >
-                                                <small class="text-muted">@item.TotalDownloads</small>
+                                                @item.TotalDownloads
                                             </td>
 
                                             <td>
-                                                <div class="item-action dropdown">
+                                                @*<div class="item-action dropdown">
                                                     <a href="#" data-toggle="dropdown" class="text-muted">
                                                         <i data-feather="more-vertical"></i>
                                                     </a>
@@ -52,6 +50,21 @@
                                                         <div class="dropdown-divider"></div>
                                                         <a class="dropdown-item trash" href="../../Administrators/DeleteDocument/@item.Id" id="deleteInstitution">
                                                             Delete
+                                                        </a>
+                                                    </div>
+                                                </div>*@
+                                                <div class="btn-group">
+                                                    <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       
+                                                    </i>
+                   
+                                                    <div class="dropdown-menu shadow animated--grow-in">
+                                                        <a style='margin-right:16px' href="../../Administrators/ViewDocument/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-eye text-success"></i> View
+                                                        </a>
+                           
+                                                         <a style='margin-right:16px' href="../../Administrators/DeleteDocument/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-trash text-danger"></i> Delete
                                                         </a>
                                                     </div>
                                                 </div>

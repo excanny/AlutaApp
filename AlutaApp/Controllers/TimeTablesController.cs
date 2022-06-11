@@ -27,6 +27,8 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TimeTables.View)]
         public async Task<IActionResult> TimeTables(int? page)
         {
             var alltimetables = await _context.TimeTables.Include(e=>e.User).ToListAsync();
@@ -37,6 +39,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TimeTables
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TimeTables.View)]
         public async Task<IActionResult> Index()
         {
             var firstCount = 2;
@@ -55,20 +59,10 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TimeTables/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TimeTables.View)]
         public async Task<IActionResult> Details(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             if (id == null)
             {
                 return NotFound();
@@ -85,6 +79,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TimeTables/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TimeTables.Create)]
         public IActionResult Create()
         {
             var firstCount = 2;
@@ -106,6 +102,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.TimeTables.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Course,Day,Hour,Minute,RemindInMinutes")] TimeTable timeTable)
         {
@@ -131,6 +129,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TimeTables/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TimeTables.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             var firstCount = 2;
@@ -162,6 +162,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.TimeTables.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Course,Day,Hour,Minute,RemindInMinutes")] TimeTable timeTable)
         {
@@ -206,6 +208,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TimeTables/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TimeTables.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             var firstCount = 2;
@@ -237,6 +241,8 @@ namespace AlutaApp.Controllers
 
         // POST: TimeTables/Delete/5
         [HttpPost, ActionName("Delete")]
+        
+        [Authorize(Policy = Permissions.Permissions.TimeTables.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -1,43 +1,18 @@
-﻿using AlutaApp.Data;
+﻿using Aluta.Constants;
+using AlutaApp.Constants;
+using AlutaApp.Models;
+using AlutaApp.Permissions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace Identity
+namespace AlutaApp
 {
     public static class IdentityMigrationManager
     {
-        public static IHost MigrateAndSeed(this IHost host)
+        public static async Task SeedDatabaseAsync(this WebApplication app)
         {
-            MigrateDatabaseAsync(host).GetAwaiter().GetResult();
-            SeedDatabaseAsync(host).GetAwaiter().GetResult();
-            return host;
-        }
-
-        public static async Task MigrateDatabaseAsync(IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-            await using var identityContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            try
-            {
-                await identityContext.Database.MigrateAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message + ". " + ex.Source);
-                throw;
-            }
-        }
-
-        public static async Task SeedDatabaseAsync(IHost host)
-        {
-            using var scope = host.Services.CreateScope();
+            using var scope = app.Services.CreateScope();
             try
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -51,7 +26,7 @@ namespace Identity
             }
         }
 
-        private static async Task SeedDefaultUserRolesAsync(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, List<Claim> permissions)
+        public static async Task SeedDefaultUserRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, List<Claim> permissions)
         {
             var defaultRoles = DefaultApplicationRoles.GetDefaultRoles();
             if (!await roleManager.Roles.AnyAsync())
@@ -63,14 +38,14 @@ namespace Identity
             }
             if (!await roleManager.RoleExistsAsync(DefaultApplicationRoles.SuperAdmin))
             {
-                await roleManager.CreateAsync(new AppRole(DefaultApplicationRoles.SuperAdmin));
+                await roleManager.CreateAsync(new ApplicationRole(DefaultApplicationRoles.SuperAdmin));
             }
             var defaultUser = DefaultApplicationUsers.GetSuperUser();
             var userByName = await userManager.FindByNameAsync(defaultUser.UserName);
             var userByEmail = await userManager.FindByEmailAsync(defaultUser.Email);
             if (userByName == null && userByEmail == null)
             {
-                await userManager.CreateAsync(defaultUser, "SuperAdmin");
+                await userManager.CreateAsync(defaultUser, "p,W:xcCjF^cR8JRK");
                 foreach (var defaultRole in defaultRoles)
                 {
                     await userManager.AddToRoleAsync(defaultUser, defaultRole.Name);

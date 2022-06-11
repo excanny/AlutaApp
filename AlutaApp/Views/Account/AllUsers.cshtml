@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<ApplicationUser>
+   
  @{  
     ViewData["Title"] = "All Users";  
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";  
@@ -16,7 +17,7 @@
 
    <a class="btn btn-success mb-2" href="../../Account/AddUser">Add User</a>
 <br />
-<table class="table table-striped" id="userTable">
+<table id="datatable" class="table table-theme table-row v-middle table-striped table-bordered" data-plugin="dataTable">
     <thead>
         <tr>
             <th>
@@ -51,15 +52,20 @@
                     </a>
                 </td>
                 <td>
+                   
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Action
-                        </button>
+                        <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       
+                        </i>
                    
                         <div class="dropdown-menu shadow animated--grow-in">
-                            <a style='margin-right:16px' asp-controller="ApplicationRole" asp-action="Update" asp-route-userId="@user.Id" class="dropdown-item">
-                                <i class="fas fa-wrench"></i> Manage Roles
+                           <a style='margin-right:16px' asp-action="ManageRoles" asp-route-userId="@user.Id" class="dropdown-item">
+                                <i class="fas fa-wrench text-warning"></i> Manage Roles
                             </a>
+                             <a style='margin-right:16px' asp-action="ManagePermissions" asp-route-userId="@user.Id" class="dropdown-item">
+                                <i class="fas fa-wrench text-warning"></i> Manage Permissions
+                            </a>
+                                                        
                         </div>
                     </div>
                 </td>

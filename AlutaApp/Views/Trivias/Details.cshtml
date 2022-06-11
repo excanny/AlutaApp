@@ -12,8 +12,8 @@
         <h4>Question</h4>
         @{
             var triviaQuestion = new TriviaQuestion();
-            var question = Model.Questions.Where(e => e.TriviaId == Model.Id).FirstOrDefault();
-            await Html.RenderPartialAsync("_TriviaQuestionPartial", question);
+            //var question = Model.Questions.Where(e => e.TriviaId == Model.Id).FirstOrDefault();
+            //await Html.RenderPartialAsync("_TriviaQuestionPartial", question);
        }
     </div>
     <div>
@@ -23,9 +23,9 @@
                 int pageSize = 10;
                 int pageIndex = 1;
                 var triviaAttempts = new TriviaAttempt();
-                var attempts = Model.Attempts.Where(e => e.TriviaId == Model.Id).OrderByDescending(e=>e.TotalScore).ToList();
-                var attempss = await attempts.ToPagedListAsync(pageIndex, pageSize);
-                await Html.RenderPartialAsync("_TriviaAttemptsPartial", attempss);
+                //var attempts = Model.Where(e => e.TriviaId == Model.Id).OrderByDescending(e=>e.TotalScore).ToList();
+                
+                //await Html.RenderPartialAsync("_TriviaAttemptsPartial", attempss);
        }
     </div>
 
@@ -36,9 +36,9 @@
            int pgSize = 10;
            int pgIndex = 1;
            var triviaResults = new TriviaResult();
-           var resultss = Model.UserResults.Where(e => e.TriviaId == Model.Id).OrderBy(s=>s.TimeTakenInSeconds).ToList();
-           var res = await resultss.ToPagedListAsync(pgIndex, pgSize);
-           await Html.RenderPartialAsync("_TriviaResultPartial", res);
+           //var resultss = Model.UserResults.Where(e => e.TriviaId == Model.Id).OrderBy(s=>s.TimeTakenInSeconds).ToList();
+           //var res = await resultss.ToPagedListAsync(pgIndex, pgSize);
+           //await Html.RenderPartialAsync("_TriviaResultPartial", res);
        }
     </div>
 

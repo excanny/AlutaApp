@@ -1,69 +1,48 @@
-﻿
+﻿@model IEnumerable<AlutaApp.Models.Institution>
+<br />
+<h4>Institutions</h4>
+ 
+    <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap">
+        <thead>
+            <tr>
+               <tr>
+                    <th><span class="text-muted">Name</span></th>
+                    <th><span class="text-muted">Abbreviation</span></th>
+                    <th><span class="text-muted text-center">Actions</span></th>
+                </tr>
+            </tr>
+        </thead>
+        <tbody id="search-results">
+            @foreach (var item in Model) {
 
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
-@using X.PagedList.Web.Common;
-@model X.PagedList.IPagedList<AlutaApp.Models.Institution>
-
-
-<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th><span class="text-muted">Name</span></th>
-                                            <th><span class="text-muted">Abbreviation</span></th>
-                                            
-                                            
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="search-results">
-                                        @foreach (var item in Model) {
-
-                                        <tr class="" data-id="16">
-                                            <td >
-                                                <small class="text-muted">@item.Name</small>
-                                            </td>
-                                            
-                                            <td class="flex">
-                                                <small class="text-muted">@item.Abbreviation</small>
-                                            </td>
-                                            
-                                            <td>
-                                                <div class="item-action dropdown">
-                                                    <a href="#" data-toggle="dropdown" class="text-muted">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
-                                                        <a class="dropdown-item" href="../../Administrators/ViewDetails/@item.Id" id="viewInstitution">
-                                                            View
-                                                        </a>
-                                                       
-                                                        <a class="dropdown-item edit" href="../../Administrators/Edit/@item.Id" id="editInstitution">
-                                                            Update
-                                                        </a>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="dropdown-item trash" href="../../Administrators/DeleteInstitution/@item.Id" id="deleteInstitution">
-                                                            Delete
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                   }
-                                    </tbody>
-
-                                </table>
-                                <div>
-                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-            of @Model.PageCount   @Html.PagedListPager(Model, page => Url.Action("Institutions", new { page = page }),
-            new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] { "page-item"},
-                        PageClasses = new string[] {"page-link"}
-                    } )
+           <tr class="" data-id="16">
+                    <td style="min-width:30px;text-align:center">@item.Name</td>
+                    <td>@item.Abbreviation</td>
+                
+                    <td width="10%">
                     
-               
-                                </div>
+                    <div class="btn-group">
+                        <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       
+                        </i>
+                   
+                        <div class="dropdown-menu shadow animated--grow-in">
+                            <a style='margin-right:16px' href="../../Administrators/ViewDetails/@item.Id" class="dropdown-item">
+                                <i class="fas fa-eye text-success"></i> View
+                            </a>
+                            <a style='margin-right:16px' href="../../Administrators/Edit/@item.Id" class="dropdown-item">
+                                <i class="fas fa-edit text-warning"></i> Edit
+                            </a>
+                             <a style='margin-right:16px' href="../../Administrators/DeleteInstitution/@item.Id" class="dropdown-item">
+                                <i class="fas fa-trash text-danger"></i> Delete
+                            </a>
+                        </div>
 
+                    </div>
+                    </td>
+                </tr>
+        }
+        </tbody>
 
-                      
+    </table>
+

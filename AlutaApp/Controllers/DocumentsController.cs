@@ -22,6 +22,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Documents
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Documents.View)]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Documents.Include(d => d.Category).Include(d => d.Department).Include(d => d.User);
@@ -29,6 +31,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Documents/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Documents.View)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,6 +54,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Documents/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Documents.Create)]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.DocumentCategories, "Id", "Id");
@@ -62,6 +68,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Documents.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,DepartmentId,CategoryId,Title,DocumentLink,DocumentThumbnailLink,TotalDownloads,TimeCreated,LastUpdated")] Document document)
         {
@@ -78,6 +86,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Documents/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Documents.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -100,6 +110,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.Documents.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,DepartmentId,CategoryId,Title,DocumentLink,DocumentThumbnailLink,TotalDownloads,TimeCreated,LastUpdated")] Document document)
         {
@@ -135,6 +147,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Documents/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Documents.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -157,6 +171,8 @@ namespace AlutaApp.Controllers
 
         // POST: Documents/Delete/5
         [HttpPost, ActionName("Delete")]
+       
+        [Authorize(Policy = Permissions.Permissions.Documents.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

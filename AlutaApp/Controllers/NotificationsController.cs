@@ -46,6 +46,28 @@ namespace AlutaApp.Controllers
             return View();
         }
 
+        // GET: Notifications/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Notifications.View)]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var notification = await _context.Notifications
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (notification == null)
+            {
+                return NotFound();
+            }
+
+            return View(notification);
+        }
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Notifications.View)]
         public async Task<IActionResult> ViewNotification(int id)
         {
             ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
@@ -95,25 +117,10 @@ namespace AlutaApp.Controllers
            
         }
 
-        // GET: Notifications/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var notification = await _context.Notifications
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (notification == null)
-            {
-                return NotFound();
-            }
-
-            return View(notification);
-        }
-
+       
         // GET: Notifications/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Notifications.Create)]
         public async Task<IActionResult> Create()
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -126,6 +133,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Notifications.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Content,Category,CategoryId,SecondPartyId,ThirdPartyId,Viewed,Clicked,TimeCreated,Active")] Notification notification)
         {
@@ -139,6 +148,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Notifications/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Notifications.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -158,6 +169,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.Notifications.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Content,Category,CategoryId,SecondPartyId,ThirdPartyId,Viewed,Clicked,TimeCreated,Active")] Notification notification)
         {
@@ -190,6 +203,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Notifications/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Notifications.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -209,6 +224,7 @@ namespace AlutaApp.Controllers
 
         // POST: Notifications/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = Permissions.Permissions.Notifications.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

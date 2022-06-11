@@ -28,7 +28,8 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
-
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TGIFs.View)]
         public async Task<IActionResult> TGIFs(int? page)
         {
      
@@ -40,6 +41,8 @@ namespace AlutaApp.Controllers
             return View(alltgifs);
         }
         // GET: TGIFMatches
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TGIFs.View)]
         public async Task<IActionResult> Index()
         {
             
@@ -60,6 +63,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TGIFMatches/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TGIFs.View)]
         public async Task<IActionResult> Details(int? id)
         {
             
@@ -93,6 +98,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TGIFMatches/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TGIFs.Create)]
         public IActionResult Create()
         {
             
@@ -117,6 +124,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.TGIFs.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,MaleId,FemaleId,MaleStatus,FemaleStatus,DateOfExpiry")] TGIFMatch tGIFMatch)
         {
@@ -146,21 +155,11 @@ namespace AlutaApp.Controllers
         }
 
         // GET: TGIFMatches/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TGIFs.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
-            
-           var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+          
             if (id == null)
             {
                 return NotFound();
@@ -180,22 +179,12 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.TGIFs.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,MaleId,FemaleId,MaleStatus,FemaleStatus,DateMatched,DateOfExpiry")] TGIFMatch tGIFMatch)
         {
             
-           var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-               //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             if (id != tGIFMatch.Id)
             {
                 return NotFound();
@@ -223,10 +212,14 @@ namespace AlutaApp.Controllers
             }
             ViewData["FemaleId"] = new SelectList(_context.Users, "Id", "FullName", tGIFMatch.FemaleId);
             ViewData["MaleId"] = new SelectList(_context.Users, "Id", "FullName", tGIFMatch.MaleId);
-            return View(tGIFMatch);
+            //return View(tGIFMatch);
+
+            return RedirectToAction("Index");
         }
 
         // GET: TGIFMatches/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.TGIFs.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             
@@ -261,6 +254,8 @@ namespace AlutaApp.Controllers
 
         // POST: TGIFMatches/Delete/5
         [HttpPost, ActionName("Delete")]
+       
+        [Authorize(Policy = Permissions.Permissions.TGIFs.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

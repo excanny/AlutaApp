@@ -7,19 +7,13 @@
 
 
 
-<div class="col-sm-12">
-    <div class="card">
-        <div class="card-header">
-             <h3> Notification</h3>
-        </div>
 
-        <div class="card-body">
-            <h1>Index</h1>
-
+             <h4> Notification</h4>
+        
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="datatable" class="table table-theme table-row v-middle table-striped table-bordered" data-plugin="dataTable">
     <thead>
         <tr>
             <th>
@@ -49,7 +43,7 @@
             <th>
                 Active
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -83,15 +77,24 @@
                 @Html.DisplayFor(modelItem => item.Active)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                <div class="btn-group">
+                        <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       
+                        </i>
+                   
+                        <div class="dropdown-menu shadow animated--grow-in">
+                            <a style='margin-right:16px' href="../../Notifications/Details/@item.Id" class="dropdown-item">
+                                <i class="fas fa-eye text-success"></i> View
+                            </a>
+                          
+                        </div>
+                    </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
-        </div>
         
-    </div>                               
-</div>

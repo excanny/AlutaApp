@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<AlutaApp.Models.Points2Earn>
 
-<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+<table id="datatable" class="table table-bordered table-striped dt-responsive nowrap">
         <thead>
             <tr>
                 <th><span class="text-muted">Point</span></th>
                 <th><span class="text-muted">Category</span></th>
                                            
                                             
-                <th></th>
+                <th width="10%"><span class="text-muted">Actions</span></th>
             </tr>
         </thead>
         <tbody id="search-results">
@@ -15,29 +15,32 @@
 
             <tr class="" data-id="16">
                 <td >
-                    <small class="text-muted">@item.Points</small>
+                   @item.Points
                                                 
                 </td>
                                             
                 <td>
-                    <small class="text-muted">@item.Category</small>
+                    @item.Category
                 </td>
+
                                             
                 <td>
-                    <div class="item-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="text-muted">
-                            <i data-feather="more-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
-                            <a class="dropdown-item" href="../../Administrators/ViewPoint/@item.Id" id="viewInstitution">
-                                View
-                            </a>
+                 
+                     <div class="btn-group">
+                        <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                        
-                            <a class="dropdown-item edit" href="../../Administrators/UpdatePoint/@item.Id" id="editInstitution">
-                                Update
+                        </i>
+                   
+                        <div class="dropdown-menu shadow animated--grow-in">
+                            <a style='margin-right:16px' href="../../Administrators/ViewPoint/@item.Id" class="dropdown-item">
+                                <i class="fas fa-eye text-success"></i> View
                             </a>
-                                                        
+                            <a style='margin-right:16px' href="../../Administrators/UpdatePoint/@item.Id" class="dropdown-item">
+                                <i class="fas fa-edit text-warning"></i> Edit
+                            </a>
+                             
                         </div>
+
                     </div>
                 </td>
             </tr>

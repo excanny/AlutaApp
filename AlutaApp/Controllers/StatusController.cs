@@ -28,7 +28,8 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
-
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Status.View)]
         public async Task<IActionResult> Statuses(int? page)
         {
             var firstCount = 2;
@@ -58,29 +59,42 @@ namespace AlutaApp.Controllers
             return View(promotions);
         }
 
+        // GET: Status/Details/5
         [HttpGet]
-        public async Task<IActionResult> StatusesView(int? id)
+        [Authorize(Policy = Permissions.Permissions.Status.View)]
+        public async Task<IActionResult> Details(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             if (id == null)
             {
                 return NotFound();
             }
 
-            var status = await _context.StatusViews
+            var status = await _context.Statuses
                 .Include(s => s.User)
-                .Include(s => s.StatusId)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (status == null)
+            {
+                return NotFound();
+            }
+            //ViewBag.TotalViews = _context.StatusViews.Where(d => d.StatusId == id).ToList();
+            return View(status);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> StatusesView(int? id)
+        {
+            
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //var status = await _context.StatusViews
+            //    .Include(s => s.User)
+            //    .Include(s => s.StatusId)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var status = await _context.Statuses
+                
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (status == null)
             {
@@ -91,52 +105,21 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Status
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Status.View)]
         public async Task<IActionResult> Index()
         {
             var allStatuses = await _context.Statuses.ToListAsync();
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
+            
 
             return View(allStatuses);
         }
 
-        // GET: Status/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var status = await _context.StatusViews
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (status == null)
-            {
-                return NotFound();
-            }
-            ViewBag.TotalViews = _context.StatusViews.Where(d=>d.StatusId == id).ToList();
-            return View(status);
-        }
-
         // GET: Status/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Status.Create)]
         public async Task<IActionResult> Create()
         {
-            var currentUser =  await _userManager.GetUserAsync(HttpContext.User);
-            var role =  await _userManager.GetRolesAsync(currentUser);
-
             return View();
 
         }
@@ -145,21 +128,11 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.Status.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,ImageLink,Text,TextColorCode,TimeCreated")] Status status)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+           
             if (ModelState.IsValid)
             {
                 _context.Add(status);
@@ -171,6 +144,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Status/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Status.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             var firstCount = 2;
@@ -203,6 +178,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Status.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ImageLink,Text,TextColorCode,TimeCreated")] Status status)
         {
@@ -248,6 +225,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Status/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Status.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             var firstCount = 2;
@@ -280,25 +259,15 @@ namespace AlutaApp.Controllers
 
         // POST: Status/Delete/5
         [HttpPost, ActionName("Delete")]
+        
+        [Authorize(Policy = Permissions.Permissions.Status.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             var status = await _context.Statuses.FindAsync(id);
             _context.Statuses.Remove(status);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Statuses));
+            return RedirectToAction(nameof(Index));
         }
 
         private bool StatusExists(int id)

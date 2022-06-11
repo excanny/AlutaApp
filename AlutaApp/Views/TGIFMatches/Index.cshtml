@@ -10,7 +10,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="datatable" class="table table-bordered table-striped table-row v-middle" data-plugin="dataTable">
     <thead>
         <tr>
             <th>
@@ -56,9 +56,26 @@
                 @Html.DisplayFor(modelItem => item.DateOfExpiry)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+               @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                <div class="btn-group">
+                                                    <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                       
+                                                    </i>
+                   
+                                                    <div class="dropdown-menu shadow animated--grow-in">
+                                                        <a style='margin-right:16px' href="../../TGIFMatches/Details/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-eye text-success"></i> View
+                                                        </a>
+                                                        <a style='margin-right:16px' href="../../TGIFMatches/Edit/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-edit text-warning"></i> Edit
+                                                        </a>
+                                                         <a style='margin-right:16px' href="../../TGIFMatches/Delete/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-trash text-danger"></i> Delete
+                                                        </a>
+                                                    </div>
+                                                </div>
             </td>
         </tr>
 }

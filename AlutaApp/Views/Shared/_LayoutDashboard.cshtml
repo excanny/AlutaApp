@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -15,16 +16,29 @@
         <title>Aluta - Dashboard</title>
         <meta content="Aluta" name="description" />
         <meta content="Aluta" name="author" />
-        <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+       @* <link rel="shortcut icon" href="~/assets/images/favicon.ico">*@
 
 
         <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="~/assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
         <link href="~/assets/css/icons.css" rel="stylesheet" type="text/css">
         <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
+        <!-- DataTables -->
+        <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+        <!-- Responsive datatable examples -->
+        <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" type="text/css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
          <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+         <style>
+             .cursor{
+                 cursor:pointer;
+             }
+         </style>
     </head>
 
     <body>
@@ -37,7 +51,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="index.html" class="logo">
+                    <a href="../../Administrators/Dashboard" class="logo">
                         <span class="logo-light">
                             <i class="mdi mdi-camera-control"></i> Aluta
                         </span>
@@ -55,12 +69,12 @@
                             <div class="dropdown notification-list nav-pro-img">
                                 <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                   
-                                    Welcome, Name <i class="mdi mdi-account-circle mdi-36px"></i>
+                                    Welcome,  @UserManager.GetUserName(User) <i class="mdi mdi-account-circle mdi-36px"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                     <!-- item-->
                                
-                                    <a class="dropdown-item text-danger" href="../../ApplicationRole/Logout"><i class="mdi mdi-power text-danger"></i> Logout</a>
+                                    <a class="dropdown-item text-danger" href="../../Account/Logout"><i class="mdi mdi-power text-danger"></i> Logout</a>
                                 </div>
                             </div>
                         </li>
@@ -73,14 +87,14 @@
                                 <i class="mdi mdi-menu"></i>
                             </button>
                         </li>
-                        <li class="d-none d-md-inline-block">
+                       @* <li class="d-none d-md-inline-block">
                             <form role="search" class="app-search">
                                 <div class="form-group mb-0">
                                     <input type="text" class="form-control" placeholder="Search..">
                                     <button type="submit"><i class="fa fa-search"></i></button>
                                 </div>
                             </form>
-                        </li>
+                        </li>*@
                     </ul>
 
                 </nav>
@@ -105,7 +119,7 @@
                             
                             <li>
                                 <a href="../../Administrators/Institutions" class="waves-effect">
-                                    <i class="icon-mail-open"></i>
+                                    <i class="icon-website-2"></i>
                                     <span> Institutions 
                                        
                                         </span></a>
@@ -113,37 +127,35 @@
                             </li>
 
                             <li>
-                                <a href="../../Administrators/Departments" class="waves-effect"><i class="icon-calendar"></i><span> Departments </span></a>
+                                <a href="../../Administrators/Departments" class="waves-effect"><i class="icon-squares"></i><span> Departments </span></a>
                             </li>
 
                               <li>
-                                <a href="../../Administrators/Points" class="waves-effect"><i class="icon-calendar"></i><span> Points </span></a>
+                                <a href="../../Administrators/Points" class="waves-effect"><i class="ti-target"></i><span> Points </span></a>
                             </li>
+                            
                              <li>
-                                <a href="../../Administrators/UsersAccount" class="waves-effect"><i class="icon-calendar"></i><span> Users </span></a>
-                            </li>
-                             <li>
-                                <a href="../../Administrators/Posts" class="waves-effect"><i class="icon-calendar"></i><span> Posts </span></a>
+                                <a href="../../Administrators/Posts" class="waves-effect"><i class="ti-comments"></i><span> Posts </span></a>
                             </li>
 
                              <li>
-                                <a href="../../Administrators/Documents" class="waves-effect"><i class="icon-calendar"></i><span> Documents </span></a>
+                                <a href="../../Administrators/Documents" class="waves-effect"><i class="far fa-folder-open"></i><span> Documents </span></a>
                             </li>
 
                              <li>
-                                <a href="../../Trivias/Trivias" class="waves-effect"><i class="icon-calendar"></i><span> Trivias </span></a>
+                                <a href="../../Trivias/Trivias" class="waves-effect"><i class="ti-dribbble"></i><span> Trivias </span></a>
                             </li>
 
                              <li>
-                                <a href="../../TGIFMatches/TGIFs" class="waves-effect"><i class="icon-calendar"></i><span> TGIFs </span></a>
+                                <a href="../../TGIFMatches/TGIFs" class="waves-effect"><i class="ti-gift"></i><span> TGIFs </span></a>
                             </li>
 
                              <li>
-                                <a href="../../TimeTables/TimeTables" class="waves-effect"><i class="icon-calendar"></i><span> TimeTables </span></a>
+                                <a href="../../TimeTables/TimeTables" class="waves-effect"><i class="mdi mdi-calendar-clock"></i><span> TimeTables </span></a>
                             </li>
 
                              <li>
-                                <a href="../../CGPAs/CGPAs" class="waves-effect"><i class="icon-calendar"></i><span> CGPAs </span></a>
+                                <a href="../../CGPAs/CGPAs" class="waves-effect"><i class="mdi mdi-calculator"></i><span> CGPAs </span></a>
                             </li>
 
                              <li>
@@ -151,44 +163,53 @@
                             </li>
 
                              <li>
-                                <a href="../../Status/Index" class="waves-effect"><i class="icon-calendar"></i><span> Status </span></a>
+                                <a href="../../Status/Index" class="waves-effect"><i class="ti-loop"></i><span> Status </span></a>
+                            </li>
+
+           
+
+                             <li>
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-group"></i><span> Users <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+                                <ul class="submenu">
+                                 <li>
+                                    <a href="../../Administrators/UsersAccount" class="waves-effect"><i class="fas fa-users"></i><span> All Users </span></a>
+                                </li>
+                                    <li><a href="../../Users/ActiveUsers" class="waves-effect"><i class="icon-calendar"></i><span> Active Users </span></a></li>
+                                    <li>
+                                        <a href="../../Users/InActiveUsers" class="waves-effect"><i class="icon-calendar"></i><span> InActive Users </span></a>
+                                    </li>
+                                
+                                </ul>
+                              </li>
+
+                             <li>
+                                <a href="../../Notifications/Index" class="waves-effect"><i class="ti-alert"></i><span> Notifications </span></a>
                             </li>
 
                              <li>
-                                <a href="../../Users/ActiveUsers" class="waves-effect"><i class="icon-calendar"></i><span> Active Users </span></a>
-                            </li>
-
-                             <li>
-                                <a href="../../Users/InActiveUsers" class="waves-effect"><i class="icon-calendar"></i><span> InActive Users </span></a>
-                            </li>
-
-                             <li>
-                                <a href="../../Notifications/Index" class="waves-effect"><i class="icon-calendar"></i><span> Notifications </span></a>
-                            </li>
-
-                             <li>
-                                <a href="../../Promotions/Promotions" class="waves-effect"><i class="icon-calendar"></i><span> Promotions </span></a>
+                                <a href="../../Promotions/Promotions" class="waves-effect"><i class="icon-tv-monitor"></i><span> Promotions </span></a>
                             </li>
 
                             <li>
-                                <a href="../../BannerAds/Index" class="waves-effect"><i class="icon-calendar"></i><span> BannerAds </span></a>
+                                <a href="../../BannerAds/Index" class="waves-effect"><i class="icon-pricetag"></i><span> BannerAds </span></a>
                             </li>
 
                             <li>
-                                <a href="../../ChatGroups/Index" class="waves-effect"><i class="icon-calendar"></i><span> Chat Groups </span></a>
+                                <a href="../../ChatGroups/Index" class="waves-effect"><i class="icon-dialogue-text"></i><span> Chat Groups </span></a>
                             </li>
 
                             <li>
-                                <a href="../../Messages/Messages" class="waves-effect"><i class="icon-calendar"></i><span> Messages </span></a>
+                                <a href="../../Messages/Messages" class="waves-effect"><i class="icon-mail"></i><span> Messages </span></a>
                             </li>
+
+                  
                           
                                 <li>
-                                    <a href="javascript:void(0);" class="waves-effect"><i class="icon-paper-sheet"></i><span> User Management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+                                    <a href="javascript:void(0);" class="waves-effect"><i class="ti-world"></i><span> Authorization <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                                     <ul class="submenu">
                                 
-                                        <li><a href="../../ApplicationRole/AllUsers">Manage Users</a></li>
-
-                                        <li><a href="../../ApplicationRole/AllRoles">Manage Roles</a></li>
+                                        <li><a href="../../Account/AllUsers">Manage Users</a></li>
+                                        <li><a href="../../ApplicationRole/Index">Manage Roles</a></li>
                                 
                                     </ul>
                                 </li>
@@ -241,6 +262,9 @@
 
         <!-- jQuery  -->
         <script src="~/assets/js/jquery.min.js"></script>
+     
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js"></script>
         <script src="~/assets/js/bootstrap.bundle.min.js"></script>
         <script src="~/assets/js/metismenu.min.js"></script>
         <script src="~/assets/js/jquery.slimscroll.js"></script>
@@ -248,10 +272,32 @@
 
         <!-- chartjs js -->
         <script src="~/plugins/chartjs/chart.min.js"></script>
-        <script src="~/assets/pages/chartjs.init.js"></script>     
+        <script src="~/assets/pages/chartjs.init.js"></script>  
+        
+        <!-- Required datatable js -->
+        <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+        <!-- Buttons examples -->
+        <script src="~/plugins/datatables/dataTables.buttons.min.js"></script>
+        <script src="~/plugins/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="~/plugins/datatables/jszip.min.js"></script>
+        <script src="~/plugins/datatables/pdfmake.min.js"></script>
+        <script src="~/plugins/datatables/vfs_fonts.js"></script>
+        <script src="~/plugins/datatables/buttons.html5.min.js"></script>
+        <script src="~/plugins/datatables/buttons.print.min.js"></script>
+        <script src="~/plugins/datatables/buttons.colVis.min.js"></script>
+        <!-- Responsive examples -->
+        <script src="~/plugins/datatables/dataTables.responsive.min.js"></script>
+        <script src="~/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+        <!-- Datatable init js -->
+        <script src="~/assets/pages/datatables.init.js"></script>   
 
         <!-- App js -->
         <script src="~/assets/js/app.js"></script>
+
+        <!-- App js -->
+      @*  <script src="~/assets/js/app.js"></script>*@
 
 
 
@@ -489,7 +535,9 @@
 
         </script>
 
- 
+
+        @await RenderSectionAsync("Scripts", required: false)
+
         
     </body>
 

@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<AlutaApp.Models.Department>
 
 
-    <table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+    <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap">
         <thead>
             <tr>
                 <th><span class="text-muted">Name</span></th>
                                             
-                <th></th>
+                <th><span class="text-muted">Action</span></th>
             </tr>
         </thead>
         <tbody id="search-results">
@@ -14,25 +14,23 @@
 
             <tr class="" data-id="16">
                 <td >
-                    <small class="text-muted">@item.Name</small>
-                </td>
+                    @item.Name
                                             
-                <td>
-                    <div class="item-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="text-muted">
-                            <i data-feather="more-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
-                            <a class="dropdown-item" href="../../Administrators/ViewDepartment/@item.Id" id="viewInstitution">
-                                View
-                            </a>
+                <td width="10%">
+                     <div class="btn-group">
+                        <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                        
-                            <a class="dropdown-item edit" href="../../Administrators/EditDepartment/@item.Id" id="editInstitution">
-                                Update
+                        </i>
+                   
+                        <div class="dropdown-menu shadow animated--grow-in">
+                            <a style='margin-right:16px' href="../../Administrators/ViewDepartment/@item.Id" class="dropdown-item">
+                                <i class="fas fa-eye text-success"></i> View
                             </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item trash" href="../../Administrators/DeleteDepartment/@item.Id" id="deleteInstitution">
-                                Delete
+                            <a style='margin-right:16px' href="../../Administrators/EditDepartment/@item.Id" class="dropdown-item">
+                                <i class="fas fa-edit text-warning"></i> Edit
+                            </a>
+                             <a style='margin-right:16px' href="../../Administrators/DeleteDepartment/@item.Id" class="dropdown-item">
+                                <i class="fas fa-trash text-danger"></i> Delete
                             </a>
                         </div>
                     </div>
@@ -42,9 +40,7 @@
         </tbody>
 
     </table>
-    <div>
-               
-</div>
+    
 
 
                               

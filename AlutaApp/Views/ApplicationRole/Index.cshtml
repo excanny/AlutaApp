@@ -1,74 +1,87 @@
-﻿@model IEnumerable<ApplicationRoleListViewModel>  
-@using AlutaApp.Models  
-<div class="top-buffer"></div>  
-<div class="panel panel-primary">  
-    <div class="panel-heading panel-head">Application Roles</div>  
-    <div class="panel-body">  
-        <div class="btn-group">  
-            <a id="createRoleModal" data-toggle="modal" asp-action="AddEditApplicationRole" data-target="#modal-action-application-role" class="btn btn-primary">  
-                <i class="glyphicon glyphicon-plus"></i>  Add Role  
-            </a>  
-        </div>  
-        <div class="top-buffer"></div>  
-        <table class="table table-bordered table-striped table-condensed">  
-            <thead>  
-                <tr>  
-                    <th>Name</th>  
-                    <th>Description</th>  
-                    <th>Users</th>                      
-                    <th>Action</th>  
-                </tr>  
-            </thead>  
-            <tbody>  
-                @foreach (var item in Model)  
-                {  
-                    <tr>  
-                        <td>@item.RoleName</td>  
-                        <td>@item.Description</td>    
-                        <td>@item.NumberOfUsers</td>                                                
-                        <td>                              
-                            <a id="addEditApplicationRoleModal" data-toggle="modal" asp-action="AddEditApplicationRole" asp-route-id="@item.Id" data-target="#modal-action-application-role"  
-                               class="btn btn-info">  
-                                <i class="glyphicon glyphicon-pencil"></i>  Edit  
-                            </a>  
-                            @if (item.NumberOfUsers == 0)  
-                            {  
-                            <a id="deleteApplicationRoleModal" data-toggle="modal" asp-action="DeleteApplicationRole" asp-route-id="@item.Id" data-target="#modal-action-application-role" class="btn btn-danger">  
-                                <i class="glyphicon glyphicon-trash"></i>  Delete  
-                            </a>  
-                            }  
-                        </td>  
-                    </tr>  
-                }  
-            </tbody>  
-        </table>  
-    </div>  
-</div>  
-  
-@*@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-application-role", AreaLabeledId = "modal-action-application-role-label", Size = ModalSize.Medium })  *@
-  
-@section scripts  
-{  
-    <script>
-        
-    (function ($) {  
-    function ApplicationRole() {  
-        var $this = this;  
-  
-        function initilizeModel() {  
-            $("#modal-action-application-role").on('loaded.bs.modal', function (e) {  
-  
-            }).on('hidden.bs.modal', function (e) {  
-                $(this).removeData('bs.modal');  
-            });  
-        }  
-        $this.init = function () {  
-            initilizeModel();  
-        }  
-    }  
-    $(function () {  
-        var self = new ApplicationRole();  
-        self.init();  
-    })  
-}(jQuery))   </script>  
-}   
+﻿@model AlutaApp.Helpers.PaginatedList<AlutaApp.ViewModels.RoleViewModel>
+
+@{
+    ViewData["Title"] = "View Roles";
+   Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Roles</h3>
+        <a asp-action="Add" class="float-right btn btn-success">Add New </a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered dt-responsive nowrap">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            <a class="text-primary" asp-action="ManageRolePermissions" asp-route-roleId="@item.Id">Manage Permissions</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer clearfix">
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <div class="row">
+            <div class="col">
+                <ul class="pagination float-right">
+                    <li>
+                        <a asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           class="btn btn-default @prevDisabled">
+                            Previous
+                        </a>
+                    </li>
+                    @for (var i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")" style="z-index: 0;">
+                            <a asp-action="Index"
+                               asp-route-pageNumber="@i"
+                               class="page-link">@i</a>
+                        </li>
+                    }
+                    <li>
+                        <a asp-action="Index"
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           class="btn btn-default @nextDisabled">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

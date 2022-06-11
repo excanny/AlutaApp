@@ -31,13 +31,7 @@ namespace AlutaApp.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IPAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -1104,7 +1098,7 @@ namespace AlutaApp.Migrations
                     b.ToTable("Promotions");
                 });
 
-            modelBuilder.Entity("AlutaApp.Models.PropmotionPayments", b =>
+            modelBuilder.Entity("AlutaApp.Models.PromotionPayments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1136,7 +1130,7 @@ namespace AlutaApp.Migrations
 
                     b.HasIndex("PromotionId");
 
-                    b.ToTable("PropmotionPayments");
+                    b.ToTable("PromotionPayments");
                 });
 
             modelBuilder.Entity("AlutaApp.Models.ReportedComment", b =>
@@ -1840,12 +1834,10 @@ namespace AlutaApp.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -1882,12 +1874,10 @@ namespace AlutaApp.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -2184,7 +2174,7 @@ namespace AlutaApp.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("AlutaApp.Models.PropmotionPayments", b =>
+            modelBuilder.Entity("AlutaApp.Models.PromotionPayments", b =>
                 {
                     b.HasOne("AlutaApp.Models.Promotion", "Promotion")
                         .WithMany()

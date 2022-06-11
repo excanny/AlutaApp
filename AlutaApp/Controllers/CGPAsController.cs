@@ -23,54 +23,39 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.View)]
         public async Task<IActionResult> CGPAs(int? page)
         {
            
             var allcgpas = await _context.CGPAs.ToListAsync();
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
+            
+            
 
             return View(allcgpas);
         }
         // GET: CGPAs
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.View)]
         public async Task<IActionResult> Index()
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             return View(await _context.CGPAs.ToListAsync());
         }
 
         // GET: CGPAs/Details/5
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.View)]
         public async Task<IActionResult> Details(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cGPA = await _context.CGPAs.Include(D=>D.UserId)
+            var cGPA = await _context.CGPAs
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cGPA == null)
             {
@@ -81,6 +66,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: CGPAs/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.Create)]
         public IActionResult Create()
         {
             var firstCount = 2;
@@ -102,6 +89,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Level,Semester,CourseCode,Grade,GradePoint,CreditUnit")] CGPA cGPA)
         {
@@ -127,6 +116,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: CGPAs/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             var firstCount = 2;
@@ -158,6 +149,7 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Level,Semester,CourseCode,Grade,GradePoint,CreditUnit")] CGPA cGPA)
         {
@@ -202,6 +194,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: CGPAs/Delete/5
+        [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             var firstCount = 2;
@@ -233,6 +227,7 @@ namespace AlutaApp.Controllers
 
         // POST: CGPAs/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = Permissions.Permissions.CPGAs.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

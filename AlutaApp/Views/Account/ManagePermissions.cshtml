@@ -1,0 +1,102 @@
+﻿@model AlutaApp.ViewModels.ManageUserPermissionsViewModel
+
+@{
+    ViewData["Title"] = "User Permissions";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml"; 
+}
+
+
+            <h4 class="card-title">Manage Permissions for User: <b>@Model.UserName</b></h4>
+  
+        <table id="datatable" class="table table-theme table-row table-bordered table-striped v-middle" data-plugin="dataTable">
+            <thead>
+                <tr>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Permission Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.ManagePermissionsViewModel.Count(); i++)
+                {
+                    <tr>
+                        <td class="text-center" id="claimType@(i)">
+                            @Model.ManagePermissionsViewModel[i].Type
+                        </td>
+                        <td class="text-center" id="claimValue@(i)">
+                            @Model.ManagePermissionsViewModel[i].Value
+                        </td>
+                        <td>
+                            <div class="form-check m-1">
+                                <input asp-for="@Model.ManagePermissionsViewModel[i].Checked" class="form-check-input" id="checked@(i)" onchange="permissionChanged(@i)" />
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+   
+
+@section Scripts
+{
+
+    <script>
+        var userId = '@Model.UserId';
+        var userName = '@Model.UserName';
+        function permissionChanged(i) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/Account/ManageClaims",
+                    data: {
+                        UserId: userId,
+                        UserName: userName,
+                        Type: document.getElementById("claimType" + i).innerHTML.trim(),
+                        Value: document.getElementById("claimValue" + i).innerHTML.trim(),
+                        Checked: document.getElementById("checked" + i).checked
+                    },
+                    success: function (response) {
+                        if (response != null) {
+                            if (response.succeeded === true) {
+                                Swal.fire({
+                                    title: 'Succeeded',
+                                    text: response.message,
+                                    icon: 'success'
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Failed',
+                                    text: response.message,
+                                    icon: 'error'
+                                });
+                                document.getElementById("checked" + i).checked = !document.getElementById("checked" + i).checked;
+                            }
+                        } else {
+                            Swal.fire({
+                                title: 'Failed',
+                                text: "Something went wrong",
+                                icon: 'error'
+                            });
+                            document.getElementById("checked" + i).checked = !document.getElementById("checked" + i).checked;
+                        }
+                    },
+                    failure: function(response) {
+                        //alert(response.responseText);
+                        console.log(response.responseText);
+                        document.getElementById("checked" + i).checked = !document.getElementById("checked" + i).checked;
+                    },
+                    error: function(response) {
+                        //alert(response.responseText);
+                        console.log(response.responseText);
+                        document.getElementById("checked" + i).checked = !document.getElementById("checked" + i).checked;
+                    }
+                });
+        }
+    </script>
+}

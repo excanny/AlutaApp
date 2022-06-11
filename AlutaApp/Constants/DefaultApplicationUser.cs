@@ -1,6 +1,6 @@
 ﻿using AlutaApp.Models;
 
-namespace Identity.Constants
+namespace AlutaApp.Constants
 {
     public class DefaultApplicationUsers
     {
@@ -10,9 +10,9 @@ namespace Identity.Constants
             {
                 Id = "39c64ad6-39ae-4de0-a0b2-9298a46b4b4c",
                 UserName = "SuperAdmin",
-                Email = "a2masum@yahoo.com",
-                FirstName = "Al",
-                LastName = "Masum",
+                Email = "alutasuperadmin@aluta.com",
+                FirstName = "Super",
+                LastName = "Admin",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
             };

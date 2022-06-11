@@ -6,18 +6,18 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AlutaApp.Models
 {
-    public class User : IdentityUser
+    public class User
     {
-        [Required]
+        public int Id { get; set; }
         public string FullName { get; set; }
 
-        [Required]
+        
         public string Gender { get; set; }
 
-        [Required]
+        
         public DateTime DateOfBirth { get; set; }
 
-        [Required]
+        
         public int YearOfAdmission { get; set; }
 
         public string ProfilePhoto { get; set; }

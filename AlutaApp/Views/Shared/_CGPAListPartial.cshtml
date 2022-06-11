@@ -1,7 +1,7 @@
-﻿
+﻿@model IEnumerable<AlutaApp.Models.CGPA>
 
-@model IEnumerable<AlutaApp.Models.CGPA>
-<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+
+<table id="datatable" class="table table-theme table-bordered table-striped table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
                                             <th><span class="text-muted">FullName</span></th>
@@ -12,56 +12,53 @@
                                             <th><span class="text-muted">Semester</span></th>
                                             <th><span class="text-muted">Course Code</span></th>
                                             
-                                            <th></th>
+                                            <th><span class="text-muted">Action</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model) {
 
                                         <tr class="" data-id="16">
-                                           @* <td >
-                                                <small class="text-muted">@item.User.FullName</small>
-                                            </td>*@
                                             <td >
-                                                <small class="text-muted">@item.CreditUnit</small>
+                                                @item.Id
+                                            </td>
+                                            <td >
+                                                @item.CreditUnit
                                             </td>
                                              
                                             <td >
-                                                <small class="text-muted">@item.Grade</small>
+                                                @item.Grade
                                             </td>
 
 
                                             <td >
-                                                <small class="text-muted">@item.GradePoint</small>
+                                                @item.GradePoint
                                             </td>
 
                                             <td >
-                                                <small class="text-muted">@item.Level</small>
+                                                @item.Level
                                             </td>
 
                                             <td >
-                                                <small class="text-muted">@item.Semester</small>
+                                                @item.Semester
                                             </td>
 
                                             <td >
-                                                <small class="text-muted">@item.CourseCode</small>
+                                                @item.CourseCode
                                             </td>
                                             <td>
-                                                <div class="item-action dropdown">
-                                                    <a href="#" data-toggle="dropdown" class="text-muted">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
-                                                        <a class="dropdown-item" href="../../CGPAs/Details/@item.Id" id="viewInstitution">
-                                                            View
-                                                        </a>
-                                                        @*<a class="dropdown-item edit" href="../../TGIFMatches/Edit/@item.Id" id="editInstitution">
-                                                            Update
-                                                        </a>
+                                                
+                                                <div class="btn-group">
+                                                    <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                        
-                                                        <a class="dropdown-item edit" href="../../TGIFMatches/Delete/@item.Id" id="editInstitution">
-                                                            Delete  
-                                                        </a>*@
+                                                    </i>
+                   
+                                                    <div class="dropdown-menu shadow animated--grow-in">
+                                                        <a style='margin-right:16px' href="../../CGPAs/Details/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-eye text-success"></i> View
+                                                        </a>
+                           
+                                                        
                                                     </div>
                                                 </div>
                                             </td>

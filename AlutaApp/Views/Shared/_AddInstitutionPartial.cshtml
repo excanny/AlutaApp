@@ -3,14 +3,14 @@
 <h5>Add a new Institution</h5>
     @using (Html.BeginForm("Create", "Administrators"))
     {        
-        <div class="col-lg-8">
+        <div class="col-lg-6">
             
               <label for="email">Name:</label>
               <input type="text" name="Name" class="form-control mb-3" placeholder="Enter name" required>
               <label for="pwd">Abbreviation:</label>
               <input type="text" name="Abbreviation" class="form-control mb-4" placeholder="Enter abbreviation" required>
 
-              <button type="submit" class="btn btn-primary">Add</button>
+              <button type="submit" class="btn btn-success">Add</button>
            
         </div>                                  
     }

@@ -22,6 +22,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroupMessages
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.View)]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.GroupMessages.Include(c => c.Sender);
@@ -29,8 +31,10 @@ namespace AlutaApp.Controllers
         }
 
 
-        
+
         // GET: ChatGroupMessages/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.View)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,6 +54,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroupMessages/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.Create)]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName");
@@ -60,6 +66,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ChatGroupId,UserId,Content,Deleted,TimeCreated")] ChatGroupMessage chatGroupMessage)
         {
@@ -74,6 +82,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroupMessages/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,6 +104,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ChatGroupId,UserId,Content,Deleted,TimeCreated")] ChatGroupMessage chatGroupMessage)
         {
@@ -127,6 +139,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroupMessages/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,6 +161,8 @@ namespace AlutaApp.Controllers
 
         // POST: ChatGroupMessages/Delete/5
         [HttpPost, ActionName("Delete")]
+       
+        [Authorize(Policy = Permissions.Permissions.ChatGroupMessages.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -30,28 +30,9 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
-        public ActionResult UserChart()
-        {
-            var users = _context.Users.Where(s => s.TimeRegistered.Year == DateTime.Now.Year).ToList();
-            var months = new Month
-            {
-                January = users.Where(s => s.TimeRegistered.Month == 1).Count(),
-                February = users.Where(s => s.TimeRegistered.Month == 2).Count(),
-                March = users.Where(s => s.TimeRegistered.Month == 3).Count(),
-                April = users.Where(s => s.TimeRegistered.Month == 4).Count(),
-                May = users.Where(s => s.TimeRegistered.Month == 5).Count(),
-                June = users.Where(s => s.TimeRegistered.Month == 6).Count(),
-                July = users.Where(s => s.TimeRegistered.Month == 7).Count(),
-                August = users.Where(s => s.TimeRegistered.Month == 8).Count(),
-                September = users.Where(s => s.TimeRegistered.Month == 9).Count(),
-                October = users.Where(s => s.TimeRegistered.Month == 10).Count(),
-                November = users.Where(s => s.TimeRegistered.Month == 11).Count(),
-                December = users.Where(s => s.TimeRegistered.Month == 12).Count(),
-            };
-            return new JsonResult(months);
-        }
-
         // GET: Users
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.View)]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Users.Include(u => u.Department).Include(u => u.Institution);
@@ -59,6 +40,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Users/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.View)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -78,10 +61,11 @@ namespace AlutaApp.Controllers
             return View(user);
         }
 
-    
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.View)]
         public async Task<IActionResult> ActiveUsers(){
            
-            var allUsers = await _context.Users.Where(q=>q.Online == true).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
+            var allUsers = await _context.Users.Where(q=>q.Online == true && !q.Deleted).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
             
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var role = await _userManager.GetRolesAsync(currentUser);
@@ -89,9 +73,11 @@ namespace AlutaApp.Controllers
             return View(allUsers);
         }
 
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.View)]
         public async Task<IActionResult> InActiveUsers(int? page){
            
-            var allUsers = await _context.Users.Where(q=>q.Online == false).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
+            var allUsers = await _context.Users.Where(q=>q.Online == false && !q.Deleted).Include(s=>s.Institution).Include(a=>a.Department).ToListAsync();
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var role = await _userManager.GetRolesAsync(currentUser);
 
@@ -149,6 +135,8 @@ namespace AlutaApp.Controllers
        }
 
         // GET: Users/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.Create)]
         public IActionResult Create()
         {
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
@@ -160,6 +148,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Users.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FullName,Gender,DateOfBirth,YearOfAdmission,ProfilePhoto,Biography,IsBanned,IsVerified,Referrer,InstitutionId,DepartmentId,GradePoint,Online,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
         {
@@ -175,6 +165,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Users/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -196,6 +188,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.Users.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission,ProfilePhoto,Biography,IsBanned,IsVerified,Referrer,InstitutionId,DepartmentId,GradePoint,Online,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
         {
@@ -230,6 +224,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Users/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Users.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -251,6 +247,8 @@ namespace AlutaApp.Controllers
 
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
+       
+        [Authorize(Policy = Permissions.Permissions.Users.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

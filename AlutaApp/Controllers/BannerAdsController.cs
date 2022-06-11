@@ -27,17 +27,19 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
-        // GET: BannerAds
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.BannerAds.View)]
         public async Task<IActionResult> Index()
         {
             var allBannerAds = await _context.BannerAds.Include(b => b.User).ToListAsync();
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
 
             return View(allBannerAds);
         }
 
         // GET: BannerAds/Details/5
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.BannerAds.View)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,12 +58,11 @@ namespace AlutaApp.Controllers
             return View(bannerAd);
         }
 
-        // GET: BannerAds/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.BannerAds.Create)]
         public async Task<IActionResult> Create()
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
-
+            ViewBag.UsersList = await _context.Users.Where(q => !q.Deleted).ToListAsync();
             return View();
         }
 
@@ -69,6 +70,9 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+
+      
+        [Authorize(Policy = Permissions.Permissions.BannerAds.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,BannerLink,InstitutionId,DepartmentId,Gender,StartDate,EndDate,Status")] BannerAd bannerAd)
         {
@@ -83,6 +87,9 @@ namespace AlutaApp.Controllers
         }
 
         // GET: BannerAds/Edit/5
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.BannerAds.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -103,6 +110,7 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.BannerAds.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,BannerLink,InstitutionId,DepartmentId,Gender,StartDate,EndDate,Status")] BannerAd bannerAd)
         {
@@ -136,6 +144,9 @@ namespace AlutaApp.Controllers
         }
 
         // GET: BannerAds/Delete/5
+
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.BannerAds.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -156,6 +167,7 @@ namespace AlutaApp.Controllers
 
         // POST: BannerAds/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = Permissions.Permissions.BannerAds.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

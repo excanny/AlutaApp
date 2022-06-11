@@ -26,7 +26,8 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
-
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Messages.View)]
         public async Task<IActionResult> Messages()
         {
             
@@ -47,6 +48,8 @@ namespace AlutaApp.Controllers
 
         }
         // GET: Messages
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Messages.View)]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Messages.Include(m => m.Reciever).Include(m => m.Sender);
@@ -54,6 +57,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Messages/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Messages.View)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -74,6 +79,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Messages/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Messages.Create)]
         public IActionResult Create()
         {
             ViewData["RecieverId"] = new SelectList(_context.Users, "Id", "FullName");
@@ -85,6 +92,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Messages.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Content,SenderId,RecieverId,Delivered,Read,TimeCreated,Deleted")] Message message)
         {
@@ -100,6 +109,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Messages/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Messages.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -121,6 +132,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Messages.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Content,SenderId,RecieverId,Delivered,Read,TimeCreated,Deleted")] Message message)
         {
@@ -155,6 +168,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Messages/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Messages.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -176,6 +191,8 @@ namespace AlutaApp.Controllers
 
         // POST: Messages/Delete/5
         [HttpPost, ActionName("Delete")]
+       
+        [Authorize(Policy = Permissions.Permissions.Messages.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

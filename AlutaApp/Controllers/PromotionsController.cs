@@ -28,7 +28,8 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
-
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Promotions.View)]
         public async Task<IActionResult> Promotions(int? page)
         {
             
@@ -40,6 +41,8 @@ namespace AlutaApp.Controllers
 
         }
         // GET: Promotions
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Promotions.View)]
         public async Task<IActionResult> Index()
         {
              int? page = 1;
@@ -60,6 +63,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Promotions/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Promotions.View)]
         public async Task<IActionResult> Details(int? id)
         {
              int? page = 1;
@@ -92,6 +97,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Promotions/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Promotions.Create)]
         public IActionResult Create()
         {
              int? page = 1;
@@ -115,6 +122,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.Promotions.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,PostId,Views,PromotedById,StartDate,EndDate,DateCreated,Status")] Promotion promotion)
         {
@@ -143,6 +152,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Promotions/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Promotions.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
              int? page = 1;
@@ -176,6 +187,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.Promotions.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,Views,PromotedById,StartDate,EndDate,Status")] Promotion promotion)
         {
@@ -222,6 +235,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: Promotions/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.Promotions.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
              int? page = 1;
@@ -255,6 +270,8 @@ namespace AlutaApp.Controllers
 
         // POST: Promotions/Delete/5
         [HttpPost, ActionName("Delete")]
+       
+        [Authorize(Policy = Permissions.Permissions.Promotions.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -274,7 +291,7 @@ namespace AlutaApp.Controllers
             var promotion = await _context.Promotions.FindAsync(id);
             _context.Promotions.Remove(promotion);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Promotions));
         }
 
         private bool PromotionExists(int id)

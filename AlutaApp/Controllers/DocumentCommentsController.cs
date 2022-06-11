@@ -28,43 +28,31 @@ namespace AlutaApp.Controllers
         }
 
         // GET: DocumentComments
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.View)]
         public async Task<IActionResult> Index()
         {
            
             var documentComments = _context.DocumentComments.ToList();
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
+            
 
             return View(documentComments);
         }
 
 
         // GET: DocumentComments/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.View)]
         public async Task<IActionResult> Details(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            int? page = 1;
-
-             int pageSize = 10;
-            int pageIndex = 1;
+           
             var likers = _context.DocumentCommentLikes.Where(e=>e.DocumentCommentId  == id).ToList();
 
             //var getDocumentLikers = likers.Select(d=> new Likers{
             //    Name = _context.Users.Where(e=>e.Id == d.UserId).Select(e=>e.FullName).FirstOrDefault(),
             //    TimeLiked = d.TimeCreated
             //}).ToList();
-             
+
             //var documentLikers = await getDocumentLikers.OrderByDescending(s => s.TimeLiked).ToPagedListAsync(pageIndex, pageSize);
             //ViewBag.Likers = documentLikers;
             //if (id == null)
@@ -72,9 +60,14 @@ namespace AlutaApp.Controllers
             //    return NotFound();
             //}
 
+            //var documentComment = await _context.DocumentComments
+            //    .Include(d => d.User).Include(e=>e.Likes)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
             var documentComment = await _context.DocumentComments
-                .Include(d => d.User).Include(e=>e.Likes)
+                
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (documentComment == null)
             {
                 return NotFound();
@@ -84,6 +77,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: DocumentComments/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.Create)]
         public IActionResult Create()
         {
             var firstCount = 2;
@@ -106,6 +101,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+       
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,DocumentId,Content,TimeCreated")] DocumentComment documentComment)
         {
@@ -132,6 +129,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: DocumentComments/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             var firstCount = 2;
@@ -164,6 +163,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,DocumentId,Content,TimeCreated")] DocumentComment documentComment)
         {
@@ -209,6 +210,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: DocumentComments/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             var firstCount = 2;
@@ -241,6 +244,8 @@ namespace AlutaApp.Controllers
 
         // POST: DocumentComments/Delete/5
         [HttpPost, ActionName("Delete")]
+        
+        [Authorize(Policy = Permissions.Permissions.DocumentComments.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

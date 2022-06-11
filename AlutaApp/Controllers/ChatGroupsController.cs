@@ -97,6 +97,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroups
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.View)]
         public async Task<IActionResult> Index()
         {
             var allChatGroups = await _context.ChatGroups.ToListAsync();
@@ -109,6 +111,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroups/Details/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.View)]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -127,6 +131,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroups/Create
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.Create)]
         public IActionResult Create()
         {
             return View();
@@ -136,6 +142,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+      
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.Create)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,InstitutionId,DepartmentId,YearOfAdmission,Name,GroupPhotoLink")] ChatGroup chatGroup)
         {
@@ -149,6 +157,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroups/Edit/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.Edit)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -168,6 +178,8 @@ namespace AlutaApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.Edit)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,InstitutionId,DepartmentId,YearOfAdmission,Name,GroupPhotoLink")] ChatGroup chatGroup)
         {
@@ -200,6 +212,8 @@ namespace AlutaApp.Controllers
         }
 
         // GET: ChatGroups/Delete/5
+        [HttpGet]
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.Delete)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -219,6 +233,8 @@ namespace AlutaApp.Controllers
 
         // POST: ChatGroups/Delete/5
         [HttpPost, ActionName("Delete")]
+       
+        [Authorize(Policy = Permissions.Permissions.ChatGroups.Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

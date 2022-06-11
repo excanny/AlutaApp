@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AlutaApp.Models.TimeTable>
 
-<table id="datatable" class="table table-theme table-row v-middle" data-plugin="dataTable">
+<table id="datatable" class="table table-bordered table-striped table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
                                             <th><span class="text-muted">Course</span></th>
@@ -10,7 +10,7 @@
                                             <th><span class="text-muted">RemindInMinutes</span></th>
                                             <th><span class="text-muted">User</span></th>
                                             
-                                            <th></th>
+                                             <th><span class="text-muted">Action</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -18,44 +18,40 @@
 
                                         <tr class="" data-id="16">
                                             <td >
-                                                <small class="text-muted">@item.Course</small>
+                                                @item.Course
                                             </td>
                                             <td >
-                                                <small class="text-muted">@item.Day</small>
+                                                @item.Day
                                             </td>
                                              
                                             <td >
-                                                <small class="text-muted">@item.Hour</small>
+                                                @item.Hour
                                             </td>
 
 
                                             <td >
-                                                <small class="text-muted">@item.Minute</small>
+                                                @item.Minute
                                             </td>
 
                                             <td >
-                                                <small class="text-muted">@item.RemindInMinutes</small>
+                                                @item.RemindInMinutes
                                             </td>
 
                                             <td >
-                                                <small class="text-muted">@item.User.FullName</small>
+                                                @item.User.FullName
                                             </td>
                                             <td>
-                                                <div class="item-action dropdown">
-                                                    <a href="#" data-toggle="dropdown" class="text-muted">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
-                                                        <a class="dropdown-item" href="../../TimeTables/Details/@item.Id" id="viewInstitution">
-                                                            View
-                                                        </a>
-                                                       @* <a class="dropdown-item edit" href="../../TGIFMatches/Edit/@item.Id" id="editInstitution">
-                                                            Update
-                                                        </a>
+
+                                                <div class="btn-group">
+                                                    <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                        
-                                                        <a class="dropdown-item edit" href="../../TGIFMatches/Delete/@item.Id" id="editInstitution">
-                                                            Delete  
-                                                        </a>*@
+                                                    </i>
+                   
+                                                    <div class="dropdown-menu shadow animated--grow-in">
+                                                        <a style='margin-right:16px' href="../../TimeTables/Details/@item.Id" class="dropdown-item">
+                                                            <i class="fas fa-eye text-success"></i> View
+                                                        </a>
+                                                        
                                                     </div>
                                                 </div>
                                             </td>
