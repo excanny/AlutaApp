@@ -1,9 +1,15 @@
-﻿@model IEnumerable<AlutaApp.Models.Trivia>
+﻿@model IEnumerable<AlutaApp.Models.TriviaQuestion>
 
 <table id="datatable" class="table table-bordered table-striped table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
-                                            <th><span class="text-muted">Play Date</span></th>
+                                            <th><span class="text-muted">TriviaId</span></th>
+                                            <th><span class="text-muted">Question</span></th>
+                                            <th><span class="text-muted">Option1</span></th>
+                                            <th><span class="text-muted">Option2</span></th>
+                                            <th><span class="text-muted">Option3</span></th>
+                                            <th><span class="text-muted">Option4</span></th>
+                                            <th><span class="text-muted">CorrectOption</span></th>
                                             
                                             <th width="10%"><span class="text-muted">Actions</span></th>
                                         </tr>
@@ -13,44 +19,46 @@
 
                                         <tr class="" data-id="16">
                                             <td >
-                                                @item.PlayDate
-                                            </td>  
+                                                @item.TriviaId
+                                            </td>
+                                            <td >
+                                                @item.Question
+                                            </td> 
+                                            <td >
+                                                @item.Option1
+                                            </td>
+                                            <td >
+                                                @item.Option2
+                                            </td>
+                                            <td >
+                                                @item.Option3
+                                            </td>
+                                            <td >
+                                                @item.Option4
+                                            </td>
+                                            <td >
+                                                @item.CorrectOption
+                                            </td>
                                             
                                             <td>
-                                                @*<div class="item-action dropdown">
-                                                    <a href="#" data-toggle="dropdown" class="text-muted">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right bg-black" role="menu">
-                                                        <a class="dropdown-item" href="../../Trivias/Details/@item.Id" id="viewInstitution">
-                                                            View
-                                                        </a>
-                                                        <a class="dropdown-item edit" href="../../Trivias/EditTrivia/@item.Id" id="editInstitution">
-                                                            Update
-                                                        </a>
-                                                       
-                                                        <a class="dropdown-item edit" href="../../Trivias/DeleteTrivia/@item.Id" id="editInstitution">
-                                                            Delete  
-                                                        </a>
-                                                    </div>
-                                                </div>*@
+                                              
                                                 <div class="btn-group">
                                                 <i class="fas fa-ellipsis-v text-center cursor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                        
                                                 </i>
                    
                                                 <div class="dropdown-menu shadow animated--grow-in">
-                                                    <a style='margin-right:16px' href="../../Trivias/Details/@item.Id" class="dropdown-item">
+                                                   @* <a style='margin-right:16px' href="../../Trivias/Details/@item.Id" class="dropdown-item">
                                                         <i class="fas fa-eye text-success"></i> View
-                                                    </a>
+                                                    </a>*@
 
                                                     <a style='margin-right:16px' href="../../Trivias/Edit/@item.Id" class="dropdown-item">
                                                         <i class="fas fa-edit text-warning"></i> Edit
                                                     </a>
                                                    
-                                                     <a style='margin-right:16px' href="../../Trivias/Delete/@item.Id" class="dropdown-item">
+                                                    @* <a style='margin-right:16px' href="../../Trivias/Delete/@item.Id" class="dropdown-item">
                                                         <i class="fas fa-trash text-danger"></i> Delete
-                                                    </a>
+                                                    </a>*@
                                                 </div>
 
                                                 </div>

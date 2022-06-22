@@ -1,22 +1,51 @@
-﻿@model AlutaApp.Models.Trivia
+﻿@model AlutaApp.Models.TriviaQuestion
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Question";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Trivia</h4>
+<h4>Add Trivia Questions</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PlayDate" class="control-label"></label>
-                <input asp-for="PlayDate" class="form-control" />
-                <span asp-validation-for="PlayDate" class="text-danger"></span>
+                <label asp-for="Question" class="control-label"></label>
+                <textarea asp-for="Question" class="form-control" required></textarea>
+                <span asp-validation-for="Question" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Option1" class="control-label"></label>
+                <input asp-for="Option1" class="form-control" required />
+                <span asp-validation-for="Option1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option2" class="control-label"></label>
+                <input asp-for="Option2" class="form-control" required />
+                <span asp-validation-for="Option2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option3" class="control-label"></label>
+                <input asp-for="Option3" class="form-control" required />
+                <span asp-validation-for="Option3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Option4" class="control-label"></label>
+                <input asp-for="Option4" class="form-control" required />
+                <span asp-validation-for="Option4" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CorrectOption" class="control-label"></label>
+                <select asp-for="CorrectOption" class="form-control" required>
+                    <option value=""></option>
+                    <option value="1">Option1</option>
+                    <option value="2">Option2</option>
+                    <option value="3">Option3</option>
+                    <option value="4">Option4</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-success" />

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AlutaApp.Models.Trivia>
+﻿@model IEnumerable<AlutaApp.Models.TriviaQuestion>
 
 @{
     ViewData["Title"] = "Trivias";
@@ -10,15 +10,12 @@
                     <div class="page-hero page-container " id="page-hero">
                         <div class="padding d-flex">
                             <div class="page-title">
-                                <h2 class="text-md text-highlight">Trivias</h2>
+                                <h2 class="text-md text-highlight">Trivia Questions</h2>
                                 <small class="text-muted"></small>
                                 <br />
                                 <div>
-                                @{
-                            var models = new Trivia();
-                            await Html.RenderPartialAsync("_AddTriviaPartial", models);
-
-                        }
+                              
+                                <a class="btn btn-success" asp-action="Create">Add Question</a>
                             </div>
                             </div>
                             
@@ -26,7 +23,7 @@
                         </div>
                     </div>
        
-        <div class="page-content page-container" id="page-content">
+        <div class="page-content page-container mt-5" id="page-content">
                         <div class="padding">
                 <div class="table-responsive">@{
 

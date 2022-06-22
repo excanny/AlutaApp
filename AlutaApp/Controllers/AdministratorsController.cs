@@ -719,13 +719,10 @@ namespace AlutaApp.Controllers
         {
            
             ViewBag.TotalApprovedBannerAds = _context.BannerAds.ToList().Count();
-            var totalBannerAdsCost = _context.BannerAds.Sum(e => e.Cost);
-            var totalpromotionPayments = _context.PromotionPayments.Sum(e => e.Amount);
-            ViewBag.TotalRevenue = totalBannerAdsCost + totalpromotionPayments;
+            var totalBannerAdsCost = _context.BannerAds.Where(a => a.Status == 3).Sum(e => e.Cost);
+            //var totalpromotionPayments = _context.PromotionPayments.Where(a => a.Status == 3).Sum(e => e.Amount);
+            ViewBag.TotalRevenue = totalBannerAdsCost;
             ViewBag.NoOfpromotions = _context.Promotions.ToList().Count();
-
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
 
             return View();
         }
@@ -753,12 +750,12 @@ namespace AlutaApp.Controllers
             return Json(post_data);
         }
 
-        public JsonResult GetCommentsChartJSON()
+        public async Task<JsonResult> GetCommentsChartJSON()
         {
             //var post_data = _context.Posts.Where(c => c.TimeCreated > DateTime.Now.AddYears(-1))
-            var comment_data = _context.Comments
+            var comment_data = await _context.Comments
                .GroupBy(c => c.TimeCreated.Month)
-            .Select(g => new { Month = g.Key, Count = g.Count() });
+            .Select(g => new { Month = g.Key, Count = g.Count() }).ToArrayAsync();
 
 
             return Json(comment_data);
