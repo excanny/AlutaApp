@@ -35,6 +35,7 @@ namespace AlutaApp.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<PhoneNumberConfirmation> PhoneNumberConfirmations { get; set; }
         public DbSet<Points2Earn> Points2Earns { get; set; }
+        //public DbSet<PointsLog> PointsLogs { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostImage> PostImages { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }

@@ -1,6 +1,6 @@
 ﻿
 
-@model IEnumerable<AlutaApp.Models.Comment>
+@model IEnumerable<AlutaApp.Models.DocumentComment>
 <table id="datatable" class="table table-bordered table-striped" data-plugin="dataTable">
             <thead>
                 <tr>
@@ -31,12 +31,12 @@
                         <small class="text-muted">@item.TimeCreated</small>
                     </td>
 
-                        <td >
+                        @*<td >
                         <small class="text-muted">@item.CommentLikes.Count</small>
-                    </td>
+                    </td>*@
                                             
                         <td >
-                        <a href="../../Administrators/DeleteComment/@item.Id">Delete</a>
+                        <a href="../../DocumentComments/Delete/@item.Id">Delete</a>
                     </td>
                 </tr>
             }

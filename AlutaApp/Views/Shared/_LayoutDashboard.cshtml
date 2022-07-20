@@ -27,6 +27,12 @@
         <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
+        <!--Morris Chart CSS -->
+        <link rel="stylesheet" href="~/plugins/morris/morris.css">
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+       
+
         <!-- Responsive datatable examples -->
         <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -38,6 +44,311 @@
              .cursor{
                  cursor:pointer;
              }
+             .card-bordered {
+    border: 1px solid #ebebeb;
+}
+
+.card {
+    border: 0;
+    border-radius: 0px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.03);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.03);
+    -webkit-transition: .5s;
+    transition: .5s;
+}
+
+.padding {
+    padding: 3rem !important
+}
+
+body {
+    background-color: #f9f9fa
+}
+
+.card-header:first-child {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+}
+
+
+.card-header {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(77,82,89,0.07);
+}
+
+.card-header .card-title {
+    padding: 0;
+    border: none;
+}
+
+h4.card-title {
+    font-size: 17px;
+}
+
+.card-header>*:last-child {
+    margin-right: 0;
+}
+
+.card-header>* {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.btn-secondary {
+    color: #4d5259 !important;
+    background-color: #e4e7ea;
+    border-color: #e4e7ea;
+    color: #fff;
+}
+
+.btn-xs {
+    font-size: 11px;
+    padding: 2px 8px;
+    line-height: 18px;
+}
+.btn-xs:hover{
+    color:#fff !important;
+}
+
+
+
+
+.card-title {
+    font-family: Roboto,sans-serif;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 0;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(77,82,89,0.07);
+}
+
+
+.ps-container {
+    position: relative;
+}
+
+.ps-container {
+    -ms-touch-action: auto;
+    touch-action: auto;
+    overflow: hidden!important;
+    -ms-overflow-style: none;
+}
+
+.media-chat {
+    padding-right: 64px;
+    margin-bottom: 0;
+}
+
+.media {
+    padding: 16px 12px;
+    -webkit-transition: background-color .2s linear;
+    transition: background-color .2s linear;
+}
+
+.media .avatar {
+    flex-shrink: 0;
+}
+
+.avatar {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 100%;
+    background-color: #f5f6f7;
+    color: #8b95a5;
+    text-transform: uppercase;
+}
+
+.media-chat .media-body {
+    -webkit-box-flex: initial;
+    flex: initial;
+    display: table;
+}
+
+.media-body {
+    min-width: 0;
+}
+
+.media-chat .media-body p {
+    position: relative;
+    padding: 6px 8px;
+    margin: 4px 0;
+    background-color: #f5f6f7;
+    border-radius: 3px;
+    font-weight: 100;
+    color:#9b9b9b;
+}
+
+.media>* {
+    margin: 0 8px;
+}
+
+.media-chat .media-body p.meta {
+    background-color: transparent !important;
+    padding: 0;
+    opacity: .8;
+}
+
+.media-meta-day {
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-bottom: 0;
+    color: #8b95a5;
+    opacity: .8;
+    font-weight: 400;
+}
+
+.media {
+    padding: 16px 12px;
+    -webkit-transition: background-color .2s linear;
+    transition: background-color .2s linear;
+}
+
+.media-meta-day::before {
+    margin-right: 16px;
+}
+
+.media-meta-day::before, .media-meta-day::after {
+    content: '';
+    -webkit-box-flex: 1;
+    flex: 1 1;
+    border-top: 1px solid #ebebeb;
+}
+
+.media-meta-day::after {
+    content: '';
+    -webkit-box-flex: 1;
+    flex: 1 1;
+    border-top: 1px solid #ebebeb;
+}
+
+.media-meta-day::after {
+    margin-left: 16px;
+}
+
+.media-chat.media-chat-reverse {
+    padding-right: 12px;
+    padding-left: 64px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    flex-direction: row-reverse;
+}
+
+.media-chat {
+    padding-right: 64px;
+    margin-bottom: 0;
+}
+
+.media {
+    padding: 16px 12px;
+    -webkit-transition: background-color .2s linear;
+    transition: background-color .2s linear;
+}
+
+.media-chat.media-chat-reverse .media-body p {
+    float: right;
+    clear: right;
+    background-color: #48b0f7;
+    color: #fff;
+}
+
+.media-chat .media-body p {
+    position: relative;
+    padding: 6px 8px;
+    margin: 4px 0;
+    background-color: #f5f6f7;
+    border-radius: 3px;
+}
+
+
+.border-light {
+    border-color: #f1f2f3 !important;
+}
+
+.bt-1 {
+    border-top: 1px solid #ebebeb !important;
+}
+
+.publisher {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #f9fafb;
+}
+
+.publisher>*:first-child {
+    margin-left: 0;
+}
+
+.publisher>* {
+    margin: 0 8px;
+}
+
+.publisher-input {
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    border: none;
+    outline: none !important;
+    background-color: transparent;
+}
+
+button, input, optgroup, select, textarea {
+    font-family: Roboto,sans-serif;
+    font-weight: 300;
+}
+
+.publisher-btn {
+    background-color: transparent;
+    border: none;
+    color: #8b95a5;
+    font-size: 16px;
+    cursor: pointer;
+    overflow: -moz-hidden-unscrollable;
+    -webkit-transition: .2s linear;
+    transition: .2s linear;
+}
+
+.file-group {
+    position: relative;
+    overflow: hidden;
+} 
+
+.publisher-btn {
+    background-color: transparent;
+    border: none;
+    color: #cac7c7;
+    font-size: 16px;
+    cursor: pointer;
+    overflow: -moz-hidden-unscrollable;
+    -webkit-transition: .2s linear;
+    transition: .2s linear;
+} 
+
+.file-group input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -1; 
+    width: 20px;
+}
+
+.text-info {
+    color: #48b0f7 !important;
+}
          </style>
     </head>
 
@@ -129,10 +440,6 @@
                             <li>
                                 <a href="../../Administrators/Departments" class="waves-effect"><i class="icon-squares"></i><span> Departments </span></a>
                             </li>
-
-                              @*<li>
-                                <a href="../../Administrators/Points" class="waves-effect"><i class="ti-target"></i><span> Points </span></a>
-                            </li>*@
                             
                              <li>
                                 <a href="../../Administrators/Posts" class="waves-effect"><i class="ti-comments"></i><span> Posts </span></a>
@@ -159,14 +466,8 @@
                             </li>
 
                              <li>
-                                <a href="../../DocumentComments/Index" class="waves-effect"><i class="icon-calendar"></i><span> DocumentComments </span></a>
-                            </li>
-
-                             <li>
                                 <a href="../../Status/Index" class="waves-effect"><i class="ti-loop"></i><span> Status </span></a>
                             </li>
-
-           
 
                              <li>
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-group"></i><span> Users <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
@@ -199,7 +500,7 @@
                             </li>
 
                             <li>
-                                <a href="../../Messages/Messages" class="waves-effect"><i class="icon-mail"></i><span> Messages </span></a>
+                                <a href="../../Messages/GetMessages" class="waves-effect"><i class="icon-mail"></i><span> Messages </span></a>
                             </li>
 
                   
@@ -273,6 +574,8 @@
         <!-- chartjs js -->
         <script src="~/plugins/chartjs/chart.min.js"></script>
         <script src="~/assets/pages/chartjs.init.js"></script>  
+
+         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         
         <!-- Required datatable js -->
         <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -289,6 +592,9 @@
         <!-- Responsive examples -->
         <script src="~/plugins/datatables/dataTables.responsive.min.js"></script>
         <script src="~/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+        <script src="~/plugins/morris/morris.min.js"></script>
+        <script src="~/plugins/raphael/raphael.min.js"></script>
 
         <!-- Datatable init js -->
         <script src="~/assets/pages/datatables.init.js"></script>   
@@ -310,7 +616,7 @@
 
                $.ajax({
                     type: "GET",
-                    url: "/Administrators/GetUsersChartJSON",
+                    url: "/Administrators/GetActiveUsersChartJSON",
                     success: function (chartdata) {
                         var Data = chartdata;
 
@@ -328,8 +634,8 @@
                           title: 'User Activities',
                           is3D: true,
                           slices: {
-                                0: { color: '#990099' },
-                                1: { color: '#FF9900' }
+                                0: { color: '#45b6b7' },
+                                1: { color: '#497786' }
                               }
                         };
 
@@ -340,13 +646,9 @@
                             div.innerHTML += 'Sorry, not info available';
                          
                         }else{
-                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart1'));
                             chart.draw(data, options);        
                         }
-
-                        //var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-                        //chart.draw(data, options);
                       
 
                         },
@@ -359,173 +661,49 @@
                     }
         </script>
 
-     
-      
-
-        <script type="text/javascript">
+      <script type="text/javascript">
           google.charts.load('current', {'packages':['corechart']});
           google.charts.setOnLoadCallback(drawChart);
 
           function drawChart() {
 
-
                $.ajax({
                     type: "GET",
-                    url: "/Administrators/GetCommentsChartJSON",
+                    url: "/Administrators/GetOnlineUsersChartJSON",
                     success: function (chartdata) {
-                        var Datax = chartdata;
+                        var Data = chartdata;
 
-                        //console.log(Datax);
-
-                       // alert(Datax)
+                       //console.log(Data);
+                        
 
                         var data = google.visualization.arrayToDataTable([
-                          ['Month', 'Comments'],
-                          ['Jan',  1],
-                          ['Feb',  7],
-                          ['Mar',  3],
-                          ['Apr',  30],
-                          ['May',  16],
-                          ['Jun',  17],
-                          ['Jul',  20],
-                          ['Aug',  45],
-                          ['Sep',  2],
-                          ['Oct',  9],
-                          ['Nov',  13],
-                          ['Dec',  25]
+                          ['Task', 'Hours per Day'],
+                          ['Online ('+Data[0].count+')', Data[0].count],
+                          ['Offline ('+Data[1].count+')',  Data[1].count],
+              
                         ]);
 
                         var options = {
-                          title: 'Comments',
-                          curveType: 'function',
-                          legend: { position: 'bottom' }
+                          title: 'User Pressence',
+                          is3D: true,
+                          slices: {
+                                0: { color: '#990099' },
+                                1: { color: '#FF9900' }
+                              }
                         };
 
-                        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                        if(Data[0].count == 0){
 
-                        chart.draw(data, options);
+                            var div = document.getElementById('piechart');
 
-                },
-                error: function (jqXhr, textStatus, errorMessage) {
-                    alert(errorMessage);
-                }
-
-            });
-
-          }
-        </script>
-
-
-         <script>
-
-             $.ajax({
-                    type: "GET",
-                    url: "/Administrators/GetPostsChartJSON",
-                    success: function (chartdata) {
-                        var Data = chartdata;
-                        //console.log(Data);
-
-                        for (let i = 0; i < Data.length; i++) {
-
-                            
-                              if(Data[i].month === 1){
-                                var janCount = Data[i].count
-                                //console.log(janCount)
-                              }
-                              if(Data[i].month === 2){
-                                var febCount = Data[i].count
-                                //console.log(febCount)
-                              }
-                              if(Data[i].month === 3){
-                                var marCount = Data[i].count
-                                //console.log(marCount)
-                              }
-                              if(Data[i].month === 4){
-                                var aprCount = Data[i].count
-                                //console.log(aprCount)
-                              }
-                              if(Data[i].month === 5){
-                                var mayCount = Data[i].count
-                                //console.log(mayCount)
-                              }
-                              if(Data[i].month === 6){
-                                var junCount = Data[i].count
-                                //console.log(junCount)
-                              }
-                              if(Data[i].month === 7){
-                                var julCount = Data[i].count
-                                //console.log(julCount)
-                              }
-                              if(Data[i].month === 8){
-                                var augCount = Data[i].count
-                                //console.log(augCount)
-                              }
-                              if(Data[i].month === 9){
-                                var sepCount = Data[i].count
-                                //console.log(sepCount)
-                              }
-                              if(Data[i].month === 10){
-                                var octCount = Data[i].count
-                                //console.log(octCount)
-                              }
-                              if(Data[i].month === 11){
-                                var novCount = Data[i].count
-                                //console.log(novCount)
-                              }
-                              if(Data[i].month === 12){
-                                var decCount = Data[i].count
-                                //console.log(decCount)
-                              }
+                            div.innerHTML += 'Sorry, not info available';
+                         
+                        }else{
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+                            chart.draw(data, options);        
                         }
+                      
 
-                        const ctx = document.getElementById('barChart');
-                            const myChart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                                    datasets: [{
-                                        label: '# of Posts',
-                                        data: [janCount, febCount, marCount, aprCount, mayCount, junCount, julCount, augCount, sepCount, octCount, novCount, decCount],
-                                        //data: [janCount, febCount, marCount, aprCount, mayCount, junCount, julCount, augCount, sepCount, octCount, novCount, decCount],
-                                        backgroundColor: [
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)',
-                                            'rgba(75, 192, 192, 0.2)',
-                                            'rgba(153, 102, 255, 0.2)',
-                                            'rgba(255, 159, 64, 0.2)',
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)',
-                                            'rgba(75, 192, 192, 0.2)',
-                                            'rgba(153, 102, 255, 0.2)',
-                                            'rgba(255, 159, 64, 0.2)'
-                                        ],
-                                        borderColor: [
-                                            'rgba(255, 99, 132, 1)',
-                                            'rgba(54, 162, 235, 1)',
-                                            'rgba(255, 206, 86, 1)',
-                                            'rgba(75, 192, 192, 1)',
-                                            'rgba(153, 102, 255, 1)',
-                                            'rgba(255, 159, 64, 1)',
-                                             'rgba(255, 99, 132, 1)',
-                                            'rgba(54, 162, 235, 1)',
-                                            'rgba(255, 206, 86, 1)',
-                                            'rgba(75, 192, 192, 1)',
-                                            'rgba(153, 102, 255, 1)',
-                                            'rgba(255, 159, 64, 1)'
-                                        ],
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
                         },
                         error: function (jqXhr, textStatus, errorMessage) {
                             alert(errorMessage);
@@ -533,6 +711,53 @@
 
                     });
 
+                    }
+        </script>
+     
+        <script>
+
+              $.ajax({
+                    type: "GET",
+                    url: "/Administrators/GetPostsCommentsChartJSON",
+                    success: function (chartdata) {
+                        var Data = chartdata;
+
+            const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                    ];
+
+          Morris.Area({
+            element: 'morris-area-example',
+            pointSize: 3,
+            lineWidth: 2,
+            data: Data,
+            xkey: 'y',
+            parseTime: false,
+            ykeys: ['totalPosts', 'totalComments'],
+            xLabelFormat: function (x) {
+            var index = parseInt(x.src.y);
+            return monthNames[index];
+            },
+            xLabels: "month",
+            labels: ['Posts', 'Comments'],
+            resize: true,
+            hideHover: 'auto',
+            gridLineColor: '#eef0f2',
+            lineColors: ['#30419b', '#02c58d']
+          });
+
+           },
+                        error: function (jqXhr, textStatus, errorMessage) {
+                            alert(errorMessage);
+                        }
+
+                    });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.js-example-basic-single').select2();
+            });
         </script>
 
 

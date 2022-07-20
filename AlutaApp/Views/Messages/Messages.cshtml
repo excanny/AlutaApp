@@ -1,116 +1,70 @@
-﻿    @using AlutaApp.ViewModels
+﻿@using System.Web
+@model IEnumerable<AlutaApp.ViewModels.MessageSingleDTO>
 
     @{
-        ViewData["Title"] = "Messages";
-        Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
-    }
+    ViewData["Title"] = "Messages";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
 
-    <div id="content" class="flex">
 
-                    <!-- ############ Main START-->
-                    @foreach(ListOfSenders senders in @ViewBag.ListOfSenders)
-    {
-                    <div class="d-flex flex fixed-content">
-                        <div class="aside aside-sm" id="content-aside">
-                        
-                            <div class="d-flex flex-column w-xl modal-dialog bg-body" id="chat-nav">
-                                <div class="navbar">
-                                    <div class="input-group flex bg-light rounded">
-                                        <input type="text" class="form-control no-bg no-border no-shadow search" placeholder="Search" required="">
-                                        <span class="input-group-append">
-                            <button class="btn no-bg no-shadow" type="button"><i data-feather="search" class="text-fade"></i></button>
-                            </span>
-                                    </div>
-                                </div>
-                                </div>
-                            
-                                <div class="scrollable hover">
-                                
-                                    <div class="list list-row">
+<div class=!importantmportantmportantpage-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-md-9">
+                <div class="card card-bordered">
+                    <div class="card-header">
+                        <h4 class="card-title"><strong>Chats</strong></h4>
+                        @*<a class="btn btn-xs btn-secondary" href="#" data-abc="true">Let's Chat App</a>*@
+                    </div>
+
+
+                    <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:400px !important;">
+
+                        @foreach (var message in Model)
+                        {
+                            string allignmentClass = "media media-chat media-chat";
+                            string image = "";
+                            string deletedClass = "";
+                            if(message.SenderId  ==  ViewBag.UserId1)
+                            {
+                                allignmentClass = "media media-chat media-chat-reverse";
+                            }
+                            if(!string.IsNullOrEmpty(message.MediaLink))
+                            {
+                                image = $"<img src='{message.MediaLink}' width='150px' /> <br/>";
+                            }
+                            if(message.Deleted)
+                            {
+                                deletedClass = "text-decoration:line-through;";
+                            }
+                            <div class="@allignmentClass">
+                                <div class="media-body">
+                                    @Html.Raw(HttpUtility.HtmlDecode(@image))
                                     
-                                        <div class="list-item " data-id="1">
-                                            <div>
-                                                <span class="avatar-status on"></span>
-                                            </div>
-                                            <div>
-                                                <a href="#">
-                                                    <span class="w-40 avatar gd-primary">
-                                    <img src="../assets/img/a1.jpg" alt=".">
-                                </span>
-                                                </a>
-                                            </div>
-                                            
-                                            <div class="flex">
-                                                <a href="#" class="item-author text-color ">@senders.Sender</a>
-                                                <div class="item-except text-muted text-sm h-1x">
-                                                    @senders.SenderLastMessage
-                                                </div>
-                                            </div>
-    
-    
-                                            <div>
-    
-                                            </div>
-    
-                                        </div>
-
-                                        
-                                        
-     
-                                    </div>
+                                    <p style="@deletedClass">@message.Content</p>
                                     
-                                    <div class="no-result hide">
-                                        <div class="p-4 text-center">
-                                            No Results
-                                        </div>
-                                    </div>
+                                    <p class="meta" style="color:black !important;"><time datetime="2018">@message.TimeCreated</time></p>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="d-flex flex pr-md-3" id="content-body">
-                            <div class="d-flex flex-column flex card m-0 mb-md-3" id="chat-list" data-plugin="chat">
-                                <div class="navbar flex-nowrap b-b">
-                                    </div>
-                                        <!-- @{
-                                    var sends =  (System.Collections.Generic.List<ListOfSenders>)@ViewBag.ListOfSenders;
-                                    await Html.RenderPartialAsync("_MessageChat",sends);
-                                } -->
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-auto b-t" id="chat-form">
-                                    <div class="p-2">
-                                        <div class="px-3">
-                                            <div class="toolbar my-1">
-                                                <a href="#" class="text-muted mx-1">
-                                                    <i data-feather="image" width="14" height="14"></i>
-                                                </a>
-                                                <a href="#" class="text-muted mx-1">
-                                                    <i data-feather="camera" width="14" height="14"></i>
-                                                </a>
-                                                <a href="#" class="text-muted mx-1">
-                                                    <i data-feather="map-pin" width="14" height="14"></i>
-                                                </a>
-                                                <a href="#" class="text-muted mx-1">
-                                                    <i data-feather="paperclip" width="14" height="14"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control p-3 no-shadow no-border" placeholder="Say something" id="newField">
-                                            <button class="btn btn-icon btn-rounded gd-success" type="button" id="newBtn">
-                                                <i data-feather="arrow-up"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-    
-                                </div>
+                            </div>  
                             
-    }
-                    <!-- ############ Main END-->
+                        }
 
 
-    </div>
+              <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div></div></div>
 
-            
-            
+             @* <div class="publisher bt-1 border-light">
+                <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                <input class="publisher-input" type="text" placeholder="Write something">
+                <span class="publisher-btn file-group">
+                  <i class="fa fa-paperclip file-browser"></i>
+                  <input type="file">
+                </span>
+                <a class="publisher-btn" href="#" data-abc="true"><i class="fa fa-smile"></i></a>
+                <a class="publisher-btn text-info" href="#" data-abc="true"><i class="fa fa-paper-plane"></i></a>
+              </div>*@
+
+             </div>
+          </div>
+          </div>
+          </div>
+          </div>

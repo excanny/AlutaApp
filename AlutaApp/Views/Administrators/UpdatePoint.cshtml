@@ -1,4 +1,4 @@
-﻿@model AlutaApp.Models.Points2Earn
+﻿@model AlutaApp.Models.PointsLog
 
 @{
     ViewData["Title"] = "UpdatePoint";
@@ -15,9 +15,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
+                <label asp-for="Reason" class="control-label"></label>
+                <input asp-for="Reason" class="form-control" />
+                <span asp-validation-for="Reason" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Points" class="control-label"></label>

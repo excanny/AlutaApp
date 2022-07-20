@@ -133,3 +133,13 @@
                     </div>
                 </div>
                 <!-- ############ Main END-->
+
+                <div>
+
+                    <h4>Points Log</h4>
+                    
+                     @{
+                                                     
+                     await Html.RenderPartialAsync("_PointListPartial", @Model.PointsLogs);
+                 }
+                </div>

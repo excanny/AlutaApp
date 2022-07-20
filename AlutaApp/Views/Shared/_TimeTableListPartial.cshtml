@@ -3,12 +3,13 @@
 <table id="datatable" class="table table-bordered table-striped table-row v-middle" data-plugin="dataTable">
                                     <thead>
                                         <tr>
+                                            <th><span class="text-muted">User</span></th>
                                             <th><span class="text-muted">Course</span></th>
                                             <th><span class="text-muted">Day</span></th>
                                             <th><span class="text-muted">Hour</span></th>
                                             <th><span class="text-muted">Minute</span></th>
                                             <th><span class="text-muted">RemindInMinutes</span></th>
-                                            <th><span class="text-muted">User</span></th>
+                                            
                                             
                                              <th><span class="text-muted">Action</span></th>
                                         </tr>
@@ -17,6 +18,9 @@
                                         @foreach (var item in Model) {
 
                                         <tr class="" data-id="16">
+                                            <td >
+                                                @item.User.FullName
+                                            </td>
                                             <td >
                                                 @item.Course
                                             </td>
@@ -37,9 +41,7 @@
                                                 @item.RemindInMinutes
                                             </td>
 
-                                            <td >
-                                                @item.User.FullName
-                                            </td>
+                                            
                                             <td>
 
                                                 <div class="btn-group">

@@ -90,7 +90,7 @@
 </div>
 
 <div class="row">
-        <div class="col-xl-12">
+        <div class="col-xl-6">
             <div class="card m-b-30">
                 <div class="card-body">
         
@@ -107,7 +107,32 @@
                         </li>
                     </ul>
         
-                    <div id="piechart" style="height:350px; width: 100%"></div>
+                    <div id="piechart1" style="height:350px; width: 100%"></div>
+
+           
+        
+                </div>
+            </div>
+        </div> <!-- end col -->
+
+        <div class="col-xl-6">
+            <div class="card m-b-30">
+                <div class="card-body">
+        
+                    <h4 class="mt-0 header-title">User Pressence</h4>
+                                      
+                    <ul class="list-inline widget-chart m-t-20 m-b-15 text-center">
+                        <li class="list-inline-item">
+                            <h5 id="active_users_count"></h5>
+                            <p class="text-muted">Online</p>
+                        </li>
+                        <li class="list-inline-item">
+                            <h5 id="inactive_users_count"></h5>
+                            <p class="text-muted">Offline</p>
+                        </li>
+                    </ul>
+        
+                    <div id="piechart2" style="height:350px; width: 100%"></div>
 
            
         
@@ -119,35 +144,20 @@
     </div> <!-- end row -->
 
     <div class="row">
+        
         <div class="col-xl-12">
-            <div class="card m-b-30">
-                <div class="card-body">
-        
-                    <h4 class="mt-0 header-title">Comments</h4>
-                    @*
-                    <canvas id="lineChart" height="300"></canvas>*@
-                    <div id="curve_chart" style="weight: 900px; height: 500px"></div>
-        
-                </div>
+        <div class="card m-b-30">
+            <div class="card-body">
+
+                <h4 class="mt-0 header-title mb-4">Posts <small>vs</small> Comments</h4>
+
+                <div id="morris-area-example" class="morris-charts morris-chart-height"></div>
+
             </div>
-        </div> <!-- end col -->
+        </div>
+    </div>
         
        
-    </div> <!-- end row -->
-
-      <div class="row">
-       
-        <div class="col-xl-6">
-            <div class="card m-b-30">
-                <div class="card-body">
-        
-                    <h4 class="mt-0 header-title">Posts</h4>
-
-                    <canvas id="barChart" width="400" height="400"></canvas>
-
-                </div>
-            </div>
-        </div> <!-- end col -->
     </div> <!-- end row -->
 
  </div>

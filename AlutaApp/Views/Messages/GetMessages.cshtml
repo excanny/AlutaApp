@@ -1,0 +1,33 @@
+﻿@using AlutaApp.ViewModels
+@model UserListViewModel
+
+    @{
+        ViewData["Title"] = "Messages";
+        Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    }
+
+
+
+    <div class="row" style="margin-top: 10rem;">
+        <div class="col-lg-6 mx-auto">
+            <form asp-action="Messages" method="post">
+               <div class="input-group mb-3">
+                   
+                   <select asp-name="UserId1" class ="form-control js-example-basic-single" asp-items="@Model.Users" name="userId1" required>
+                       <option value="">Select User 1</option>
+
+                   </select>
+
+                    <select asp-name="UserId2" class ="form-control js-example-basic-single" asp-items="@Model.Users" name="userId2" required>
+                        <option value="">Select User 2</option>
+                            </select>
+                  <div class="input-group-append">
+                    <button class="btn btn-success" type="submit">Get Messages</button>
+                  </div>
+                </div>
+            </form>
+         </div>
+    </div>
+    
+
+    

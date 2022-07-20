@@ -121,6 +121,19 @@ namespace AlutaApp.Controllers
 
                 if (user != null)
                 {
+                    var role = await _userManager.GetRolesAsync(user);
+                    if(!role.Contains("SuperAdmin"))
+                    {
+                        var claims = await _userManager.GetClaimsAsync(user);
+
+                        if (claims.Count < 1)
+                        {
+                            ModelState.AddModelError("message", "Sorry, you have no permissions yet");
+                            return View(model);
+                        }
+                    }
+
+             
                     if (!user.EmailConfirmed)
                     {
                         ModelState.AddModelError("message", "Email not confirmed yet");
@@ -153,14 +166,6 @@ namespace AlutaApp.Controllers
 
                 }
 
-                try
-                {
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.InnerException);
-                }
             }
             return View();
         }

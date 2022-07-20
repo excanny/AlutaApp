@@ -102,7 +102,7 @@ namespace AlutaApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName", bannerAd.UserId);
+            
             return View(bannerAd);
         }
 

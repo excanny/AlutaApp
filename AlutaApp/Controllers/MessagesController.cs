@@ -26,25 +26,59 @@ namespace AlutaApp.Controllers
             _userManager = userManager;
         }
 
+        // GET: Messages/Create
         [HttpGet]
-        [Authorize(Policy = Permissions.Permissions.Messages.View)]
-        public async Task<IActionResult> Messages()
+        public IActionResult GetMessages()
         {
-            
-   
-            ViewBag.ListOfSenders = await _context.Messages.Select(e=>new ListOfSenders{
-                Sender = e.Sender.FullName,
-                SenderLastMessage = e.Content,
-                MessageId = e.Id
-            }).ToListAsync();
+            var vm = new UserListViewModel();
+            vm.Users = _context.Users
+                                  .Select(a => new SelectListItem()
+                                  {
+                                      Value = a.Id.ToString(),
+                                      Text = a.FullName
+                                  })
+                                  .ToList();
+            return View(vm);
 
-            List<ListOfSenders> Sender = ViewBag.ListOfSenders;
+        }
 
 
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
+        [HttpPost]
+        [Authorize(Policy = Permissions.Permissions.Messages.View)]
+        public async Task<IActionResult> Messages(int userId1, int userId2)
+        {
+            ViewBag.UserId1 = userId1;
+            ViewBag.UserId2 = userId2;
+            var allMessages = await _context.Messages
+                .Where(x => ((x.SenderId == userId1 && x.RecieverId == userId2) || (x.RecieverId == userId1 && x.SenderId == userId2)))
+                .Include(x => x.ParentMessage)
+                .ThenInclude(x => x.Sender)
+                .Include(x => x.Post.Video)
+                .Select(x => new MessageSingleDTO
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    MediaLink = x.MediaLink,
+                    IsReel = x.Post.Video != null,
+                    SenderId = x.SenderId,
+                    RecieverId = x.RecieverId,
+                    ParentMessage = x.ParentMessage != null ? new ParentMessageDTO
+                    {
+                        Id = x.ParentMessage.Id,
+                        UserName = x.ParentMessage.Sender.FullName,
+                        Content = x.ParentMessage.Content,
+                        MediaLink = x.ParentMessage.MediaLink,
+                        PostId = x.ParentMessage.PostId,
+                        Deleted = x.ParentMessage.Deleted
+                    } : null,
+                    PostId = x.PostId,
+                    TimeCreated = x.TimeCreated.ToUniversalTime(),
+                    Delivered = x.Delivered,
+                    Read = x.Read,
+                    Deleted = x.Deleted
+                }).OrderByDescending(x => x.Id).ToListAsync();
 
-            return View();
+            return View(allMessages);
 
         }
         // GET: Messages

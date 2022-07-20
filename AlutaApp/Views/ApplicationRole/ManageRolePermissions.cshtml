@@ -5,23 +5,10 @@
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
 }
 
-<div class="card">
-    <div class="card-header">
-        <form asp-action="ManageRolePermissions" method="get">
-            <h3 class="card-title">Manage Permissions for Role: <b>@Model.RoleName</b></h3>
-            <div class="float-right">
-                <p>
-                    Find by name: <input type="text" name="permissionValue" value="@Model.PermissionValue" />
-                    <input type="submit" value="Search" class="btn btn-default" /> |
-                    <input asp-for="RoleId" type="hidden" />
-                    
-                </p>
-            </div>
-        </form>
-    </div>
 
-    <div class="card-body">
-        <table class="table table-striped">
+
+ 
+        <table id="datatable" class="table table-theme table-row v-middle table-striped table-bordered" data-plugin="dataTable">
             <thead>
                 <tr>
                     <th>
@@ -54,46 +41,7 @@
                 }
             </tbody>
         </table>
-    </div>
-    <div class="card-footer clearfix">
-        @{
-            var prevDisabled = !Model.ManagePermissionsViewModel.HasPreviousPage ? "disabled" : "";
-            var nextDisabled = !Model.ManagePermissionsViewModel.HasNextPage ? "disabled" : "";
-        }
-        <div class="row">
-            <div class="col-sm-9">
-                <ul class="pagination">
-                    <li>
-                        <a asp-action="ManageRolePermissions"
-                           asp-route-roleId="@Model.RoleId"
-                           asp-route-pageNumber="@(Model.ManagePermissionsViewModel.PageIndex - 1)"
-                           class="btn btn-default @prevDisabled">
-                            Previous
-                        </a>
-                    </li>
-                    @for (var i = 1; i <= Model.ManagePermissionsViewModel.TotalPages; i++)
-                    {
-                        <li class="page-item @(i == Model.ManagePermissionsViewModel.PageIndex ? "active" : "")" style="z-index: 0;">
-                            <a asp-action="ManageRolePermissions"
-                               asp-route-roleId="@Model.RoleId"
-                               asp-route-pageNumber="@i"
-                               class="page-link">@i</a>
-                        </li>
-                    }
-                    <li>
-                        <a asp-action="ManageRolePermissions"
-                           asp-route-roleId="@Model.RoleId"
-                           asp-route-pageNumber="@(Model.ManagePermissionsViewModel.PageIndex + 1)"
-                           class="btn btn-default @nextDisabled">
-                            Next
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
-</div>
 
 @section Scripts
 {

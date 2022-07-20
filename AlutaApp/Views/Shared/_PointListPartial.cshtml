@@ -1,11 +1,11 @@
-﻿@model IEnumerable<AlutaApp.Models.Points2Earn>
+﻿@model IEnumerable<AlutaApp.Models.PointsLog>
 
 <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap">
         <thead>
             <tr>
                 <th><span class="text-muted">Point</span></th>
-                <th><span class="text-muted">Category</span></th>
-                                           
+                <th><span class="text-muted">Reason</span></th>
+                   <th><span class="text-muted">Date</span></th>                         
                                             
                 <th width="10%"><span class="text-muted">Actions</span></th>
             </tr>
@@ -20,9 +20,11 @@
                 </td>
                                             
                 <td>
-                    @item.Category
+                    @item.Reason
                 </td>
-
+                <td>
+                    @item.DateCreated
+                </td>
                                             
                 <td>
                  

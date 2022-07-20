@@ -123,10 +123,20 @@ namespace AlutaApp.Controllers
         [Authorize(Policy = Permissions.Permissions.Notifications.Create)]
         public async Task<IActionResult> Create()
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
 
-            return View();
+            var vm = new UserListViewModel();
+            vm.Users = _context.Users
+                                  .Select(a => new SelectListItem()
+                                  {
+                                      Value = a.Id.ToString(),
+                                      Text = a.FullName
+                                  })
+                                  .ToList();
+
+            //var users = await _context.Users.ToListAsync();
+
+            
+            return View(vm);
         }
 
         // POST: Notifications/Create
@@ -136,7 +146,7 @@ namespace AlutaApp.Controllers
         
         [Authorize(Policy = Permissions.Permissions.Notifications.Create)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,Content,Category,CategoryId,SecondPartyId,ThirdPartyId,Viewed,Clicked,TimeCreated,Active")] Notification notification)
+        public async Task<IActionResult> Create(Notification notification)
         {
             if (ModelState.IsValid)
             {

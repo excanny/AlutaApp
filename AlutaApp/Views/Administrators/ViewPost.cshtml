@@ -1,7 +1,4 @@
 ﻿@model AlutaApp.Models.Post
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
-@using X.PagedList.Web.Common;
 @{
     ViewData["Title"] = "ViewPost";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
@@ -42,43 +39,33 @@
 
                                                     </div>
                                                     <div id="likesPanel" style="display: none">
-                                                    
-                                            @{
-                                                var page  = (IPagedList)@ViewBag.PageList;
-                                                await Html.RenderPartialAsync("_PostLikeListPartial",page);
-                                            }
+                                           
                                   
         </div>
-                                                <div id="commentPanel" style="display: none">
-                                                  @{
-                                                      var pages = (IPagedList)@ViewBag.CommentList;
-                                                      await Html.RenderPartialAsync("_PostCommentListPartial",pages);
-                                                  }
+                                                <div>
+                                                 
     </div>
 
 
 
     }
+
+    
     </div>
     
-                                                
+            <div>
+
+                 @{
+                                                     
+                     await Html.RenderPartialAsync("_PostCommentListPartial", @Model.Comments);
+                 }
+            </div>                                   
                                                 
                                                 
 
      <script src="~/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/libs/jquery/dist/datatable.js"></script>
-    
-    <script>
-        $('#comment').on('click', function (e) {
-            $("#commentPanel").show();
-            $("#likesPanel").hide();
-         });
 
-          $('#likes').on('click', function (e) {
-            $("#likesPanel").show();
-            $("#commentPanel").hide();
-         });
-    </script>
 
     
 

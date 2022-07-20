@@ -35,9 +35,6 @@ namespace AlutaApp.Controllers
      
             var alltgifs = await _context.TGIFMatches.Include(s => s.Messages).ToListAsync();
 
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
-
             return View(alltgifs);
         }
         // GET: TGIFMatches

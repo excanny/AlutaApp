@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using X.PagedList;
 
 namespace AlutaApp.Controllers
@@ -279,7 +280,11 @@ namespace AlutaApp.Controllers
         public async Task<IActionResult> ViewAccount(int id)
         {
 
-            var userDetails = await _context.Users.Where(e => e.Id == id).Include(e => e.Department).Include(x=>x.Posts).Include(s => s.Institution).FirstOrDefaultAsync();
+            var userDetails = await _context.Users.Where(e => e.Id == id)
+                .Include(e => e.Department)
+                .Include(e => e.PointsLogs)
+                .Include(x=>x.Posts)
+                .Include(s => s.Institution).FirstOrDefaultAsync();
             return View(userDetails);
 
         }
@@ -358,38 +363,11 @@ namespace AlutaApp.Controllers
 
         public async Task<IActionResult> ViewPost(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+            
             var result = await _context.Posts.Where(e => e.Id == id).Include(e=>e.User).Include(s => s.Comments).Include(w=>w.Likes).FirstOrDefaultAsync();
             ViewBag.CommentLikes =  _context.Comments.Where(r=>r.PostId == id).Include(w=>w.CommentLikes).ToList();
-            int? page = 1;
-
-             int pageSize = 10;
-            int pageIndex = 1;
-
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-            ViewBag.Id =  id;
-            var getLikes  = _context.PostLikes.Where(p=>p.PostId  == id).ToList();
-           //var allDepartments = await _context.Points2Earns.ToListAsync();
-            var likes = await getLikes.OrderByDescending(s => s.TimeCreated).ToPagedListAsync(pageIndex, pageSize);
-            
-            var getComments  = _context.Comments.Where(p=>p.PostId  == id).ToList();
-           //var allDepartments = await _context.Points2Earns.ToListAsync();
-            var comments = await getComments.OrderByDescending(s => s.TimeCreated).ToPagedListAsync(pageIndex, pageSize);
-            
-            ViewBag.PageList = likes;
-            ViewBag.CommentList = comments;
-
+          
+            var getLikes  = _context.PostLikes.Where(p=>p.PostId  == id).ToList();   
 
             return View(result);
 
@@ -540,20 +518,10 @@ namespace AlutaApp.Controllers
 
         public async Task<IActionResult> ViewDocument(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+           
             var document = await _context.Documents
                 .Include(d => d.Category)
+                .Include(d => d.Comments)
                 .Include(d => d.Department)
                 .Include(d => d.User)
                 .Where(y => y.Id == id).FirstOrDefaultAsync();
@@ -624,20 +592,10 @@ namespace AlutaApp.Controllers
         // POST: Documents/Delete/5
         public async Task<IActionResult> DeleteComment(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
             var comment = await _context.Comments.FindAsync(id);
-            _context.Comments.Remove(comment);
+
+            if (comment != null)
+                _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             return RedirectToAction("ViewPost", new { id = id});
         }
@@ -652,17 +610,17 @@ namespace AlutaApp.Controllers
         public async Task<IActionResult> UpdatePoint(int? id)
         {
            
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var administrator = await _context.Points2Earns.FindAsync(id);
-            if (administrator == null)
-            {
-                return NotFound();
-            }
-            return View(administrator);
+            //var administrator = await _context.PointsLogs.FindAsync(id);
+            //if (administrator == null)
+            //{
+            //    return NotFound();
+            //}
+            return View();
         }
 
         // POST: Administrators/Edit/5
@@ -671,7 +629,7 @@ namespace AlutaApp.Controllers
         [HttpPost]
         [Authorize(Policy = Permissions.Permissions.Points.Edit)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdatePoint(int id, [Bind("Id,Points,Category")] Points2Earn administrator)
+        public async Task<IActionResult> UpdatePoint(int id, [Bind("Id,Points,Reason")] PointsLog administrator)
         {
             var firstCount = 2;
             ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
@@ -727,7 +685,17 @@ namespace AlutaApp.Controllers
             return View();
         }
 
-        public JsonResult GetUsersChartJSON()
+        public JsonResult GetActiveUsersChartJSON()
+        {
+            var user_data = _context.Users.GroupBy(user => user.Deleted).Select(group => new
+            {
+                Count = group.Count()
+            });
+
+            return Json(user_data);
+        }
+
+        public JsonResult GetOnlineUsersChartJSON()
         {
             var user_data = _context.Users.GroupBy(user => user.Online).Select(group => new
             {
@@ -760,6 +728,46 @@ namespace AlutaApp.Controllers
 
             return Json(comment_data);
         }
+
+        public async Task<JsonResult> GetPostsCommentsChartJSON()
+        {
+
+            var posts = await _context.Posts.GroupBy(x => new
+            {
+                Month = x.TimeCreated.Month,
+                Year = x.TimeCreated.Year
+            }).Select(x => new
+            {
+                Month = x.Key.Month,
+                MonthYear = $"{x.Key.Month}, {x.Key.Year}",
+                TotalPosts = x.Count()
+            }).Take(13).ToListAsync();
+
+            var comments = await _context.Comments.GroupBy(x => new
+            {
+                Month = x.TimeCreated.Month,
+                Year = x.TimeCreated.Year
+            }).Select(x => new
+            {
+                Month = x.Key.Month,
+                MonthYear = $"{x.Key.Month}, {x.Key.Year}",
+                TotalComments = x.Count()
+            }).Take(13).ToListAsync();
+
+            var fullData = posts.Join(comments,
+                p => p.MonthYear,
+                c => c.MonthYear,
+                (p, c) => new
+                {
+                    y = p.Month,
+                    TotalPosts = p.TotalPosts,
+                    TotalComments = c.TotalComments
+                }).Take(12).ToList();
+
+            return Json(fullData);
+        }
+
+       
 
         [HttpGet]
         [Authorize(Policy = Permissions.Permissions.Departments.View)]
@@ -881,20 +889,9 @@ namespace AlutaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedDepartment(int id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            var administrator = await _context.Departments.FindAsync(id);
-            _context.Departments.Remove(administrator);
+            var department = await _context.Departments.FindAsync(id);
+            if (department != null)
+                _context.Departments.Remove(department);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Departments));
         }

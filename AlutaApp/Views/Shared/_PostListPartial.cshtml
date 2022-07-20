@@ -7,8 +7,9 @@
 <table id="datatable" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
+                                            <th><span class="text-muted">Posted By</span></th>
                                             <th><span class="text-muted">Content</span></th>
-                    <th><span class="text-muted">Posted By</span></th>
+                    
                     <th><span class="text-muted">Created At</span></th>
                     <th><span class="text-muted">IsActive</span></th>
                     <th width="10%"><span class="text-muted">Action</span></th>
@@ -21,12 +22,13 @@
 
                                         <tr>
                                             <td >
-                                                @item.Content
-                                            </td>
-                                            <td >
                                                 
                                                 @item.User.FullName
                                             </td>
+                                            <td >
+                                                @item.Content
+                                            </td>
+                                            
 
                                              <td >
                                                @item.TimeCreated

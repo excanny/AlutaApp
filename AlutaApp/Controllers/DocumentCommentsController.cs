@@ -249,22 +249,12 @@ namespace AlutaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                //User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
+            
             var documentComment = await _context.DocumentComments.FindAsync(id);
-            _context.DocumentComments.Remove(documentComment);
+            if(documentComment != null)
+                _context.DocumentComments.Remove(documentComment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("/Administrators/ViewDocument/"+ id);
         }
 
         private bool DocumentCommentExists(int id)
