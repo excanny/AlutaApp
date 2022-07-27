@@ -31,7 +31,7 @@ namespace AlutaApp.Controllers
         [Authorize(Policy = Permissions.Permissions.BannerAds.View)]
         public async Task<IActionResult> Index()
         {
-            var allBannerAds = await _context.BannerAds.Include(b => b.User).ToListAsync();
+            var allBannerAds = await _context.BannerAds.Include(b => b.User).Include(b => b.Department).Include(b => b.Institution).ToListAsync();
 
             return View(allBannerAds);
         }
@@ -112,34 +112,35 @@ namespace AlutaApp.Controllers
         [HttpPost]
         [Authorize(Policy = Permissions.Permissions.BannerAds.Edit)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,BannerLink,InstitutionId,DepartmentId,Gender,StartDate,EndDate,Status")] BannerAd bannerAd)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,BannerLink,InstitutionId,DepartmentId,Gender,StartDate,EndDate,Status")] BannerAdViewModel? bannerAd)
         {
             if (id != bannerAd.Id)
             {
                 return NotFound();
             }
-            //bannerAd.User = _context.Users.Where(d => d.Id == bannerAd.Id).FirstOrDefault();
+            var newbannerAd = await _context.BannerAds.Where(d => d.Id == bannerAd.Id).FirstOrDefaultAsync();
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(bannerAd);
+                    if (newbannerAd == null) return NotFound();
+
+                     newbannerAd.BannerLink = bannerAd.BannerLink;
+                     newbannerAd.InstitutionId = bannerAd.InstitutionId;
+                     newbannerAd.DepartmentId = bannerAd.DepartmentId;
+                     newbannerAd.Gender = bannerAd.Gender;
+                     newbannerAd.StartDate = bannerAd.StartDate;
+                     newbannerAd.EndDate = bannerAd.EndDate;
+                     newbannerAd.Status = bannerAd.Status;
+
+                    _context.Update(newbannerAd);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BannerAdExists(bannerAd.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                catch (DbUpdateConcurrencyException) { }
+                
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName", bannerAd.UserId);
+            
             return View(bannerAd);
         }
 

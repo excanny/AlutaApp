@@ -191,14 +191,9 @@ namespace AlutaApp.Controllers
         [HttpPost]
         [Authorize(Policy = Permissions.Permissions.Users.Edit)]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission, Biography,InstitutionId,DepartmentId,GradePoint")] EditUserDTO user)
+        public async Task<IActionResult> EditUser(int id, [Bind("FullName,Gender,DateOfBirth,YearOfAdmission, Biography,InstitutionId,DepartmentId,GradePoint, Deleted")] EditUserDTO user)
         //public async Task<IActionResult> EditUser(int id, User user)
         {
-
-            //var errors = ModelState
-            //.Where(x => x.Value.Errors.Count > 0)
-            //.Select(x => new { x.Key, x.Value.Errors })
-            //.ToArray();
 
             User? userData = await _context.Users.FindAsync(id);
             if (userData != null)
@@ -209,7 +204,8 @@ namespace AlutaApp.Controllers
                 userData.YearOfAdmission = user.YearOfAdmission;
                 userData.InstitutionId = user.InstitutionId;    
                 userData.DepartmentId = user.DepartmentId;
-                userData.GradePoint = user.GradePoint;  
+                userData.GradePoint = user.GradePoint;
+                userData.Deleted = user.Deleted;
      
             }
 
@@ -443,29 +439,11 @@ namespace AlutaApp.Controllers
         [Authorize(Policy = Permissions.Permissions.Posts.Delete)]
         public async Task<IActionResult> DeletePost(int? id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
-            {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var administrator = await _context.Posts.Include(s=>s.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (administrator == null)
-            {
-                return NotFound();
-            }
+           
+            if (id == null) return NotFound();
+         
+            var administrator = await _context.Posts.Include(s => s.User).FirstOrDefaultAsync(m => m.Id == id);
+            if (administrator == null) return NotFound();
 
             return View(administrator);
         }
@@ -477,21 +455,15 @@ namespace AlutaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedPost(int id)
         {
-            var firstCount = 2;
-            ViewBag.Count = _context.Notifications.Where(e => e.Clicked == false && e.Viewed == false).ToList().Count();
-            ViewBag.Remaining = ViewBag.Count - firstCount;
-            ViewBag.Notifications = _context.Notifications.Select(s => new NotificationViewModel
+            try
             {
-                Content = s.Content,
-                ////User = _context.Users.Where(e => e.Id == s.UserId).FirstOrDefault().FullName,
-                NotificationId = s.Id,
-                Clicked = s.Clicked,
-                View = s.Viewed,
-                TimeCreated = s.TimeCreated
-            }).ToList().OrderByDescending(s => s.TimeCreated).Take(firstCount);
-            var administrator = await _context.Posts.FindAsync(id);
-            _context.Posts.Remove(administrator);
-            await _context.SaveChangesAsync();
+                var administrator = await _context.Posts.FindAsync(id);
+                if (administrator != null)
+                    _context.Posts.Remove(administrator);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) { }
+            
             return RedirectToAction(nameof(Posts));
         }
 
@@ -609,18 +581,14 @@ namespace AlutaApp.Controllers
         [Authorize(Policy = Permissions.Permissions.Points.Edit)]
         public async Task<IActionResult> UpdatePoint(int? id)
         {
-           
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
 
-            //var administrator = await _context.PointsLogs.FindAsync(id);
-            //if (administrator == null)
-            //{
-            //    return NotFound();
-            //}
-            return View();
+            if (id == null) return NotFound();
+
+            var administrator = await _context.Users.Include(s => s.PointsLogs).FirstOrDefaultAsync();
+
+            if (administrator == null) return NotFound();
+           
+            return View(administrator);
         }
 
         // POST: Administrators/Edit/5

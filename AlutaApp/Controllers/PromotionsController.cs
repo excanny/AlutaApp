@@ -34,8 +34,6 @@ namespace AlutaApp.Controllers
         {
             
             var allPromotions = await _context.Promotions.Include(s=>s.Post).ToListAsync();
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var role = await _userManager.GetRolesAsync(currentUser);
 
             return View(allPromotions);
 

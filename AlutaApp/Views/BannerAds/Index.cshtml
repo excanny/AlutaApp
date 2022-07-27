@@ -52,10 +52,10 @@
                 @Html.DisplayFor(modelItem => item.BannerLink)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Institution)v
+                @Html.DisplayFor(modelItem => item.User.Institution.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Department)
+                @Html.DisplayFor(modelItem => item.User.Department.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Gender)
@@ -67,15 +67,25 @@
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
             <td>
-                    @*@{
+                    @{
                         if (item.Status == 1)
                         {
-                         
+                         <p>Created</p> 
+                          
+                        }
+                        if (item.Status == 2)
+                        {
+                         <p>Paid</p> 
+                          
+                        }
+
+                        if (item.Status == 3)
+                        {
+                         <p>Approved</p> 
                           
                         }
                            
-                    }*@
-              @* @Html.DisplayFor("Created")*@
+                    }
             </td>
             <td>
                 @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

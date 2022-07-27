@@ -59,13 +59,16 @@
                 </div>
             
                 <input type="hidden" asp-for="Id" />
-                @*<div class="form-group">
-                    <label asp-for="UserName" class="control-label"></label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Deleted" class="control-label"></label>
+                    <select asp-for="Deleted" class="form-control" required>
+                        <option value="">Select one</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
                 </div>
             
-                <div class="form-group">
+                @*<div class="form-group">
                     <label asp-for="Email" class="control-label"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>

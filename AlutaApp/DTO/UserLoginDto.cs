@@ -56,6 +56,7 @@ namespace AlutaApp.DTO
         public int DepartmentId { get; set; }
 
         public double GradePoint { get; set; }
+        public bool Deleted { get; set; }
 
     }
 

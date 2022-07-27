@@ -128,7 +128,7 @@ namespace AlutaApp.Controllers
 
                         if (claims.Count < 1)
                         {
-                            ModelState.AddModelError("message", "Sorry, you have no permissions yet");
+                            ModelState.AddModelError("message", "Sorry, Invalid login");
                             return View(model);
                         }
                     }
