@@ -117,7 +117,6 @@ namespace AlutaApp.Controllers
            
         }
 
-       
         // GET: Notifications/Create
         [HttpGet]
         [Authorize(Policy = Permissions.Permissions.Notifications.Create)]
@@ -148,6 +147,7 @@ namespace AlutaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Notification notification)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(notification);

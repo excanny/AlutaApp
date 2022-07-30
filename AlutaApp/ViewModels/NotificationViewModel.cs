@@ -1,13 +1,15 @@
-﻿namespace AlutaApp.ViewModels
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace AlutaApp.ViewModels
 {
     public class NotificationViewModel
     {
         public int NotificationId { get; set; }
-        public string User { get; set; }
         public string Content { get; set; }
         public bool Clicked { get; set; }
         public bool View { get; set; }
         public DateTime TimeCreated { get; set; }
+        public List<SelectListItem>? Users { set; get; }
     }
 
 
